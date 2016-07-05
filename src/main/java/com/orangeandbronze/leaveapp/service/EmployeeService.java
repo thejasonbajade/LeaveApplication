@@ -13,21 +13,21 @@ import com.orangeandbronze.leaveapp.domain.Supervisor;
 @Service
 public interface EmployeeService {
 	
-	public void fileLeave(int employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, int approverId);
+	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId);
 
-	public void cancelLeaveApplication(int employeeId, int leaveId);
+	public void cancelLeaveApplication(long employeeId, long leaveId);
 
-	public void approveLeaveApplication(int approverId, int leaveId);
+	public void approveLeaveApplication(long approverId, long leaveId);
 	
-	public void disapproveLeaveApplication(int approverId, int leaveId);
+	public void disapproveLeaveApplication(long approverId, long leaveId);
 
-	public void changeLeaveApplicationToNotTaken(int approverId, int leaveId);
+	public void changeLeaveApplicationToNotTaken(long approverId, long leaveId);
 
-	public void findLeaveApplicationsForSupervisor(int supervisorId);
+	public void findLeaveApplicationsForSupervisor(long supervisorId);
 	
 	public int addEmployee(Employee employee);
 	
-	public Employee viewEmployee(int employeeId);
+	public Employee viewEmployee(long employeeId);
 	
 	public List<Employee> viewAllEmployee();
 	

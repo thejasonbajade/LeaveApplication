@@ -58,11 +58,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
-	public void add(Employee employee) {
+	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
-		jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
+		return jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
 				employee.getEmployeeId(),
 				record.getFirstName(),
 				record.getLastName(),

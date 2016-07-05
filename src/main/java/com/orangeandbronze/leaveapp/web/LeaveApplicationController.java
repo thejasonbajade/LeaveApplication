@@ -84,31 +84,19 @@ public class LeaveApplicationController{
 	}
 	
 	@RequestMapping("/process_leave_application")
-	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) throws ParseException {
-
-
-		//Employee employee = employeeRepository.findBy(
-		//		Integer.parseInt(reqParam.map("employeeId")));
-		//Supervisor approver = (Supervisor) employeeRepository.findBy(
-		//		Integer.parseInt(reqParam.map("approverId")));
-		//reqParam.get();
-		//Employee employee = new Employee();
-		//Supervisor approver = new Supervisor();
-		/*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MMM-dd");
-		Date start = simpleDateFormat.parse(reqParam.get("startDate"));
-		Calendar startDate = Calendar.getInstance();
-		startDate.setTime(start);
-		Date end = simpleDateFormat.parse(reqParam.get("startDate"));
-		Calendar endDate = Calendar.getInstance();*/
+	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {		
 		
 		LocalDate startDate = LocalDate.parse(reqParam.get("startDate"));
 		LocalDate endDate = LocalDate.parse(reqParam.get("endDate"));
 		LeaveType leaveType = LeaveType.valueOf(reqParam.get("leaveType"));
 
-		employeeService.fileLeave(1, startDate, endDate, leaveType, reqParam.get("reason"), 2);
-		//		model.addAttribute("leaveApplication", leaveApplication);
-		//model.addAttribute("leaveApplication", leaveApplication);
-
+		employeeService.fileLeave(1, 
+				startDate, 
+				endDate, 
+				leaveType, 
+				reqParam.get("reason"), 
+				Integer.parseInt(reqParam.get("supervisorId")));
+		
 		return "redirect:/view_leave_history";
 	}
 
@@ -121,7 +109,7 @@ public class LeaveApplicationController{
 
 	@RequestMapping("/view_leave_history")
 	public String showOwnLeaveHistory(Model model) {
-		List<LeaveApplication> leaveApplications = leaveApplicationService.findLeaveApplicationsByEmployee(1);
+		List<LeaveApplication> leaveApplications = leaveApplicationService.findLeaveApplicationsByEmployee(user.getEmployeeId());
 		model.addAttribute("leaveApplications", leaveApplications);
 		return "leave_history";
 	}

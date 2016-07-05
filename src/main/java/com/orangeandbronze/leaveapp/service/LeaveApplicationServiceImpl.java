@@ -33,12 +33,12 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	}
 
 	@Override
-	public List<LeaveApplication> findLeaveApplicationsByEmployee(int employeeId) {
+	public List<LeaveApplication> findLeaveApplicationsByEmployee(long employeeId) {
 		return leaveApplicationRepository.findLeaveApplicationsByEmployee(employeeId);
 	}
 
 	@Override
-	public List<LeaveApplication> findLeaveApplicationsForSupervisor(int supervisorId) {
+	public List<LeaveApplication> findLeaveApplicationsForSupervisor(long supervisorId) {
 		return leaveApplicationRepository.findLeaveApplicationsForSupervisor(supervisorId);
 	}
 
@@ -48,7 +48,7 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
 	}
 
 	@Override
-	public List<String> findAllCommentsForLeave(int leaveId) {
+	public List<String> findAllCommentsForLeave(long leaveId) {
 		return leaveApplicationRepository.findAllCommentsForLeave(leaveId);
 	}
 

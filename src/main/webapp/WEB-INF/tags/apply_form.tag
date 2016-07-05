@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@tag description="Leave Application Form Tag" pageEncoding="UTF-8"%>
 <form action="view_leave_history" class="col-md-8 col-md-offset-2" id="leaveapplicationform" method="post">		
-	<p> ${user.employeeRecord.firstName} </p>		
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> Leave Type </label>
 		<div class="col-md-8">
@@ -21,7 +20,7 @@
 			<select class="form-control" name="supervisorId">
 				<option selected disabled> Supervisor </option>
 				<c:forEach items="${supervisors}" var="supervisor">
-					<option value="${supervisor.employeeId}"> ${supervisor.firstName} ${supervisor.lastName} </option>
+					<option value="${supervisor.employeeId}"> ${supervisor.employeeRecord.firstName} ${supervisor.employeeRecord.lastName} </option>
 				</c:forEach>
 			</select>
 		</div>

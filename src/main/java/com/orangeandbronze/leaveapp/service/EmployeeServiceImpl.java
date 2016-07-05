@@ -30,43 +30,43 @@ public class EmployeeServiceImpl implements EmployeeService{
 		this.leaveApplicationRepository = leaveApplicationRepository;
 	}
 
-	public void fileLeave(int employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, int approverId) {
+	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId) {
 		Employee employee = employeeRepository.findBy(employeeId);
 		Supervisor supervisor = (Supervisor) employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication =  employee.fileLeave(startDate, endDate, leaveType, reason, supervisor); 
 		leaveApplicationRepository.insert(leaveApplication);
 	}
 
-	public void cancelLeaveApplication(int employeeId, int leaveId) {
+	public void cancelLeaveApplication(long employeeId, long leaveId) {
 		Employee employee = employeeRepository.findBy(employeeId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		employee.cancel(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
-	public void approveLeaveApplication(int approverId, int leaveId) {
+	public void approveLeaveApplication(long approverId, long leaveId) {
 		//Supervisor approver = (Supervisor) employeeRepository.findBy(approverId);
-		Supervisor approver =  new Supervisor(1, "Jason", "Bajade");
+		//Supervisor approver =  new Supervisor(1, "Jason", "Bajade");
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
-		approver.approve(leaveApplication);
+		//approver.approve(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
-	public void disapproveLeaveApplication(int approverId, int leaveId) {
+	public void disapproveLeaveApplication(long approverId, long leaveId) {
 		Supervisor approver = (Supervisor) employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.disapprove(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
-	public void changeLeaveApplicationToNotTaken(int approverId, int leaveId) {
+	public void changeLeaveApplicationToNotTaken(long approverId, long leaveId) {
 		Admin approver = (Admin) employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.changeToNotTaken(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
-	public void findLeaveApplicationsForSupervisor(int supervisorId) {
+	public void findLeaveApplicationsForSupervisor(long supervisorId) {
 		//Employee supervisor = employeeDao.findBy(supervisorId);
 		Collection<LeaveApplication> leaveApplications = leaveApplicationRepository.findLeaveApplicationsForSupervisor(supervisorId);
 	}
@@ -74,11 +74,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public int addEmployee(Employee employee) {
 		//Employee employee = new Employee(); //TODO: finalize Employee parameters
-		return employeeRepository.create(employee);
+		return employeeRepository.add(employee);
 	}
 
 	@Override
-	public Employee viewEmployee(int employeeId) {
+	public Employee viewEmployee(long employeeId) {
 		return employeeRepository.findBy(employeeId);
 	}
 
