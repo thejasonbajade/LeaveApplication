@@ -1,0 +1,52 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+	
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.orangeandbronze.leaveapp.web 
+					com.orangeandbronze.leaveapp.service 
+					com.orangeandbronze.leaveapp.repository 
+					com.orangeandbronze.leaveapp.jdbc" />
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	
+	<!-- <jdbc:embedded-database id="dataSource" type="HSQL">
+		<jdbc:script location="${schemaLocation}" />
+		<jdbc:script location="${testDataLocation}" />
+	</jdbc:embedded-database>
+	
+	<context:property-placeholder location="/WEB-INF/db.properties" /> -->
+	
+	<bean class="com.orangeandbronze.leaveapp.web.EmployeeController">
+		<constructor-arg ref="employeeService" />
+	</bean>
+	<bean id="employeeService" class="com.orangeandbronze.leaveapp.service.EmployeeServiceImpl" />
+	
+	<!-- <bean id="" class="com.orangeandbronze.leaveapp.service.EmployeeServiceImpl" />-->
+
+	<mvc:resources mapping="/assets/**" location="/assets/"
+		cache-period="31556926" />
+	<mvc:annotation-driven />
+	<mvc:default-servlet-handler />
+
+</beans>
+
+<!--<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" 
+	p:host="${mailserver.host}"> </bean> <bean id="dataSource" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"> 
+	<property name="driverClassName"> <value>org.hsqldb.jdbcDriver</value> </property> 
+	<property name="url"> <value>org.hsqldb.jdbcDriver</value> </property> <property 
+	name="username"> <value></value> </property> <property name="password"> <value></value> 
+	</property> </bean> -->

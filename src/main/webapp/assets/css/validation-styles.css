@@ -1,0 +1,11 @@
+ input:focus,textarea:focus{
+  border-color: initial;
+ }
+
+ input.error, textarea.error{
+  border:1px solid red;
+ }
+ 
+label.error {
+    color: red;
+}

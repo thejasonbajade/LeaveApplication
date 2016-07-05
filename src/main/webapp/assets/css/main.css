@@ -1,0 +1,115 @@
+#index {
+	margin-top: 50px;
+	background-color: #1276d8;
+	color: #FFF;
+}
+#content {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-top: 95px;
+}
+.remove-padding {
+	padding: 0px;
+}
+label {
+	font-weight: normal;
+}
+p {
+	margin: 0px;
+}
+.list-group-item {
+	text-align: center;
+}
+.navbar {
+	margin-bottom: 0px;
+	height: 90px;
+	border-radius: 0px;
+	background-color: white;
+	box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.10);
+
+}
+
+#navLogo{
+	width: 300px;
+}
+#navLogout {
+	position:absolute; 
+	right:25px;
+	top:30px
+}
+#mainContent {
+	margin-left: 180px;
+}
+#mainContent #pagination{
+	text-align:center;
+}
+#mainContent div div #leaveCreditsPanel {
+	text-align: center;
+}
+#mainContent div div div h1{
+	font-size: 70px;
+}
+#mainContentBottom{
+	border-top: none;
+	min-height: 280px;
+}
+table thead th{
+	text-align: center;
+}
+#leaveList th:nth-child(1),
+#leaveList td:nth-child(1){
+	max-width: 100px;
+}
+.modal .modal-body div {
+	margin-bottom: 10px;
+} 
+#verticalNav {
+	height: 100vh;
+	width: 125px;
+	position: fixed;
+	background-color:#212121;
+}
+.list-group-item,
+.list-group-item .active{
+	border-color: #000;
+}
+a.list-group-item {
+	text-align: center;
+	color: #B0BEC5;
+	background-color: #212121;
+	padding: 14px 0px;
+	border-left: 6px solid #37474F;
+}
+
+a.list-group-item:hover {
+	background-color: #212121;
+	border-left-color:#FF9800;
+	color: #FF9800;
+}
+a.list-group-item.active {	
+	color: #FF9800;
+	background-color: #FFF;
+	border-color: #FFF;
+	border-left: 6px solid #37474F;
+}
+a.list-group-item.active:hover {
+	color: #FF9800;
+	background-color: #FFF;
+	border-color: #FFF;
+	border-left: 6px solid #FF9800;
+}
+
+#banner {
+	margin-top: 150px;
+}
+
+#banner,
+#banner a {
+	color: white;
+}
+
+#verticalNav .badge {
+	position:absolute; 
+	right:5px; 
+	background-color: #FF9800;
+}

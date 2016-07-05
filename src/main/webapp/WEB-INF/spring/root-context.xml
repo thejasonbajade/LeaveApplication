@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:annotation-config />
+	<context:component-scan
+		base-package="com.orangeandbronze.leaveapp.web 
+					com.orangeandbronze.leaveapp.service 
+					com.orangeandbronze.leaveapp.repository 
+					com.orangeandbronze.leaveapp.jdbc" />
+
+
+
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+		<property name="url" value="jdbc:hsqldb:mem:leaveapp" />
+		<property name="username" value="" />
+		<property name="password" value="" />
+	</bean> -->
+
+	<bean name="dataSource"  
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/leaveapp" />
+		<property name="username" value="root" />
+		<property name="password" value="" />
+	</bean>
+
+	<!-- <jdbc:embedded-database id="dataSource" type="HSQL">
+		<jdbc:script location="${schemaLocation}" />
+		<jdbc:script location="${testDataLocation}" />
+	</jdbc:embedded-database>
+ -->
+	<context:property-placeholder location="/WEB-INF/db.properties" />
+
+</beans>
