@@ -78,7 +78,7 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	}*/
 
 	@Override
-	public LeaveApplication findBy(int leaveId) {
+	public LeaveApplication findBy(long leaveId) {
 
 		return jdbcTemplate.queryForObject(
 				"SELECT * FROM LeaveApplication WHERE ID = ?", new LeaveApplicationMapper(), leaveId);
@@ -92,7 +92,7 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	}
 
 	@Override
-	public List<LeaveApplication> findLeaveApplicationsByEmployee(int employeeId) {
+	public List<LeaveApplication> findLeaveApplicationsByEmployee(long employeeId) {
 		return jdbcTemplate.query(
 				"SELECT * FROM LeaveApplication WHERE Employee_Id = ? ORDER BY DateFiled DESC", 
 				new LeaveApplicationMapper(),
@@ -100,7 +100,7 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	}
 
 	@Override
-	public List<LeaveApplication> findLeaveApplicationsForSupervisor(int supervisorId) {
+	public List<LeaveApplication> findLeaveApplicationsForSupervisor(long supervisorId) {
 		return jdbcTemplate.query(
 				"SELECT * FROM LeaveApplication WHERE Supervisor_ID = ? ORDER BY DateFiled DESC", 
 				new LeaveApplicationMapper(), 
@@ -135,7 +135,7 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	}
 
 	@Override
-	public List<String> findAllCommentsForLeave(int leaveId) {
+	public List<String> findAllCommentsForLeave(long leaveId) {
 		/*jdbcTemplate.query(
 				"SELECT * FROM Comments WHERE LeaveHistor_Id = ?", ,leaveId);*/		
 		return null; 

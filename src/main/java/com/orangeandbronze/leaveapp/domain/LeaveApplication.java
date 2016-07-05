@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class LeaveApplication {
 
-	private int leaveId;
+	private long leaveId;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private LocalDate dateFiled;
@@ -96,7 +96,7 @@ public class LeaveApplication {
 		return numberOfLeaveDays;
 	}
 
-	public int getLeaveId() {
+	public long getLeaveId() {
 		return leaveId;
 	}
 

@@ -30,9 +30,6 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	private static final String SQL_FINDBY_ID =
-	"SELECT * FROM employee e JOIN department d ON e.Department_ID = d.ID WHERE e.ID = ?";
-
 	@Override
 	public Employee findBy(long emp_id) {
 		return jdbcTemplate.queryForObject(SQL_FINDBY_ID, rowMapper , emp_id);
@@ -61,11 +58,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
-	public void add(Employee employee) {
+	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
-		jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
+		return jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
 				employee.getEmployeeId(),
 				record.getFirstName(),
 				record.getLastName(),
@@ -83,6 +80,9 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
 				department.getId());
 	}
+
+	private static final String SQL_FINDBY_ID =
+			"SELECT * FROM employee e JOIN department d ON e.Department_ID = d.ID WHERE e.ID = ?";
 
 	public class EmployeeMapper implements RowMapper<Employee> {
 		@Override

@@ -10,11 +10,11 @@ public interface LeaveApplicationService {
 	
 	public List<LeaveApplication> findAllLeaveApplications();
 	
-	public List<LeaveApplication> findLeaveApplicationsByEmployee(int employeeId);
+	public List<LeaveApplication> findLeaveApplicationsByEmployee(long employeeId);
 	
-	public List<LeaveApplication> findLeaveApplicationsForSupervisor(int supervisorId);
+	public List<LeaveApplication> findLeaveApplicationsForSupervisor(long supervisorId);
 	
 	public int insert(LeaveApplication leaveApplication);
 	
-	public List<String> findAllCommentsForLeave(int leaveId); 
+	public List<String> findAllCommentsForLeave(long leaveId); 
 }
