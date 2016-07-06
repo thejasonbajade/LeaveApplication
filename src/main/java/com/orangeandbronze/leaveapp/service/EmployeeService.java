@@ -32,5 +32,7 @@ public interface EmployeeService {
 	public List<Employee> viewAllEmployee();
 	
 	public List<Employee> findAllSupervisor();
+
+	public List<Employee> findAllEmployees();
 }
 

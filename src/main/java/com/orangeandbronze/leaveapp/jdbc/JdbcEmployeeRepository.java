@@ -40,11 +40,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
-
+	
+	
 	@Override
 	public List<Employee> findAll() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not yet implemented");
+		return jdbcTemplate.query("SELECT * FROM Employee e JOIN department d ON e.Department_ID = d.ID", rowMapper);
 	}
 
 	@Override

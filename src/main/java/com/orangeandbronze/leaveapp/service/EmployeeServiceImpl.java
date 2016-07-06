@@ -1,18 +1,21 @@
 package com.orangeandbronze.leaveapp.service;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.orangeandbronze.leaveapp.domain.*;
-import com.orangeandbronze.leaveapp.repository.*;
+import com.orangeandbronze.leaveapp.domain.Admin;
+import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.LeaveApplication;
+import com.orangeandbronze.leaveapp.domain.LeaveType;
+import com.orangeandbronze.leaveapp.domain.Supervisor;
+import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
+import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
 
 @Service
 @Transactional
@@ -89,5 +92,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	public List<Employee> findAllSupervisor() {
 		return employeeRepository.findAllSupervisors();
+	}
+
+	@Override
+	public List<Employee> findAllEmployees() {
+		return employeeRepository.findAll();
 	}
 }

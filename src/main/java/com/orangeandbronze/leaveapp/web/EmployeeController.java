@@ -1,5 +1,6 @@
 package com.orangeandbronze.leaveapp.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.service.EmployeeService;
 
 
@@ -58,8 +60,8 @@ public class EmployeeController{
 	
 	@RequestMapping("/view_all_employees")
 	public String viewAllEmployees(Model model) {
-		//Collection<Employee> employees = employeeRepository.findAll();
-		//model.addAttribute("employees", employees);
+		List<Employee> employees = employeeService.findAllEmployees();
+		model.addAttribute("employees", employees);
 		
 		return "employee_list";
 	}
