@@ -48,8 +48,6 @@ public class LeaveApplicationController{
 	public String loginEmployee(HttpServletRequest request, Model model){
 		user = employeeService.viewEmployee(4);
 		request.getSession().setAttribute("user", user);
-		
-		model.addAttribute("user", user);
 		return "account_info";
 	}
 	
@@ -57,13 +55,12 @@ public class LeaveApplicationController{
 	public String loginSupervisor(HttpServletRequest request, Model model){
 		user = employeeService.viewEmployee(6);
 		request.getSession().setAttribute("user", user);
-		
-		model.addAttribute("user", user);
 		return "account_info";
 	}
 
 	@RequestMapping(value="/loginAdmin", method = RequestMethod.GET)
 	public String loginAdmin(HttpServletRequest request){
+		user = employeeService.viewEmployee(1);
 		request.getSession().setAttribute("user", user);
 		return "account_info";
 	}

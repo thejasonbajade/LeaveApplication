@@ -109,11 +109,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		}
 
 		private void checkEmployeePrivileges(Employee employee, ResultSet rs) throws SQLException {
-			if(rs.getBoolean("isSupervisor"))
+			if(rs.getInt("isSupervisor") == 1)
 				employee.grantSupervisorPrivileges();
-			if(rs.getBoolean("isAdmin"))
+			if(rs.getInt("isAdmin") == 1)
 				employee.grantAdminPrivelages();
-			if(rs.getBoolean("isHR"))
+			if(rs.getInt("isHR") == 1)
 				employee.grantHRPrivileges();
 		}
 
