@@ -12,7 +12,9 @@ public interface EmployeeRepository {
 	
 	public List<Employee> findAllSupervisors();
 	
-	public void update(Employee employee);
+	public int updateLeaveCreditsOf(Employee employee);
+	
+	public int updateEmploymentStatusOf(Employee employee);
 
 	public int add(Employee employee);
 }	

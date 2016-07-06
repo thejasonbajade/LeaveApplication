@@ -27,6 +27,10 @@ public interface EmployeeService {
 	
 	public int addEmployee(Employee employee);
 	
+	public int updateLeaveCreditsOf(Employee employee);
+	
+	public int updateEmploymentStatusOf(Employee employee);
+	
 	public Employee viewEmployee(long employeeId);
 	
 	public List<Employee> viewAllEmployee();

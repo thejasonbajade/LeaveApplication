@@ -108,4 +108,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public List<Department> findAllDepartments() {
 		return departmentRepository.findAll();
 	}
+
+	@Override
+	public int updateLeaveCreditsOf(Employee employee) {
+		return employeeRepository.updateLeaveCreditsOf(employee);
+	}
+
+	@Override
+	public int updateEmploymentStatusOf(Employee employee) {
+		return employeeRepository.updateEmploymentStatusOf(employee);
+	}
 }

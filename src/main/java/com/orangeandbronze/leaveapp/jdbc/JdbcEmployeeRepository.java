@@ -37,12 +37,38 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	}
 
 	@Override
-	public void update(Employee employee) {
+	public int updateLeaveCreditsOf(Employee employee) {
 		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not yet implemented");
+		final LeaveCredits credits = employee.getCredits();
+		return jdbcTemplate.update("UPDATE Employee SET "
+				+ "VLCredits = ?, "
+				+ "SLCredits = ?, "
+				+ "ELCredits = ?, "
+				+ "SPCredits = ?, "
+				+ "OffsetCredits = ? "
+				+ "WHERE ID = ?", 
+				credits.getVacationLeaveCredits(),
+				credits.getSickLeaveCredits(),
+				credits.getEmergencyLeaveCredits(),
+				credits.getSoloParentLeaveCredits(),
+				credits.getOffsetLeaveCredits(),
+				employee.getEmployeeId());
 	}
 	
 	
+	
+	@Override
+	public int updateEmploymentStatusOf(Employee employee) {
+		final EmploymentStatus status = employee.getEmployeeRecord().getStatus();
+		return jdbcTemplate.update("UPDATE Employee SET "
+				+ "EmploymentStatus = ?, "
+				+ "RegularizationDate = ? "
+				+ "WHERE ID = ?", 
+				status, 
+				LocalDate.now().toString(),
+				employee.getEmployeeId());
+	}
+
 	@Override
 	public List<Employee> findAll() {
 		return jdbcTemplate.query("SELECT * FROM Employee e JOIN department d ON e.Department_ID = d.ID", rowMapper);
