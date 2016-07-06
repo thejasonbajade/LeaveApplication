@@ -1,18 +1,21 @@
 package com.orangeandbronze.leaveapp.service;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.orangeandbronze.leaveapp.domain.*;
-import com.orangeandbronze.leaveapp.repository.*;
+import com.orangeandbronze.leaveapp.domain.Department;
+import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.LeaveApplication;
+import com.orangeandbronze.leaveapp.domain.LeaveType;
+import com.orangeandbronze.leaveapp.repository.DepartmentRepository;
+import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
+import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
 
 @Service
 @Transactional
@@ -21,18 +24,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	private EmployeeRepository employeeRepository;
 	private LeaveApplicationRepository leaveApplicationRepository;
+	private DepartmentRepository departmentRepository;
 
 	@Autowired
 	public EmployeeServiceImpl(
 			EmployeeRepository employeeRepository, 
-			LeaveApplicationRepository leaveApplicationRepository) {
+			LeaveApplicationRepository leaveApplicationRepository,
+			DepartmentRepository departmentRepository) {
 		this.employeeRepository = employeeRepository;
 		this.leaveApplicationRepository = leaveApplicationRepository;
+		this.departmentRepository = departmentRepository;
 	}
 
 	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId) {
 		Employee employee = employeeRepository.findBy(employeeId);
-		Supervisor supervisor = (Supervisor) employeeRepository.findBy(approverId);
+		Employee supervisor = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication =  employee.fileLeave(startDate, endDate, leaveType, reason, supervisor); 
 		leaveApplicationRepository.insert(leaveApplication);
 	}
@@ -53,14 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	public void disapproveLeaveApplication(long approverId, long leaveId) {
-		Supervisor approver = (Supervisor) employeeRepository.findBy(approverId);
+		Employee approver = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.disapprove(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
 	public void changeLeaveApplicationToNotTaken(long approverId, long leaveId) {
-		Admin approver = (Admin) employeeRepository.findBy(approverId);
+		Employee approver = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.changeToNotTaken(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
@@ -73,7 +79,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public int addEmployee(Employee employee) {
-		//Employee employee = new Employee(); //TODO: finalize Employee parameters
 		return employeeRepository.add(employee);
 	}
 
@@ -89,5 +94,15 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	public List<Employee> findAllSupervisor() {
 		return employeeRepository.findAllSupervisors();
+	}
+
+	@Override
+	public List<Employee> findAllEmployees() {
+		return employeeRepository.findAll();
+	}
+
+	@Override
+	public List<Department> findAllDepartments() {
+		return departmentRepository.findAll();
 	}
 }

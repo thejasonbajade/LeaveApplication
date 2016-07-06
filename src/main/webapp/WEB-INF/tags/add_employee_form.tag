@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@tag description="Add Employee Form Tag" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <form action="submit_add_employee" method="post" id="addemployeeform" class="col-md-8 col-md-offset-2">
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> First Name </label>
@@ -59,7 +60,10 @@
 			<select class="form-control" name="department">
 				<option style="display: none" value="default">Select
 					Department</option>
-				<option> Department 1 </option>
+				<c:forEach items="${departments}" var="department">
+					<option value="${department.id}">${department.name}</option>
+				</c:forEach>
+				
 				<!-- loop departments from db -->
 			</select>
 		</div>
@@ -68,7 +72,7 @@
 	<div class="form-group col-md-12" id="regulardatediv">
 		<label class="col-md-4"> Solo Parent </label>
 		<div class="col-md-3">
-			<input type="checkbox" checked data-toggle="toggle" checked data-on="Solo Parent" data-off="Non Solo Parent" data-onstyle="primary" data-offstyle="default" data-width="100%">
+			<input name="isSoloParent" type="checkbox" checked data-toggle="toggle" checked data-on="Solo Parent" data-off="Non Solo Parent" data-onstyle="primary" data-offstyle="default" data-width="100%">
 		</div>
 	</div>
 	
@@ -77,13 +81,13 @@
 		<label class="col-md-4"> Roles </label>
 		<div class="col-md-8">
 			<div class="checkbox">
-				<label><input type="checkbox" id="adminrole" name="roles" value="admin"> Admin </label>
+				<label><input type="checkbox" id="adminrole" name="isadmin" value="admin"> Admin </label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" id="supervisorrole" name="roles" value="supervisor"> Supervisor </label>
+				<label><input type="checkbox" id="supervisorrole" name="issupervisor" value="supervisor"> Supervisor </label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" id="hrrole" name="roles" value="hr"> HR </label>
+				<label><input type="checkbox" id="hrrole" name="ishr" value="hr"> HR </label>
 			</div>
 		</div>
 	</div>

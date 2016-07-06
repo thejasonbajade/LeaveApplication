@@ -15,4 +15,17 @@ public class Department {
 	public long getId() {
 		return id;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public Collection<Employee> getEmployees() {
+		return employees;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

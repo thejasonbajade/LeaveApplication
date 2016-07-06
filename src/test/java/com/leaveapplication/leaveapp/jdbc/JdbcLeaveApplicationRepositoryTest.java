@@ -1,6 +1,8 @@
 package com.leaveapplication.leaveapp.jdbc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -17,7 +19,6 @@ import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
-import com.orangeandbronze.leaveapp.domain.Supervisor;
 import com.orangeandbronze.leaveapp.jdbc.JdbcLeaveApplicationRepository;
 
 public class JdbcLeaveApplicationRepositoryTest {

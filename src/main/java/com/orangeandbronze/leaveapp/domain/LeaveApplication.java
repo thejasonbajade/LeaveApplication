@@ -12,17 +12,17 @@ public class LeaveApplication {
 	private LeaveType leaveType;
 	private LeaveStatus leaveStatus;
 	private Employee filer;
-	private Supervisor approver;
+	private Employee approver;
 	private String reason;
 	private float numberOfLeaveDays;
 
 	public LeaveApplication(LocalDate startDate, LocalDate endDate, LeaveType leaveType,
-			String reason,Employee filer, Supervisor approver) {
+			String reason,Employee filer, Employee approver) {
 		this(0, startDate, endDate, LocalDate.now(), leaveType, LeaveStatus.PENDING, reason, filer, approver);
 	}
 
 	public LeaveApplication(int leaveId, LocalDate startDate, LocalDate endDate, LocalDate dateFiled, LeaveType leaveType, 
-			 LeaveStatus leaveStatus, String reason, Employee filer, Supervisor approver) {
+			 LeaveStatus leaveStatus, String reason, Employee filer, Employee approver) {
 		checkIfEndDateIsBeforeStartDate(startDate, endDate);
 		this.leaveId = leaveId;
 		this.startDate = startDate;
@@ -120,7 +120,7 @@ public class LeaveApplication {
 		return filer;
 	}
 
-	public Supervisor getApprover() {
+	public Employee getApprover() {
 		return approver;
 	}
 

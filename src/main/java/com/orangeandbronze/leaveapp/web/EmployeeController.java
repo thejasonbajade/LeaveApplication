@@ -1,5 +1,7 @@
 package com.orangeandbronze.leaveapp.web;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.orangeandbronze.leaveapp.domain.Department;
+import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.EmployeeRecord;
+import com.orangeandbronze.leaveapp.domain.EmploymentStatus;
 import com.orangeandbronze.leaveapp.service.EmployeeService;
 
 
 @Controller
 @Component
 public class EmployeeController{
-	/*EmployeeRepository employeeRepository;
-	LeaveApplicationRepository leaveApplicationRepository;
-
-	@Autowired
-	public EmployeeController(
-			EmployeeRepository employeeRepository, 
-			LeaveApplicationRepository leaveApplicationRepository) {
-		this.employeeRepository = employeeRepository;
-		this.leaveApplicationRepository = leaveApplicationRepository;
-	}	*/
-
 	private EmployeeService employeeService;
 	
 	@Autowired
@@ -38,28 +33,53 @@ public class EmployeeController{
 	
 	@RequestMapping("/add_employee")
 	public String addEmployee(Model model) {
-		
-		//model.addAttribute(arg0, arg1);
-		
+		List<Department> departments = employeeService.findAllDepartments();
+		model.addAttribute("departments", departments);
+		if(!model.containsAttribute("message")){
+			model.addAttribute("message", "");
+		}
 		return "add_employee";
 	}
 	
 	@RequestMapping(value = "/submit_add_employee", method = RequestMethod.POST)
 	public String submitAddEmployee(@RequestParam Map<String, String> reqParam, Model model) {
-		//Employee employee = new Employee(reqParam.get("firstName"), reqParam.get("lastName"));
-		
-		//int ret = employeeService.addEmployee(employee);
-		//Collection<Employee> employees = employeeService.viewAllEmployee();
-		
-		//model.addAttribute("ret", ret);
-		return "employee_list";
+		EmploymentStatus status = reqParam.get("employeestatus") == null ? 
+				EmploymentStatus.PROBATIONARY : EmploymentStatus.REGULAR;
+		LocalDate regularizationDate = reqParam.get("regularizationdate").equals("") ?
+				LocalDate.ofEpochDay(0) : LocalDate.parse(reqParam.get("regularizationdate"));
+		EmployeeRecord record = new EmployeeRecord.Builder(
+				reqParam.get("firstName"), 
+				reqParam.get("lastName"), 
+				LocalDate.parse(reqParam.get("employmentdate")), 
+				new Department(Long.parseLong(reqParam.get("department")), ""), 
+				reqParam.get("email"), 
+				reqParam.get("employeeposition"))
+				.contactNumber(reqParam.get("contactnumber"))
+				.employmentStatus(status)
+				.isSoloParent(reqParam.get("isSoloParent") == null)
+				.regularizationDate(regularizationDate)
+				.build();
+		Employee employee = new Employee(1, record);
+		checkPrivileges(reqParam, employee);
+		int ret = employeeService.addEmployee(employee);
+		model.addAttribute("message", "Successfully added employee!");
+		return "redirect:/add_employee";
 	}
 	
 	
+	private void checkPrivileges(Map<String, String> reqParam, Employee employee) {
+		if(reqParam.get("isadmin") != null)
+			employee.grantAdminPrivelages();
+		if(reqParam.get("issupervisor") != null)
+			employee.grantSupervisorPrivileges();
+		if(reqParam.get("ishr") != null)
+			employee.grantHRPrivileges();
+	}
+
 	@RequestMapping("/view_all_employees")
 	public String viewAllEmployees(Model model) {
-		//Collection<Employee> employees = employeeRepository.findAll();
-		//model.addAttribute("employees", employees);
+		List<Employee> employees = employeeService.findAllEmployees();
+		model.addAttribute("employees", employees);
 		
 		return "employee_list";
 	}

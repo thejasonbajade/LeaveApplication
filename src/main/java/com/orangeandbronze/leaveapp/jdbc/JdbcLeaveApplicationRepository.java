@@ -2,10 +2,6 @@ package com.orangeandbronze.leaveapp.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -13,16 +9,11 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
-import com.orangeandbronze.leaveapp.domain.Supervisor;
-import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
 import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
 
 @Repository

@@ -1,6 +1,8 @@
 package com.orangeandbronze.leaveapp.domain;
 
 public class LeaveCredits {
+	public static final LeaveCredits ZERO = new Builder().build();
+	
 	private float vacationLeaveCredits;
 	private float sickLeaveCredits;
 	private float emergencyLeaveCredits;

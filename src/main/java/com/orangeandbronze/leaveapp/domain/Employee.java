@@ -1,14 +1,15 @@
 package com.orangeandbronze.leaveapp.domain;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
 
 public class Employee {
 	private final long employeeId;
 	private final LeaveCredits credits;
 	private final EmployeeRecord record;
+	
+	private boolean isAdmin;
+	private boolean isSupervisor;
+	private boolean isHR;
 	
 	public Employee(long employeeId, EmployeeRecord record) {
 		this(employeeId, record, LeaveCredits.ZERO);
@@ -20,7 +21,7 @@ public class Employee {
 		this.credits = credits;
 	}
 
-	public LeaveApplication fileLeave(LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, Supervisor approver) {
+	public LeaveApplication fileLeave(LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, Employee approver) {
 		LeaveApplication leaveApplication = new LeaveApplication(startDate, endDate, leaveType, reason, this, approver);
 		return leaveApplication;
 	}
@@ -29,8 +30,24 @@ public class Employee {
 		leaveApplication.cancel();
 	}
 	
-	public void regularize() {
-		//record.regularize();
+	public void changeToNotTaken(LeaveApplication leaveApplication) {
+		leaveApplication.changeToNotTaken();
+	}
+	
+	public void regularize(Employee employee) {
+		employee.regularize();
+	}	
+
+	private void regularize() {
+		record.changeEmploymentStatusToRegular();
+	}
+	
+	public void approve(LeaveApplication leaveApplication) {
+		leaveApplication.approve();
+	}
+	
+	public void disapprove(LeaveApplication leaveApplication) {
+		leaveApplication.disapprove();
 	}
 
 	public long getEmployeeId() {
@@ -43,5 +60,49 @@ public class Employee {
 	
 	public LeaveCredits getLeaveCredits() {
 		return credits;
+	}
+	
+	public void grantAdminPrivelages(){
+		isAdmin = true;
+	}
+	
+	public void grantSupervisorPrivileges(){
+		isSupervisor = true;
+	}
+	
+	public void grantHRPrivileges(){
+		isHR = true;
+	}
+	
+	public void revokeAdminPrivileges(){
+		isAdmin = false;
+	}
+	
+	public void revokeSupervisorPrivileges(){
+		isSupervisor = false;
+	}
+	
+	public void revokeHRPrivileges(){
+		isHR = false;
+	}
+
+	public LeaveCredits getCredits() {
+		return credits;
+	}
+
+	public EmployeeRecord getRecord() {
+		return record;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public boolean isSupervisor() {
+		return isSupervisor;
+	}
+
+	public boolean isHR() {
+		return isHR;
 	}
 }

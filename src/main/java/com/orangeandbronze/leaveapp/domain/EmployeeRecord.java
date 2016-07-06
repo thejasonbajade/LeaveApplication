@@ -11,7 +11,8 @@ public class EmployeeRecord {
 	private final LocalDate employmentDate;
 	private final String contactNumber;
 	private final String position;
-	private EmploymentStatus status;
+	
+	private EmploymentStatus employmentStatus;
 	private LocalDate regularizationDate;
 	private boolean isSoloParent;
 	
@@ -29,7 +30,8 @@ public class EmployeeRecord {
 		private LocalDate regularizationDate = LocalDate.now();
 		private boolean isSoloParent = false;
 		
-		public Builder(String firstName, String lastName, String email, String position, Department department, LocalDate employmentDate) {
+		public Builder(String firstName, String lastName, LocalDate employmentDate, Department department, String email,
+				String position) {
 			this.firstName = firstName;
 			this.lastName = lastName;
 			this.email = email;
@@ -37,8 +39,8 @@ public class EmployeeRecord {
 			this.employmentDate = employmentDate;
 			this.position = position;
 		}
-		
-		public Builder status(EmploymentStatus status){
+
+		public Builder employmentStatus(EmploymentStatus status){
 			this.status = status;
 			return this;
 		}
@@ -73,12 +75,13 @@ public class EmployeeRecord {
 		this.lastName = builder.lastName;
 		this.middleName = builder.middleName;
 		this.email = builder.email;
-		this.status = builder.status;
+		this.employmentStatus = builder.status;
 		this.employmentDate = builder.employmentDate;
 		this.department = builder.department;
 		this.contactNumber = builder.contactNumber;
 		this.position = builder.position;
 		this.regularizationDate = builder.regularizationDate;
+		this.isSoloParent = builder.isSoloParent;
 	}
 
 	public String getFirstName() {
@@ -106,7 +109,7 @@ public class EmployeeRecord {
 	}
 
 	public EmploymentStatus getStatus() {
-		return status;
+		return employmentStatus;
 	}
 
 	public String getContactNumber() {
@@ -123,6 +126,10 @@ public class EmployeeRecord {
 
 	public boolean isSoloParent() {
 		return isSoloParent;
+	}
+
+	public void changeEmploymentStatusToRegular() {
+		employmentStatus = EmploymentStatus.REGULAR;
 	}
 
 }
