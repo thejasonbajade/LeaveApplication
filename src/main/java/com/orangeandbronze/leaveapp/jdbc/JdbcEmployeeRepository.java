@@ -2,6 +2,7 @@ package com.orangeandbronze.leaveapp.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -93,8 +94,10 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 					mapDepartment(rs), 
 					rs.getString("Email"), 
 					rs.getString("Position"))
-					.employmentStatus(EmploymentStatus.valueOf("EmploymentStatus"))
-					.regularizationDate(rs.getDate("RegularizationDate").toLocalDate())
+					.employmentStatus(EmploymentStatus.valueOf(rs.getString("EmploymentStatus")))
+					.regularizationDate(
+							rs.getDate("RegularizationDate") == null ? LocalDate.ofEpochDay(0) :
+									rs.getDate("RegularizationDate").toLocalDate())
 					.build();
 			LeaveCredits credits = mapLeaveCredits(rs);
 			Employee employee = new Employee(rs.getLong("ID"), record, credits);
