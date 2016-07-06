@@ -6,7 +6,6 @@ import static org.junit.Assert.fail;
 import java.time.LocalDate;
 import java.time.Month;
 
-import org.junit.Before;
 import org.junit.Test;
 
 public class LeaveDetailsTest {

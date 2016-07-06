@@ -103,4 +103,12 @@ public class Employee {
 	public boolean isHR() {
 		return isHR;
 	}
+
+	public void terminate(Employee employee) {
+		employee.terminate();
+	}
+
+	private void terminate() {
+		record.changeEmploymentStatusToTerminated();
+	}
 }

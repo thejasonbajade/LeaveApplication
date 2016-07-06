@@ -132,4 +132,8 @@ public class EmployeeRecord {
 		employmentStatus = EmploymentStatus.REGULAR;
 	}
 
+	public void changeEmploymentStatusToTerminated() {
+		employmentStatus = EmploymentStatus.TERMINATED;
+	}
+
 }

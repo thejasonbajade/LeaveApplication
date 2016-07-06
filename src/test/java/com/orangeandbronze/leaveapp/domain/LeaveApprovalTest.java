@@ -2,8 +2,8 @@ package com.orangeandbronze.leaveapp.domain;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.time.Month;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -11,22 +11,35 @@ import org.junit.Test;
 public class LeaveApprovalTest {
 
 	private LeaveApplication newLeaveApplication;
-	Employee filer;
-	private Supervisor supervisor;
-	private Admin admin;
+	private Employee filer;
+	private Employee supervisor;
+	private Employee admin;
 
 	@Before
 	public void setUp() {
-		filer = new Employee();
-		supervisor = new Supervisor();
-		admin = new Admin();
+		filer = generateEmployee(1);
+		supervisor = generateEmployee(2);
+		admin = generateEmployee(3);
 		newLeaveApplication = generateLeaveApplication(filer);
+	}
+	
+	private Employee generateEmployee(long id) {
+		Department department = new Department(1, "Partying");
+		EmployeeRecord record = new EmployeeRecord.Builder("John", 
+				"Cena", 
+				LocalDate.now(), 
+				department, 
+				"youcantseeme@orangeandbronze.com", 
+				"Professional Wrestler")
+				.build();
+		return new Employee(id, record);
 	}
 
 	private LeaveApplication generateLeaveApplication(Employee filer) {
-		Calendar startDate = new GregorianCalendar(2016,11,5);
-		Calendar endDate = new GregorianCalendar(2016,11,12);
-		return filer.fileLeave(startDate, endDate, LeaveType.SICK_LEAVE, supervisor);
+		LocalDate startDate = LocalDate.of(2016, Month.DECEMBER, 5);
+		LocalDate endDate = LocalDate.of(2016, Month.DECEMBER, 12);
+		LeaveDetails details = new LeaveDetails(startDate, false, endDate, false, LeaveType.SICK_LEAVE, "I am sick");
+		return filer.fileLeave(details, supervisor);
 	}
 
 	private void assertGetLeaveStausEvaluatesTo(LeaveStatus status) {

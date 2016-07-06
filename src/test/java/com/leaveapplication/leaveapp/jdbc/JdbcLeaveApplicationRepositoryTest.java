@@ -15,8 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.EmployeeRecord;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
+import com.orangeandbronze.leaveapp.domain.LeaveDetails;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 import com.orangeandbronze.leaveapp.jdbc.JdbcLeaveApplicationRepository;
@@ -39,7 +42,7 @@ public class JdbcLeaveApplicationRepositoryTest {
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(1);
 		assertNotNull(leaveApplication);
 		assertEquals(1, leaveApplication.getLeaveId());
-		assertEquals("I am Sick", leaveApplication.getReason());
+		assertEquals("I am Sick", leaveApplication.getLeaveDetails().getReason());
 		assertEquals(LeaveStatus.PENDING, leaveApplication.getStatus());
 	}
 	
@@ -69,11 +72,10 @@ public class JdbcLeaveApplicationRepositoryTest {
 	
 	@Test
 	public void testInsertLeaveApplication() {
-		Employee employee = new Employee(1, "Jason", "Bajade");
-		Supervisor supervisor = new Supervisor(2, "Jerome", "Gonzalvo");
-		LeaveApplication leaveApplicationExpected = new LeaveApplication(
-				1, LocalDate.of(2016, Month.JULY, 1), LocalDate.of(2016, Month.JULY, 4),  
-				LocalDate.of(2016, Month.JUNE, 28), LeaveType.SICK_LEAVE, LeaveStatus.PENDING, "I am Sick", employee, supervisor);
+		Employee employee = generateEmployee(1);
+		Employee supervisor = generateEmployee(2);
+		LeaveDetails details = new LeaveDetails(LocalDate.of(2016, Month.JULY, 1), false, LocalDate.of(2016, Month.JULY, 4), false, LeaveType.SICK_LEAVE, "I am sick");
+		LeaveApplication leaveApplicationExpected = new LeaveApplication(1, details, LeaveStatus.PENDING, employee, supervisor);
 		
 		int affectedRow = leaveApplicationRepository.insert(leaveApplicationExpected);
 		
@@ -91,6 +93,18 @@ public class JdbcLeaveApplicationRepositoryTest {
 		
 		LeaveApplication leaveApplicationActual = leaveApplicationRepository.findBy(leaveId);
 		assertEquals(LeaveStatus.ADMIN_APPROVED, leaveApplicationActual.getStatus());
+	}
+	
+	private Employee generateEmployee(long id) {
+		Department department = new Department(1, "Partying");
+		EmployeeRecord record = new EmployeeRecord.Builder("John", 
+				"Cena", 
+				LocalDate.now(), 
+				department, 
+				"youcantseeme@orangeandbronze.com", 
+				"Professional Wrestler")
+				.build();
+		return new Employee(id, record);
 	}
 	
 	private DataSource createTestDataSource() {
