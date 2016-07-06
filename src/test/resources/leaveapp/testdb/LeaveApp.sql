@@ -2,7 +2,7 @@ drop table Employee if exists;
 drop table LeaveApplication if exists;
 drop table Department if exists;
 
-create table Employee (id integer identity primary key, FirstName varchar(45) not null, LastName varchar(45) not null, Email varchar(100) not null, ContactNo varchar(11), EmploymentDate DATE, Position varchar(45), EmploymentStatus varchar(15), RegularizationDate DATE, isSoloParent integer, VLCredits float, SLCredits float, ELCredits float, SPCredits float, OffsetCredits float, Department_ID integer);
+create table Employee (id integer identity primary key, FirstName varchar(45) not null, LastName varchar(45) not null, Email varchar(100) not null, ContactNo varchar(11), EmploymentDate DATE, Position varchar(45), EmploymentStatus varchar(15), RegularizationDate DATE, isSoloParent integer, VLCredits float, SLCredits float, ELCredits float, SPCredits float, OffsetCredits float, Department_ID integer, isSupervisor boolean, isAdmin boolean, isHR boolean);
 
 create table LeaveApplication (ID integer identity primary key, StartDate DATE, isStartHalfDay INTEGER, EndDate DATE, 
 isEndHalfDay INTEGER,
