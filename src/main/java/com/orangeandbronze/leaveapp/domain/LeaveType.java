@@ -1,8 +1,8 @@
 package com.orangeandbronze.leaveapp.domain;
 
 public enum LeaveType {
-	SICK_LEAVE(15.0, "SL"), VACATION_LEAVE(15.0, "VL"), EMERGENCY_LEAVE(3.0, "EL"), 
-	OFFSET_LEAVE(Float.MAX_VALUE, "OL"), SOLO_PARENT_LEAVE(Float.MAX_VALUE, "SPL");
+	SICK_LEAVE(15.0, "SICK_LEAVE"), VACATION_LEAVE(15.0, "VACATION_LEAVE"), EMERGENCY_LEAVE(3.0, "EMERGENCY_LEAVE"), 
+	OFFSET_LEAVE(Float.MAX_VALUE, "OFFSET_LEAVE"), SOLO_PARENT_LEAVE(7.0, "OFFSET_LEAVE");
 
 	private final float maxValue;
 	private final String name;

@@ -1,7 +1,5 @@
 package com.orangeandbronze.leaveapp.domain;
 
-import java.time.LocalDate;
-
 public class Employee {
 	private final long employeeId;
 	private final LeaveCredits credits;
@@ -21,8 +19,8 @@ public class Employee {
 		this.credits = credits;
 	}
 
-	public LeaveApplication fileLeave(LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, Employee approver) {
-		LeaveApplication leaveApplication = new LeaveApplication(startDate, endDate, leaveType, reason, this, approver);
+	public LeaveApplication fileLeave(LeaveDetails leaveDetails, Employee approver) {
+		LeaveApplication leaveApplication = new LeaveApplication(leaveDetails, this, approver);
 		return leaveApplication;
 	}
 

@@ -1,7 +1,7 @@
 package com.orangeandbronze.leaveapp.web;
 
-import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,14 @@ public class LeaveApplicationController{
 		this.leaveApplicationService = leaveApplicationService;
 	}
 	
+	@ModelAttribute
+	public void addingCommonObjects(Model model, HttpSession session) {
+		user = (Employee) session.getAttribute("user");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+		model.addAttribute("user", user);
+		model.addAttribute("formatter", formatter);
+	}
+	
 	@RequestMapping(value="/loginEmployee", method = RequestMethod.GET)
 	public String loginEmployee(HttpServletRequest request, Model model){
 		user = employeeService.viewEmployee(4);
@@ -45,47 +54,44 @@ public class LeaveApplicationController{
 	}
 	
 	@RequestMapping(value="/loginSupervisor", method = RequestMethod.GET)
-	public String loginSupervisor(HttpServletRequest request){
-		//user = new Employee(2, "Rochelle", "Sisa");
+	public String loginSupervisor(HttpServletRequest request, Model model){
+		user = employeeService.viewEmployee(6);
 		request.getSession().setAttribute("user", user);
+		
+		model.addAttribute("user", user);
 		return "account_info";
 	}
 
 	@RequestMapping(value="/loginAdmin", method = RequestMethod.GET)
 	public String loginAdmin(HttpServletRequest request){
-		//user = new Employee(3, "Jerome", "Gonzalvo");
 		request.getSession().setAttribute("user", user);
 		return "account_info";
 	}
 
 	@RequestMapping("/apply_leave")
-	public String applyLeave(HttpSession session, Model model) {
-		Employee user = (Employee) session.getAttribute("user");
-		
-		//Employee s1 = new Employee(4, "Angelo", "Guiam");
-		//Employee s2 = new Employee(5, "Joshua", "Pabilona");
-		
+	public String applyLeave(HttpSession session, Model model) {		
 		List<Employee> supervisors = employeeService.findAllSupervisor();
-		
-		model.addAttribute("user", user);
 		model.addAttribute("supervisors", supervisors);
 		return "apply_leave";
 	}
 	
 	@RequestMapping("/process_leave_application")
-	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {		
-		
-		LocalDate startDate = LocalDate.parse(reqParam.get("startDate"));
-		LocalDate endDate = LocalDate.parse(reqParam.get("endDate"));
-		LeaveType leaveType = LeaveType.valueOf(reqParam.get("leaveType"));
-
-		employeeService.fileLeave(1, 
-				startDate, 
-				endDate, 
-				leaveType, 
+	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {
+		boolean startHalfDay = false;
+		boolean endHalfDay = false;
+		if(reqParam.get("startHalfDay") != null)
+			startHalfDay = true;
+		if(reqParam.get("endHalfDay") != null)
+			endHalfDay = true;
+		int ret = employeeService.fileLeave(user.getEmployeeId(), 
+				LocalDate.parse(reqParam.get("startDate")), 
+				startHalfDay,
+				LocalDate.parse(reqParam.get("endDate")), 
+				endHalfDay,
+				LeaveType.valueOf(reqParam.get("leaveType")),
 				reqParam.get("reason"), 
-				Integer.parseInt(reqParam.get("supervisorId")));
-		
+				Long.parseLong(reqParam.get("supervisorId")));
+
 		return "redirect:/view_leave_history";
 	}
 
@@ -98,37 +104,41 @@ public class LeaveApplicationController{
 
 	@RequestMapping("/view_leave_history")
 	public String showOwnLeaveHistory(Model model) {
-		List<LeaveApplication> leaveApplications = leaveApplicationService.findLeaveApplicationsByEmployee(user.getEmployeeId());
+		List<LeaveApplication> leaveApplications = 
+				leaveApplicationService.findLeaveApplicationsByEmployee(user.getEmployeeId());
 		model.addAttribute("leaveApplications", leaveApplications);
 		return "leave_history";
 	}
+	
+	@RequestMapping("/view_leave_histories_supervisor")
+	public String showAllLeaveHistoriesForSupervisor(Model model) {	
+		List<LeaveApplication> leaveApplications = 
+				leaveApplicationService.findLeaveApplicationsForSupervisor(user.getEmployeeId());
+		model.addAttribute("leaveApplications", leaveApplications);
+		return "leave_list";
+	}
 
 	@RequestMapping("/approve_leave/{leaveId}")
-	public String approveLeave(@PathVariable("leaveId") int leaveId, HttpSession session, Model model) {
-		user = (Employee) session.getAttribute("user");
-		System.out.println(user.getEmployeeId());
-		employeeService.approveLeaveApplication(1, leaveId);
+	public String approveLeave(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.approveLeaveApplication(user.getEmployeeId(), leaveId);
 		return "redirect:/view_all_leave_histories";
 	}
 
 	@RequestMapping("/disapprove_leave/{leaveId}")
-	public String disapproveLeave(@PathVariable("leaveId") int leaveId, HttpSession session, Model model) {
-		//user = (Employee) session.getAttribute("user");
-		//employeeService.disapproveLeaveApplication(user.getEmployeeId(), leaveId);
+	public String disapproveLeave(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.disapproveLeaveApplication(user.getEmployeeId(), leaveId);
 		return "redirect:/view_all_leave_histories";
 	}
 
 	@RequestMapping("/cancel_leave/{leaveId}")
-	public String cancelLeave(@PathVariable("leaveId") int leaveId, HttpSession session, Model model) {
-		//user = (Employee) session.getAttribute("user");
-		//employeeService.cancelLeaveApplication(user.getEmployeeId(), leaveId);
-		return "redirect:/view_all_leave_histories";
+	public String cancelLeave(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.cancelLeaveApplication(user.getEmployeeId(), leaveId);
+		return "redirect:/view_leave_history";
 	}
 
 	@RequestMapping("/not_taken_leave/{leaveId}")
-	public String changeToNotTakenLeave(@PathVariable("leaveId") int leaveId, HttpSession session, Model model) {
-		//user = (Employee) session.getAttribute("user");
-		//employeeService.changeLeaveApplicationToNotTaken(user.getEmployeeId(), leaveId);
+	public String changeToNotTakenLeave(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.changeLeaveApplicationToNotTaken(user.getEmployeeId(), leaveId);
 		return "redirect:/view_all_leave_histories";
 	}
 

@@ -13,22 +13,7 @@ public class LeaveApplicationTest {
 	private LeaveApplication leaveApplication;
 	
 	private LeaveApplication generateLeaveApplication(LocalDate startDate, LocalDate endDate) {
-		final long filer_id = 1;
-		final long approver_id = 2;
-		EmployeeRecord record = new EmployeeRecord.Builder("John", "Cena",
-				LocalDate.of(2010, 12, 3), 
-				new Department(1, "Party"), 
-				"youcantseeme@orangeandbronze.com", 
-				"professional wrestler")
-				.build();
-		Employee filer = new Employee(filer_id, record);
-		Supervisor approver = new Supervisor(approver_id, record);
-		return new LeaveApplication(startDate, 
-				endDate, 
-				LeaveType.SICK_LEAVE, 
-				"I am sick", 
-				filer, 
-				approver);
+
 	}
 
 	private void assertGetNumberOfLeaveDaysEvaluatesTo(int expected) {
@@ -62,6 +47,22 @@ public class LeaveApplicationTest {
 		LocalDate endDate = LocalDate.of(2016,Month.AUGUST,31);
 		leaveApplication = generateLeaveApplication(startDate, endDate);
 		assertGetNumberOfLeaveDaysEvaluatesTo(2);
+	}
+	
+	@Test
+	public void leaveApplicationWithHalfDayStartAndEndDate() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
+		leaveApplication = new LeaveApplication(startDate, true, endDate, true, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+		assertGetNumberOfLeaveDaysEvaluatesTo(1);
+	}
+	
+	@Test
+	public void leaveApplicationWithHalfDayStartDate() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
+		leaveApplication = new LeaveApplication(startDate, true, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+		assertGetNumberOfLeaveDaysEvaluatesTo((float)1.5);
 	}
 
 	@Test

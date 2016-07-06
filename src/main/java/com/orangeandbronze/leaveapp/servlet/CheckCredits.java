@@ -64,7 +64,7 @@ public class CheckCredits extends HttpServlet {
 		
 		LeaveType lt = LeaveType.valueOf(request.getParameter("leavetype"));
 
-		LeaveApplication la = new LeaveApplication(startC, endC, lt, null, e, null);
+		LeaveApplication la = new LeaveApplication(null, e, null);
 		
 		
 		String json = new Gson().toJson(la);

@@ -1,13 +1,16 @@
 package com.orangeandbronze.leaveapp.domain;
 
 public class LeaveCredits {
-	public static final LeaveCredits ZERO = new Builder().build();
+	public static final LeaveCredits ZERO = new LeaveCredits.Builder().build();
+	
+	private final float vacationLeaveCreditsIncreaseRate = (float) 1.25;
+	private final float sickLeaveCreditsIncreaseRate = (float) 1.25;
 	
 	private float vacationLeaveCredits;
 	private float sickLeaveCredits;
 	private float emergencyLeaveCredits;
-	private float soloParentLeaveCredits;
 	private float offsetLeaveCredits;
+	private float soloParentLeaveCredits;
 	
 	private float lwopCount;
 	
@@ -15,17 +18,18 @@ public class LeaveCredits {
 		private float vacationLeaveCredits = 0;
 		private float sickLeaveCredits = 0;
 		private float emergencyLeaveCredits = 0;
-		private float soloParentLeaveCredits = 0;
 		private float offsetLeaveCredits = 0;
-		private float lwopCount = 0;
+		private float soloParentLeaveCredits = 0;
 		
-		public Builder() { }
+		public Builder(){
+			
+		}
 		
 		public Builder vacationLeaveCredits(float value){
 			vacationLeaveCredits = value;
 			return this;
 		}
-		
+
 		public Builder sickLeaveCredits(float value){
 			sickLeaveCredits = value;
 			return this;
@@ -36,33 +40,52 @@ public class LeaveCredits {
 			return this;
 		}
 		
-		public Builder soloParentLeaveCredits(float value){
-			soloParentLeaveCredits = value;
-			return this;
-		}
-		
 		public Builder offsetLeaveCredits(float value){
 			offsetLeaveCredits = value;
 			return this;
 		}
 		
-		public Builder lwopCount(float value) {
-			lwopCount = value;
+		public Builder soloParentLeaveCredits(float value){
+			soloParentLeaveCredits = value;
 			return this;
 		}
-
-		public LeaveCredits build() {
+		
+		public LeaveCredits build(){
 			return new LeaveCredits(this);
 		}
 	}
-
+	
 	private LeaveCredits(Builder builder) {
 		this.vacationLeaveCredits = builder.vacationLeaveCredits;
 		this.sickLeaveCredits = builder.sickLeaveCredits;
 		this.emergencyLeaveCredits = builder.emergencyLeaveCredits;
-		this.soloParentLeaveCredits = builder.soloParentLeaveCredits;
 		this.offsetLeaveCredits = builder.offsetLeaveCredits;
-		this.lwopCount = builder.lwopCount;
+		this.soloParentLeaveCredits = builder.soloParentLeaveCredits;
+	}
+	
+	public float getLeaveCreditsOfType(LeaveType type){
+		switch (type) {
+		case VACATION_LEAVE:
+			return vacationLeaveCredits;
+		case SICK_LEAVE:
+			return sickLeaveCredits;
+		case EMERGENCY_LEAVE:
+			return emergencyLeaveCredits;
+		case SOLO_PARENT_LEAVE:
+			return soloParentLeaveCredits;
+		case OFFSET_LEAVE:
+			return offsetLeaveCredits;
+		default:
+			return 0;
+		}
+	}
+
+	public float getOffsetLeaveCredits() {
+		return offsetLeaveCredits;
+	}
+
+	public float getSoloParentLeaveCredits() {
+		return soloParentLeaveCredits;
 	}
 
 	public float getVacationLeaveCredits() {
@@ -77,36 +100,12 @@ public class LeaveCredits {
 		return emergencyLeaveCredits;
 	}
 
-	public float getSoloParentLeaveCredits() {
-		return soloParentLeaveCredits;
-	}
-
-	public float getOffsetLeaveCredits() {
-		return offsetLeaveCredits;
-	}
-
-	public float getLwopCount() {
-		return lwopCount;
-	}
-
 	public void increaseVacationLeaveCredits() {
-		vacationLeaveCredits += 1.25;
-	}
-
-	public float getLeaveCreditsOfType(LeaveType type) {
-		switch (type) {
-		case VACATION_LEAVE: return getVacationLeaveCredits();
-		case SICK_LEAVE: return getSickLeaveCredits();
-		case EMERGENCY_LEAVE: return getEmergencyLeaveCredits();
-		case SOLO_PARENT_LEAVE: return getSoloParentLeaveCredits();
-		case OFFSET_LEAVE: return getOffsetLeaveCredits();
-		default:
-			return 0;
-		}
+		vacationLeaveCredits += vacationLeaveCreditsIncreaseRate;
 	}
 
 	public void increaseSickLeaveCredits() {
-		sickLeaveCredits += 1.25;
+		sickLeaveCredits += sickLeaveCreditsIncreaseRate;
 	}
 
 	public void deductLeaveCreditsOfType(LeaveType type, float creditsToDeduct) {
@@ -161,6 +160,10 @@ public class LeaveCredits {
 			lwopCount += creditsToDeduct;
 			sickLeaveCredits = 0;
 		}
+	}
+
+	public float getLwopCount() {
+		return lwopCount;
 	}
 	
 }

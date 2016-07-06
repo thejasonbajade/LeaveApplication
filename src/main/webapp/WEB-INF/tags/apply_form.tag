@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <%@tag description="Leave Application Form Tag" pageEncoding="UTF-8"%>
-<form action="view_leave_history" class="col-md-8 col-md-offset-2" id="leaveapplicationform" method="post">		
+<form action="process_leave_application" class="col-md-8 col-md-offset-2" id="leaveapplicationform" method="post">		
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> Leave Type </label>
 		<div class="col-md-8">
@@ -11,6 +11,7 @@
 				<option value="OFFSET">Offset</option>
 				<option value="SOLO_PARENT_LEAVE">Solo Parent</option>
 			</select>
+			<small id="helpBlock" class="help-block" id="balance" style="display: none">You have 0 sick leave balance</small>
 		</div>
 	</div>
 	
@@ -32,7 +33,7 @@
 			<input type="date" id="startDate" name="startDate" class="form-control">
 		</div>
 		<div class="col-md-2">
-			<input type="checkbox" name="startHalfDay" value="startHalfDay"> Half Day
+			<input type="checkbox" name="startHalfDay" value="true"> Half Day
 		</div>
 	</div>
 	
@@ -42,14 +43,15 @@
 			<input type="date" id="endDate" name="endDate" class="form-control">
 		</div>
 		<div class="col-md-2">
-			<input type="checkbox" name="endHalfDay" value="endHalfDay"> Half Day
+			<input type="checkbox" name="endHalfDay" value="true"> Half Day
 		</div>
 	</div>
 	
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> Number of Days </label>
 		<div class="col-md-8">
-			<input type="text" class="form-control" readonly name="duration" value="2">
+			<input type="text" id="duration" class="form-control" readonly name="duration">
+			<small id="warningdiv" style="color:#FFA500"></small>
 		</div>
 	</div>
 	

@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 
 @Service
 public interface EmployeeService {
 	
-	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId);
+	public int fileLeave(long employeeId, LocalDate startDate, boolean isStartHalfDay, LocalDate endDate, boolean isEndHalfDay, LeaveType leaveType, String reason, long approverId);
 
 	public void cancelLeaveApplication(long employeeId, long leaveId);
 
@@ -22,7 +23,7 @@ public interface EmployeeService {
 
 	public void changeLeaveApplicationToNotTaken(long approverId, long leaveId);
 
-	public void findLeaveApplicationsForSupervisor(long supervisorId);
+	public List<LeaveApplication> findLeaveApplicationsForSupervisor(long supervisorId);
 	
 	public int addEmployee(Employee employee);
 	
@@ -36,4 +37,3 @@ public interface EmployeeService {
 
 	public List<Department> findAllDepartments();
 }
-

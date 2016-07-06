@@ -56,14 +56,15 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	private static final String SQL_INSERT_EMPLOYEE =
 			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
-			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID, isSupervisor, isAdmin, isHR)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
 		return jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
+				employee.getEmployeeId(),
 				record.getFirstName(),
 				record.getLastName(),
 				record.getEmail(),
@@ -78,10 +79,7 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				credits.getLeaveCreditsOfType(LeaveType.EMERGENCY_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.SOLO_PARENT_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
-				department.getId(),
-				employee.isSupervisor(),
-				employee.isAdmin(),
-				employee.isHR());
+				department.getId());
 	}
 
 	private static final String SQL_FINDBY_ID =
@@ -123,5 +121,4 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		}
 	
 	}
-
 }
