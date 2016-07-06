@@ -1,16 +1,16 @@
 package com.orangeandbronze.leaveapp.servlet;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.google.gson.Gson;
 import com.orangeandbronze.leaveapp.domain.Employee;
@@ -50,19 +50,15 @@ public class CheckCredits extends HttpServlet {
 				.offsetLeaveCredits(Float.parseFloat(request.getParameter("olcredits"))).build();
 		Employee e = new Employee(0, null, lc);
 		
-		DateFormat formatter = new SimpleDateFormat("yyyy-M-d");
-		Date start = null, end = null;
-		try {
-			 start = (Date) formatter.parse(request.getParameter("startdate"));
-			 end = (Date) formatter.parse(request.getParameter("enddate"));
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}		
-		
-		LocalDate startC = LocalDate.from(start.toInstant());
-		LocalDate endC = LocalDate.from(end.toInstant());
-		LeaveType lt = LeaveType.valueOf(request.getParameter("leavetype"));
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
+		String start = request.getParameter("startDate");
+		String end = request.getParameter("endDate");
+		System.out.println(dtf.format(LocalDate.parse(start, dtf)));
+
+		LocalDate startC = LocalDate.parse(start, dtf);
+		LocalDate endC = LocalDate.parse(end, dtf);
+		System.out.println(dtf.format(startC));
+		LeaveType lt = LeaveType.valueOf(request.getParameter("leaveType"));
 		boolean isStartHalfDay = request.getParameter("startHalfDay") == null;
 		boolean isEndHalfDay = request.getAttribute("endHalfDay") == null;
 		
@@ -70,7 +66,7 @@ public class CheckCredits extends HttpServlet {
 		LeaveApplication la = new LeaveApplication(details, e, null);
 		
 		
-		String json = new Gson().toJson(la);
+		String json = new Gson().toJson(details);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);

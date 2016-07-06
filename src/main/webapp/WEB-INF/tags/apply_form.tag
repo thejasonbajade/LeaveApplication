@@ -4,11 +4,11 @@
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> Leave Type </label>
 		<div class="col-md-8">
-			<select class="form-control" name="leaveType">
+			<select class="form-control" name="leaveType" id="leaveType">
 				<option value="VACATION_LEAVE">Vacation Leave</option>
 				<option value="EMERGENCY_LEAVE">Emergency Leave</option>
 				<option value="SICK_LEAVE">Sick Leave</option>
-				<option value="OFFSET">Offset</option>
+				<option value="OFFSET_LEAVE">Offset</option>
 				<option value="SOLO_PARENT_LEAVE">Solo Parent</option>
 			</select>
 			<small id="helpBlock" class="help-block" id="balance" style="display: none">You have 0 sick leave balance</small>
