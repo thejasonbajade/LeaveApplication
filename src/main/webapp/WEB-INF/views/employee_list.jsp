@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <t:wrapper>
 <div class="container-fluid" id="content">
 	<div class="row">
@@ -34,11 +35,11 @@
 					<!-- loop employees here -->
 					<c:forEach items="${employees}" var="employee">
 					<tr>
-						<td><a href="account_info"> ${employee.getFirstName()} ${employee.getLastName()}</a></td>
-						<td> jasonbajade </td>
-						<td> jasonbajade@orangeandbronze.com </td>
-						<td> Accounting </td>
-						<td> ${ret} </td>
+						<td><a href="account_info"> ${employee.record.firstName} ${employee.record.lastName}</a></td>
+						<td> ${employee.record.firstName}${employee.record.lastName} </td>
+						<td> ${employee.record.email} </td>
+						<td> ${employee.record.position} </td>
+						<td> ${employee.record.status} </td>
 					</tr>
 					</c:forEach>
 				</tbody>
