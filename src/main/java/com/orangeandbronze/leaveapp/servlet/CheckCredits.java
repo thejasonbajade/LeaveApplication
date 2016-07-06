@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveCredits;
+import com.orangeandbronze.leaveapp.domain.LeaveDetails;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 
 /**
@@ -61,10 +62,12 @@ public class CheckCredits extends HttpServlet {
 		
 		LocalDate startC = LocalDate.from(start.toInstant());
 		LocalDate endC = LocalDate.from(end.toInstant());
-		
 		LeaveType lt = LeaveType.valueOf(request.getParameter("leavetype"));
-
-		LeaveApplication la = new LeaveApplication(null, e, null);
+		boolean isStartHalfDay = request.getParameter("startHalfDay") == null;
+		boolean isEndHalfDay = request.getAttribute("endHalfDay") == null;
+		
+		LeaveDetails details = new LeaveDetails(startC, isStartHalfDay, endC, isEndHalfDay, lt, request.getParameter("reason"));
+		LeaveApplication la = new LeaveApplication(details, e, null);
 		
 		
 		String json = new Gson().toJson(la);
