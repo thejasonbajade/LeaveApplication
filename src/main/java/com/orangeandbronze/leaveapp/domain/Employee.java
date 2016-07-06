@@ -21,9 +21,8 @@ public class Employee {
 		this.credits = credits;
 	}
 
-	public LeaveApplication fileLeave(
-			LocalDate startDate, boolean isStartHalfDay, LocalDate endDate, boolean isEndHalfDay, LeaveType leaveType, String reason, Employee approver) {
-		LeaveApplication leaveApplication = new LeaveApplication(startDate, isStartHalfDay, endDate, isEndHalfDay, leaveType, reason, this, approver);
+	public LeaveApplication fileLeave(LeaveDetails leaveDetails, Employee approver) {
+		LeaveApplication leaveApplication = new LeaveApplication(leaveDetails, this, approver);
 		return leaveApplication;
 	}
 

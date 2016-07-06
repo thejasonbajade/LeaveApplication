@@ -14,6 +14,7 @@
 			<i class="fa fa-history fa-3x" aria-hidden="true"></i> 
 			<p> Leave History </p>
 		</a>
+		<c:if test="${user.admin || user.HR} ">
 		<li class="dropdown">
 			<a id="employeesMenu" role="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
 				<i class="fa fa-users fa-3x" aria-hidden="true"></i> 
@@ -30,22 +31,24 @@
 				</a>
 			</ul>
 		</li>
-		<c:if test="user.supervisor == true">
-			<a href="view_leave_histories_supervisor" role="button" class="list-group-item"> 
 		</c:if>
-			
-		<!--<c:if test="user.admin == true">
-			<a href="view_all_leave_histories" role="button" class="list-group-item"> 
-		</c:if>-->
-		
-		
+		<c:if test="${user.supervisor || user.admin || user.HR} ">
+			<c:if test="${user.supervisor}">
+				<a href="view_leave_histories_supervisor" role="button" class="list-group-item"> 
+			</c:if>	
+			<c:if test="${user.admin || user.HR}">
+				<a href="view_all_leave_histories" role="button" class="list-group-item"> 
+			</c:if>
 			<span class="badge">5</span>
-			<i class="fa fa-list-alt fa-3x" aria-hidden="true"></i> 
-			<p> Leave List </p>
-		</a>
-		<a href="reports" role="button" class="list-group-item">
-			<i class="fa fa-file-text fa-3x" aria-hidden="true"></i> 
-			<p> Reports </p>
-		</a>
+				<i class="fa fa-list-alt fa-3x" aria-hidden="true"></i> 
+				<p> Leave List </p>
+			</a>
+		</c:if>
+		<c:if test="${user.admin || user.HR}">
+			<a href="reports" role="button" class="list-group-item">
+				<i class="fa fa-file-text fa-3x" aria-hidden="true"></i> 
+				<p> Reports </p>
+			</a>
+		</c:if>
 	</ul>
 </div>

@@ -56,11 +56,11 @@
 										</c:when>
 									</c:choose>
 									<td>${leaveApplication.filer.employeeRecord.firstName} ${leaveApplication.filer.employeeRecord.lastName}</td>
-									<td>${leaveApplication.leaveType.toString()}</td>
-									<td>${leaveApplication.dateFiled.format(formatter)}</td>
-									<td>${leaveApplication.startDate.format(formatter)}</td>
-									<td>${leaveApplication.endDate.format(formatter)}</td>
-									<td>${leaveApplication.numberOfLeaveDays}</td>
+									<td>${leaveApplication.leaveDetails.leaveType.toString()}</td>
+									<td>${leaveApplication.leaveDetails.dateFiled.format(formatter)}</td>
+									<td>${leaveApplication.leaveDetails.startDate.format(formatter)}</td>
+									<td>${leaveApplication.leaveDetails.endDate.format(formatter)}</td>
+									<td>${leaveApplication.leaveDetails.numberOfLeaveDays}</td>
 									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>

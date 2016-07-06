@@ -35,8 +35,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 			LocalDate endDate, boolean isEndHalfDay, LeaveType leaveType, String reason, long approverId) {
 		Employee employee = employeeRepository.findBy(employeeId);
 		Employee approver = employeeRepository.findBy(approverId);
-		LeaveApplication leaveApplication =  employee.fileLeave(
-				startDate, isStartHalfDay, endDate, isEndHalfDay, leaveType, reason, approver); 
+		LeaveDetails leaveDetails = new LeaveDetails(startDate, isStartHalfDay, endDate, isEndHalfDay, leaveType, reason);
+		LeaveApplication leaveApplication =  employee.fileLeave(leaveDetails, approver); 
 		return leaveApplicationRepository.insert(leaveApplication);
 	}
 

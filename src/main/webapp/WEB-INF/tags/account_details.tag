@@ -11,6 +11,6 @@
 	</div>
 	<div class="col-md-6">
 		First Name: ${user.employeeRecord.firstName}<br /> Last Name: <br />
-		Email Address: <br /> Contact Number: <br />
+		Email Address: ${user.supervisor}<br /> Contact Number: <br />
 	</div>
 </div>

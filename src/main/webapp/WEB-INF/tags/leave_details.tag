@@ -65,20 +65,20 @@
 							<p><span class="label label-default">Cancelled</span></p><br/>
 						</c:when>
 					</c:choose>
-					<p>${leaveApplication.leaveType.toString()}</p><br/>
+					<p>${leaveApplication.leaveDetails.leaveType.toString()}</p><br/>
 					<p>${leaveApplication.approver.employeeRecord.firstName}
 							${leaveApplication.approver.employeeRecord.lastName}</p><br/>
-					<p>${leaveApplication.startDate.format(formatter)} &nbsp;&nbsp;
-						<c:if test="${leaveApplication.startHalfDay}">
+					<p>${leaveApplication.leaveDetails.startDate.format(formatter)} &nbsp;&nbsp;
+						<c:if test="${leaveApplication.leaveDetails.startHalfDay}">
 							<span class="label label-primary"> Half day </span>
 						</c:if>
 					</p><br/>
-					<p>${leaveApplication.endDate.format(formatter)} &nbsp;&nbsp;
-						<c:if test="${leaveApplication.endHalfDay}">
+					<p>${leaveApplication.leaveDetails.endDate.format(formatter)} &nbsp;&nbsp;
+						<c:if test="${leaveApplication.leaveDetails.endHalfDay}">
 							<span class="label label-primary"> Half day </span>
 						</c:if></p><br/>
-					<p>${leaveApplication.numberOfLeaveDays}</p><br/>
-					<p>${leaveApplication.reason}</p><br/>
+					<p>${leaveApplication.leaveDetails.numberOfLeaveDays}</p><br/>
+					<p>${leaveApplication.leaveDetails.reason}</p><br/>
 					</div>
 				</div>
 				<!--<div class="col-md-12">

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
+import com.orangeandbronze.leaveapp.domain.LeaveDetails;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 import com.orangeandbronze.leaveapp.domain.Supervisor;
@@ -42,16 +43,18 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	private class LeaveApplicationMapper implements RowMapper<LeaveApplication> {
 		@Override
 		public LeaveApplication mapRow(ResultSet rs, int rowNum) throws SQLException {
-			return new LeaveApplication(
-					rs.getInt("ID"),
-					rs.getDate("StartDate").toLocalDate(),
-					rs.getBoolean("isStartHalfDay"),
-					rs.getDate("EndDate").toLocalDate(),
-					rs.getBoolean("isEndHalfDay"),
+			LeaveDetails leaveDetails = new LeaveDetails(
+					rs.getDate("StartDate").toLocalDate(), 
+					rs.getBoolean("isStartHalfDay"), 
+					rs.getDate("EndDate").toLocalDate(), 
+					rs.getBoolean("isEndHalfDay"), 
 					rs.getDate("DateFiled").toLocalDate(),
 					LeaveType.valueOf(rs.getString("LeaveType")),
+					rs.getString("Reason"));
+			return new LeaveApplication(
+					rs.getInt("ID"),
+					leaveDetails,
 					LeaveStatus.valueOf(rs.getString("Status")),
-					rs.getString("Reason"),
 					employeeRepository.findBy(rs.getLong("Employee_ID")),
 					employeeRepository.findBy(rs.getLong("Supervisor_ID"))	
 					);
@@ -111,15 +114,15 @@ public class JdbcLeaveApplicationRepository implements LeaveApplicationRepositor
 	public int insert(LeaveApplication leaveApplication) {
 		return jdbcTemplate.update(
 				SQL_INSERT_LEAVE_APPLICATION,
-				leaveApplication.getStartDate().toString(),
-				leaveApplication.isEndHalfDay(),
-				leaveApplication.getEndDate().toString(),
-				leaveApplication.isEndHalfDay(),
-				leaveApplication.getDateFiled().toString(),
-				leaveApplication.getNumberOfLeaveDays(),
-				leaveApplication.getReason(),
+				leaveApplication.getLeaveDetails().getStartDate().toString(),
+				leaveApplication.getLeaveDetails().isEndHalfDay(),
+				leaveApplication.getLeaveDetails().getEndDate().toString(),
+				leaveApplication.getLeaveDetails().isEndHalfDay(),
+				leaveApplication.getLeaveDetails().getDateFiled().toString(),
+				leaveApplication.getLeaveDetails().getNumberOfLeaveDays(),
+				leaveApplication.getLeaveDetails().getReason(),
 				leaveApplication.getStatus().toString(),
-				leaveApplication.getLeaveType().toString(),
+				leaveApplication.getLeaveDetails().getLeaveType().toString(),
 				leaveApplication.getFiler().getEmployeeId(),
 				leaveApplication.getApprover().getEmployeeId());
 	}
