@@ -54,10 +54,10 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	}
 
 	private static final String SQL_INSERT_EMPLOYEE =
-			"INSERT INTO EMPLOYEE (ID, FirstName, LastName, Email,"
+			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
 			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
