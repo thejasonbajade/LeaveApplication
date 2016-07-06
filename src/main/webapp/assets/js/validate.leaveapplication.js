@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $("#leaveapplicationform").validate({
         rules: {
-        	leavetype: {
+        	leaveType: {
         		isNotDefault: true
         	},
         	supervisor: {
@@ -22,7 +22,7 @@ $(document).ready(function () {
             }
         },
         messages: {
-        	leavetype: {
+        	leaveType: {
         		isNotDefault: "Please select a type"
         	},
         	supervisor: {
@@ -44,39 +44,39 @@ $(document).ready(function () {
         }
     });
     
-	$('#leavetype').change(function () {
-		if ($('#startdate').val() != "" && $('#endDate').val() != ""){
-			checkCredits();
-		}
-		if ($('#leavetype').val() == "VACATION_LEAVE"){
+	$('#leaveType').change(function () {
+		if ($('#leaveType').val() == "VACATION_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
 			$('#vlpanel').attr('class', 'panel panel-info');
 			
-		} else if ($('#leavetype').val() == "EMERGENCY_LEAVE"){
+		} else if ($('#leaveType').val() == "EMERGENCY_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
 			$('#elpanel').attr('class', 'panel panel-info');
 			
-		} else if ($('#leavetype').val() == "SICK_LEAVE"){
+		} else if ($('#leaveType').val() == "SICK_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
 			$('#slpanel').attr('class', 'panel panel-info');
 			
-		} else if ($('#leavetype').val() == "OFFSET"){
+		} else if ($('#leaveType').val() == "OFFSET_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
 			$('#olpanel').attr('class', 'panel panel-info');
-			
+		}
+		if ($('#startDate').val() != "" && $('#endDate').val() != ""){
+			checkCredits();
 		}
     });
-    
+
 	$('#endDate').change(function () {
-		if ($('#startdate').val() != "" && $('#leavetype').val() != null){
+		if ($('#startDate').val() != "" && $('#leaveType').val() != null){
 			checkCredits();
 			
 		}
     });
 
-	$('#startdate').change(function () {
-		if ($('#endDate').val() != "" && $('#leavetype').val() != null){
+	$('#startDate').change(function () {
+		if ($('#endDate').val() != "" && $('#leaveType').val() != null){
 			checkCredits();
+
 		}
     });
 
@@ -142,7 +142,7 @@ $.validator.addMethod("notEarlierThanStart", function (value) {
 		}
 }
 	$("#startDate").removeClass("error");
-	$("#startdate-error").remove();
+	$("#startDate-error").remove();
 	return bool;
 });
 
@@ -156,12 +156,13 @@ function checkCredits(){
 		    	slcredits: $('#slpanel .panel-body h3').text(),
 		    	elcredits: $('#elpanel .panel-body h3').text(),
 		    	olcredits: $('#olpanel .panel-body h3').text(),
-		    	leavetype: $('#leavetype').val(),
-		    	startdate: $('#startdate').val(),
+		    	leaveType: $('#leaveType').val(),
+		    	startDate: $('#startDate').val(),
 		      	endDate: $('#endDate').val()
+
 		      },
 			success : function(leave) {
-				$('#warningdiv').text();
+				$('#warningdiv').text("");
 				$('#duration').val(leave.numberOfLeaveDays);
 				lwopWarning(leave);
 			}
@@ -169,7 +170,7 @@ function checkCredits(){
 }
 
 function lwopWarning(leave){
-	var selected = $('#leavetype').val();
+	var selected = $('#leaveType').val();
 	var credits = getCreditsOfSelectedLeave(selected);
 	var lwopCount;
 	if (leave.numberOfLeaveDays > credits){
@@ -188,18 +189,17 @@ function lwopWarning(leave){
 	}
 }
 
-function getCreditsOfSelectedLeave(leavetype){
+function getCreditsOfSelectedLeave(leaveType){
 	var credits;
-	if (leavetype === "VACATION_LEAVE"){
+	if (leaveType === "VACATION_LEAVE"){
 		credits = $('#vlpanel .panel-body h3').text();
-	} else if (leavetype === "SICK_LEAVE"){
+	} else if (leaveType === "SICK_LEAVE"){
 		credits = $('#slpanel .panel-body h3').text();
-	} else if (leavetype === "EMERGENCY_LEAVE"){
+	} else if (leaveType === "EMERGENCY_LEAVE"){
 		credits = $('#elpanel .panel-body h3').text();
-	} else if (leavetype === "OFFSET_LEAVE"){
-		$('#olpanel .panel-body h3').text();
+	} else if (leaveType === "OFFSET_LEAVE"){
+		credits = $('#olpanel .panel-body h3').text();
 	}
-	console.log("credits" + credits);
 	return parseFloat(credits);
 }
 
