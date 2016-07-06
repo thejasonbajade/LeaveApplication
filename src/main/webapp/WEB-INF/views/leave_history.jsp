@@ -65,9 +65,11 @@
 									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>
-										<a href="cancel_leave/${leaveApplication.leaveId}">
-											<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Cancel"></i></span>
-										</a>
+										<c:if test=${leaveApplication.status == 'CANCELLED'}>
+											<a href="cancel_leave/${leaveApplication.leaveId}">
+												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Cancel"></i></span>
+											</a>
+										</c:if>
 									</td>
 								</tr>
 								<t:leave_details leaveApplication="${leaveApplication}"/>

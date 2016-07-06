@@ -23,7 +23,7 @@
 					<hr/>
 				</div>
 				<div class="col-md-12">
-					<div class="col-md-4 col-md-offset-1">
+					<div class="col-md-4 col-md-offset-2">
 						<p style><b>Status (Supervisor)</b></p><br/>
 						<p><b>Status (Admin)</b></p><br/>
 						<p><b>Leave Type</b></p><br/>
@@ -33,7 +33,7 @@
 						<p><b>Number of Days</b></p><br/>
 						<p><b>Reason</b></p><br/>
 					</div>
-					<div class="col-md-7">
+					<div class="col-md-6">
 					<c:choose>
 						<c:when test="${leaveApplication.status == 'PENDING'}">
 							<p><span class="label label-warning">Pending</span></p><br/>
@@ -81,68 +81,6 @@
 					<p>${leaveApplication.leaveDetails.reason}</p><br/>
 					</div>
 				</div>
-				<!--<div class="col-md-12">
-					<label class="col-md-4"></label>
-					<div class="col-md-8">
-						<p>Approved</p>
-					</div>
-				</div>
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Status (Admin)</b></label>
-					<div class="col-md-8">
-						<p>Approved</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Leave Type</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.leaveType.toString()}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Supervisor</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.approver.employeeRecord.firstName}
-							${leaveApplication.approver.employeeRecord.lastName}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Start Date</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.startDate.format(formatter)}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>End Date</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.endDate.format(formatter)}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Number of Leave Days</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.numberOfLeaveDays}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>Reason</b></label>
-					<div class="col-md-8">
-						<p>${leaveApplication.reason}</p>
-					</div>
-				</div>
-
-				<div class="col-md-12">
-					<label class="col-md-4"><b>bComment</b></label>
-					<div class="col-md-8">
-						<p>Comment here. . . .</p>
-					</div>
-				</div> -->
 			</div>
 		</div>
 	</div>
