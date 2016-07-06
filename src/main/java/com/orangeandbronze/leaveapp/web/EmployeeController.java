@@ -45,23 +45,26 @@ public class EmployeeController{
 	public String submitAddEmployee(@RequestParam Map<String, String> reqParam, Model model) {
 		long departmentID = Long.parseLong(reqParam.get("department"));
 		Department department = new Department(departmentID, "");
-		boolean isSoloParent = reqParam.get("isSoloParent").equals("Solo Parent");
-		LocalDate regularizationDate = reqParam.get("regularizationdate") == null ?
+		boolean isSoloParent = reqParam.get("isSoloParent") == null;
+		EmploymentStatus status = reqParam.get("employeestatus") == null ? 
+				EmploymentStatus.PROBATIONARY : EmploymentStatus.REGULAR;
+		LocalDate regularizationDate = reqParam.get("regularizationdate").equals("") ?
 				LocalDate.ofEpochDay(0) : LocalDate.parse(reqParam.get("regularizationdate"));
 		EmployeeRecord record = new EmployeeRecord.Builder(
 				reqParam.get("firstName"), 
 				reqParam.get("lastName"), 
-				LocalDate.parse(reqParam.get("employmentDate")), 
+				LocalDate.parse(reqParam.get("employmentdate")), 
 				department, 
 				reqParam.get("email"), 
-				reqParam.get("position"))
+				reqParam.get("employeeposition"))
 				.contactNumber(reqParam.get("contactnumber"))
-				.employmentStatus(EmploymentStatus.valueOf(reqParam.get("employeestatus")))
+				.employmentStatus(status)
 				.isSoloParent(isSoloParent)
 				.regularizationDate(regularizationDate)
 				.build();
 		Employee employee = new Employee(1, record);
 		int ret = employeeService.addEmployee(employee);
+		model.addAttribute("message", "Successfully added employee!");
 		return "redirect:/add_employee";
 	}
 	

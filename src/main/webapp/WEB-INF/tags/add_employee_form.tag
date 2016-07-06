@@ -72,7 +72,7 @@
 	<div class="form-group col-md-12" id="regulardatediv">
 		<label class="col-md-4"> Solo Parent </label>
 		<div class="col-md-3">
-			<input type="checkbox" checked data-toggle="toggle" checked data-on="Solo Parent" data-off="Non Solo Parent" data-onstyle="primary" data-offstyle="default" data-width="100%">
+			<input name="isSoloParent" type="checkbox" checked data-toggle="toggle" checked data-on="Solo Parent" data-off="Non Solo Parent" data-onstyle="primary" data-offstyle="default" data-width="100%">
 		</div>
 	</div>
 	

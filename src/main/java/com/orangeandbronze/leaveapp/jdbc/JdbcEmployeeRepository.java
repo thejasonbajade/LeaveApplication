@@ -64,7 +64,6 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
 		return jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
-				employee.getEmployeeId(),
 				record.getFirstName(),
 				record.getLastName(),
 				record.getEmail(),

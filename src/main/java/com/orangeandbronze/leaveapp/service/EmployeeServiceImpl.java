@@ -81,7 +81,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public int addEmployee(Employee employee) {
-		//Employee employee = new Employee(); //TODO: finalize Employee parameters
 		return employeeRepository.add(employee);
 	}
 
