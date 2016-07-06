@@ -104,7 +104,17 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 					.build();
 			LeaveCredits credits = mapLeaveCredits(rs);
 			Employee employee = new Employee(rs.getLong("ID"), record, credits);
+			checkEmployeePrivileges(employee, rs);
 			return employee;
+		}
+
+		private void checkEmployeePrivileges(Employee employee, ResultSet rs) throws SQLException {
+			if(rs.getBoolean("isSupervisor"))
+				employee.grantSupervisorPrivileges();
+			if(rs.getBoolean("isAdmin"))
+				employee.grantAdminPrivelages();
+			if(rs.getBoolean("isHR"))
+				employee.grantHRPrivileges();
 		}
 
 		private LeaveCredits mapLeaveCredits(ResultSet rs) throws SQLException {
