@@ -32,8 +32,8 @@ public class LeaveDetails {
 	}
 	
 	private float countNumberOfLeaveDays(LocalDate startDate, LocalDate endDate) {
-		float numberOfLeaveDays = 1;
-		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
+		float numberOfLeaveDays = 0;
+		for(LocalDate date = startDate; date.isBefore(endDate) || date.equals(endDate); date = date.plusDays(1)) {
 			if(!isWeekEnd(date) && !Holiday.isHoliday(date))
 				numberOfLeaveDays++;
 		}	

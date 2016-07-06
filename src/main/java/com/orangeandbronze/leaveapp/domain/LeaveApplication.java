@@ -1,8 +1,5 @@
 package com.orangeandbronze.leaveapp.domain;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-
 public class LeaveApplication {
 
 	private long leaveId;
