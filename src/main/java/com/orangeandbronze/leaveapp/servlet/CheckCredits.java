@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.google.gson.Gson;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;

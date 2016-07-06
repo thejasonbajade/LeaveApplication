@@ -35,11 +35,7 @@
 					<!-- loop employees here -->
 					<c:forEach items="${employees}" var="employee">
 					<tr>
-<<<<<<< HEAD
-						<td><a href="account_info"> ${employee.record.firstName} ${employee.record.lastName}</a></td>
-=======
 						<td><a href="account_info/${employee.employeeId}"> ${employee.record.firstName} ${employee.record.lastName}</a></td>
->>>>>>> refs/remotes/origin/jason-new
 						<td> ${employee.record.firstName}${employee.record.lastName} </td>
 						<td> ${employee.record.email} </td>
 						<td> ${employee.record.position} </td>

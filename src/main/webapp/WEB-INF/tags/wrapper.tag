@@ -24,17 +24,10 @@
 		</div>
 		<div id="loggedAccount">
 			You are logged in as 
-<<<<<<< HEAD
-			<p> rochelle.sisa@orangeandbronze.com </p>
-		</div>
-		<a href="login" role="button" title="Logout" id="navLogout">
-		<i class="fa fa-power-off fa-2x" aria-hidden="true"></i>
-=======
 			<p>${user.employeeRecord.email}</p>
 		</div>
 		<a href="logout" role="button" title="Logout" id="navLogout">
 			<i class="fa fa-power-off fa-2x" aria-hidden="true"></i>
->>>>>>> refs/remotes/origin/jason-new
 		</a>
 		
 	</div> 
