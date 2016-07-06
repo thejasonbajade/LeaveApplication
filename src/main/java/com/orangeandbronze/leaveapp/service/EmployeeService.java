@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
@@ -35,5 +36,9 @@ public interface EmployeeService {
 	public List<Employee> viewAllEmployee();
 	
 	public List<Employee> findAllSupervisor();
+	
+	public List<Employee> findAllEmployees();
+
+	public List<Department> findAllDepartments();
 }
 

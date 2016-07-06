@@ -36,10 +36,36 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		return jdbcTemplate.queryForObject(SQL_FINDBY_ID, rowMapper , emp_id);
 	}
 
+	private static final String SQL_UPDATE = 
+			"UPDATE EMPLOYEE SET FirstName = ?, LastName = ?, Email = ?,"
+			+ "ContactNo = ?, EmploymentDate = ?, Position = ?, EmploymentStatus = ?, RegularizationDate = ?, isSoloParent = ?,"
+			+ "VLCredits = ?, SLCredits = ?, ELCredits = ?, SPCredits = ?, OffsetCredits = ?, Department_ID = ?, isSupervisor = ?,"
+			+ "isAdmin = ?, isHR = ? WHERE ID = ?";
 	@Override
 	public void update(Employee employee) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not yet implemented");
+		EmployeeRecord record = employee.getEmployeeRecord();
+		Department department = record.getDepartment();
+		LeaveCredits credits = employee.getLeaveCredits();
+		jdbcTemplate.update(SQL_UPDATE,	
+				record.getFirstName(),
+				record.getLastName(),
+				record.getEmail(),
+				record.getContactNumber(),
+				record.getEmploymentDate().toString(),
+				record.getPosition(),
+				record.getStatus().toString(),
+				record.getRegularizationDate().toString(),
+				record.isSoloParent(),
+				credits.getLeaveCreditsOfType(LeaveType.VACATION_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.SICK_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.EMERGENCY_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.SOLO_PARENT_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
+				department.getId(),
+				employee.isSupervisor(),
+				employee.isAdmin(),
+				employee.isHR(),
+				employee.getEmployeeId());
 	}
 	
 	
@@ -56,7 +82,7 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	private static final String SQL_INSERT_EMPLOYEE =
 			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
-			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
+			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID, isSupervisor, isAdmin, isHR)"
 					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
@@ -79,7 +105,10 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				credits.getLeaveCreditsOfType(LeaveType.EMERGENCY_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.SOLO_PARENT_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
-				department.getId());
+				department.getId(),
+				employee.isSupervisor(),
+				employee.isAdmin(),
+				employee.isHR());
 	}
 
 	private static final String SQL_FINDBY_ID =
@@ -101,7 +130,17 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 					.build();
 			LeaveCredits credits = mapLeaveCredits(rs);
 			Employee employee = new Employee(rs.getLong("ID"), record, credits);
+			checkEmployeePrivileges(employee, rs);
 			return employee;
+		}
+		
+		private void checkEmployeePrivileges(Employee employee, ResultSet rs) throws SQLException {
+			if(rs.getInt("isSupervisor") == 1)
+				employee.grantSupervisorPrivileges();
+			if(rs.getInt("isAdmin") == 1)
+				employee.grantAdminPrivelages();
+			if(rs.getInt("isHR") == 1)
+				employee.grantHRPrivileges();
 		}
 
 		private LeaveCredits mapLeaveCredits(ResultSet rs) throws SQLException {
@@ -118,7 +157,6 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		private Department mapDepartment(ResultSet rs) throws SQLException {
 			Department department = new Department(rs.getLong("id"), rs.getString("DepartmentName"));
 			return department;
-		}
-	
+		}	
 	}
 }

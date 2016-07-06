@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserAccountController{
 	
 	@RequestMapping("/account_info")
-	public ModelAndView displayAccountInfo() {
+	public String displayAccountInfo() {
 		
 		ModelAndView model = new ModelAndView("account_info");
 		
-		return model;
+		return "account_info";
 	}
 	
 	@RequestMapping("/edit_profile")

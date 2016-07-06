@@ -21,13 +21,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	private EmployeeRepository employeeRepository;
 	private LeaveApplicationRepository leaveApplicationRepository;
+	private DepartmentRepository departmentRepository;
 
 	@Autowired
 	public EmployeeServiceImpl(
 			EmployeeRepository employeeRepository, 
-			LeaveApplicationRepository leaveApplicationRepository) {
+			LeaveApplicationRepository leaveApplicationRepository,
+			DepartmentRepository departmentRepository) {
 		this.employeeRepository = employeeRepository;
 		this.leaveApplicationRepository = leaveApplicationRepository;
+		this.departmentRepository = departmentRepository;
 	}
 
 	public int fileLeave(
@@ -52,7 +55,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.approve(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
-	}
+		employeeRepository.update(leaveApplication.getFiler());
+	}	
 
 	public void disapproveLeaveApplication(long approverId, long leaveId) {
 		Employee approver =  employeeRepository.findBy(approverId);
@@ -74,7 +78,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public int addEmployee(Employee employee) {
-		//Employee employee = new Employee(); //TODO: finalize Employee parameters
 		return employeeRepository.add(employee);
 	}
 
@@ -88,7 +91,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 		return employeeRepository.findAll();
 	}
 	
+	@Override
 	public List<Employee> findAllSupervisor() {
 		return employeeRepository.findAllSupervisors();
+	}
+	
+	@Override
+	public List<Employee> findAllEmployees() {
+		return employeeRepository.findAll();
+	}
+
+	@Override
+	public List<Department> findAllDepartments() {
+		return departmentRepository.findAll();
 	}
 }

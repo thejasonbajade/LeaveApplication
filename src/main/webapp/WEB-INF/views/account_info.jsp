@@ -10,7 +10,7 @@
 				<h1> Account Information </h1>
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<t:account_details/>
+						<t:account_details user="${user}"/>
 					</div>
 				</div>
 			</div>

@@ -22,17 +22,16 @@
 			<img src='<c:url value="/assets/images/oandblogo.png" />' alt="Orange & Bronze Software Labs, Inc." title="Orange & Bronze Software Labs, Inc." id="navLogo">
 		</a>
 		</div>
-		<a href="login" role="button" title="Logout" id="navLogout">
+		<div id="loggedAccount">
+			You are logged in as 
+			<p>${user.employeeRecord.email}</p>
+		</div>
+		<a href="logout" role="button" title="Logout" id="navLogout">
 			<i class="fa fa-power-off fa-2x" aria-hidden="true"></i>
 		</a>
 	</div> 
 </nav>
-
 	<jsp:doBody/>
-<!--<div class="alert alert-danger fade in col-md-6" style="position: absolute; right: 0px">
-	This is another sample alert with close that fades! 
-	<button type="button" class="close" data-dismiss="alert" aria-label="close">&times;</button>
-</div>-->
 </body>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/jquery.min.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/bootstrap.min.js"/>'></script>

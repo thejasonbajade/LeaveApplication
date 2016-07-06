@@ -9,15 +9,13 @@
 			<div class="col-md-10" id="mainContent">
 				<div class="col-md-12">
 					<h1>My Leave History</h1>
-					${date}
 					<table class="table table-striped table-bordered">
 						<thead>
 							<tr>
 								<th>Status (Supervisor)</th>
 								<th>Status (HR)</th>
-								<th>Name</th>
+								<th>Filer</th>
 								<th>Leave Type</th>
-								<th>Date Filed</th>
 								<th>Start Date</th>
 								<th>End Date</th>
 								<th>Duration</th>
@@ -57,15 +55,14 @@
 										</c:when>
 									</c:choose>									
 									<td>${leaveApplication.filer.employeeRecord.firstName} ${leaveApplication.filer.employeeRecord.lastName}</td>
-									<td>${leaveApplication.leaveDetails.leaveType.toString()}</td>
-									<td>${leaveApplication.leaveDetails.dateFiled.format(formatter)}</td>
+									<td>${leaveApplication.leaveDetails.leaveType.toAcronym()}</td>
 									<td>${leaveApplication.leaveDetails.startDate.format(formatter)}</td>
 									<td>${leaveApplication.leaveDetails.endDate.format(formatter)}</td>
 									<td>${leaveApplication.leaveDetails.numberOfLeaveDays}</td>
 									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>
-										<c:if test=${leaveApplication.status == 'CANCELLED'}>
+										<c:if test="${leaveApplication.status == 'PENDING'}">
 											<a href="cancel_leave/${leaveApplication.leaveId}">
 												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Cancel"></i></span>
 											</a>
