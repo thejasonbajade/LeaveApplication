@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@tag description="Add Employee Form Tag" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <form action="submit_add_employee" method="post" id="addemployeeform" class="col-md-8 col-md-offset-2">
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> First Name </label>
@@ -59,7 +60,10 @@
 			<select class="form-control" name="department">
 				<option style="display: none" value="default">Select
 					Department</option>
-				<option> Department 1 </option>
+				<c:forEach items="${departments}" var="department">
+					<option value="${department.id}">${department.name}</option>
+				</c:forEach>
+				
 				<!-- loop departments from db -->
 			</select>
 		</div>

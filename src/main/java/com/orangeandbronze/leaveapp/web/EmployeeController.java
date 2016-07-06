@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.service.EmployeeService;
 
@@ -18,17 +19,6 @@ import com.orangeandbronze.leaveapp.service.EmployeeService;
 @Controller
 @Component
 public class EmployeeController{
-	/*EmployeeRepository employeeRepository;
-	LeaveApplicationRepository leaveApplicationRepository;
-
-	@Autowired
-	public EmployeeController(
-			EmployeeRepository employeeRepository, 
-			LeaveApplicationRepository leaveApplicationRepository) {
-		this.employeeRepository = employeeRepository;
-		this.leaveApplicationRepository = leaveApplicationRepository;
-	}	*/
-
 	private EmployeeService employeeService;
 	
 	@Autowired
@@ -40,8 +30,8 @@ public class EmployeeController{
 	
 	@RequestMapping("/add_employee")
 	public String addEmployee(Model model) {
-		
-		//model.addAttribute(arg0, arg1);
+		List<Department> departments = employeeService.findAllDepartments();
+		model.addAttribute("departments", departments);
 		
 		return "add_employee";
 	}

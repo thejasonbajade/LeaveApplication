@@ -116,7 +116,7 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		}
 
 		private Department mapDepartment(ResultSet rs) throws SQLException {
-			Department department = new Department(rs.getLong("Department_ID"), rs.getString("DepartmentName"));
+			Department department = new Department(rs.getLong("id"), rs.getString("DepartmentName"));
 			return department;
 		}
 	

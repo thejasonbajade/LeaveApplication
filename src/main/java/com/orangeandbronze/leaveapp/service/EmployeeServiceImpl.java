@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.orangeandbronze.leaveapp.domain.Admin;
+import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 import com.orangeandbronze.leaveapp.domain.Supervisor;
+import com.orangeandbronze.leaveapp.repository.DepartmentRepository;
 import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
 import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
 
@@ -24,13 +26,16 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	private EmployeeRepository employeeRepository;
 	private LeaveApplicationRepository leaveApplicationRepository;
+	private DepartmentRepository departmentRepository;
 
 	@Autowired
 	public EmployeeServiceImpl(
 			EmployeeRepository employeeRepository, 
-			LeaveApplicationRepository leaveApplicationRepository) {
+			LeaveApplicationRepository leaveApplicationRepository,
+			DepartmentRepository departmentRepository) {
 		this.employeeRepository = employeeRepository;
 		this.leaveApplicationRepository = leaveApplicationRepository;
+		this.departmentRepository = departmentRepository;
 	}
 
 	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId) {
@@ -97,5 +102,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public List<Employee> findAllEmployees() {
 		return employeeRepository.findAll();
+	}
+
+	@Override
+	public List<Department> findAllDepartments() {
+		return departmentRepository.findAll();
 	}
 }

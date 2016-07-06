@@ -16,6 +16,14 @@ public class Department {
 		return id;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public Collection<Employee> getEmployees() {
+		return employees;
+	}
+
 	@Override
 	public String toString() {
 		return name;
