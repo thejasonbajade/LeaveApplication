@@ -56,8 +56,8 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	private static final String SQL_INSERT_EMPLOYEE =
 			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
-			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID, isSupervisor, isAdmin, isHR)"
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
@@ -78,7 +78,10 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				credits.getLeaveCreditsOfType(LeaveType.EMERGENCY_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.SOLO_PARENT_LEAVE),
 				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
-				department.getId());
+				department.getId(),
+				employee.isSupervisor(),
+				employee.isAdmin(),
+				employee.isHR());
 	}
 
 	private static final String SQL_FINDBY_ID =

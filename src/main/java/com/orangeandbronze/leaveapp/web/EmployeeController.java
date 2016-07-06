@@ -43,9 +43,6 @@ public class EmployeeController{
 	
 	@RequestMapping(value = "/submit_add_employee", method = RequestMethod.POST)
 	public String submitAddEmployee(@RequestParam Map<String, String> reqParam, Model model) {
-		long departmentID = Long.parseLong(reqParam.get("department"));
-		Department department = new Department(departmentID, "");
-		boolean isSoloParent = reqParam.get("isSoloParent") == null;
 		EmploymentStatus status = reqParam.get("employeestatus") == null ? 
 				EmploymentStatus.PROBATIONARY : EmploymentStatus.REGULAR;
 		LocalDate regularizationDate = reqParam.get("regularizationdate").equals("") ?
@@ -54,21 +51,31 @@ public class EmployeeController{
 				reqParam.get("firstName"), 
 				reqParam.get("lastName"), 
 				LocalDate.parse(reqParam.get("employmentdate")), 
-				department, 
+				new Department(Long.parseLong(reqParam.get("department")), ""), 
 				reqParam.get("email"), 
 				reqParam.get("employeeposition"))
 				.contactNumber(reqParam.get("contactnumber"))
 				.employmentStatus(status)
-				.isSoloParent(isSoloParent)
+				.isSoloParent(reqParam.get("isSoloParent") == null)
 				.regularizationDate(regularizationDate)
 				.build();
 		Employee employee = new Employee(1, record);
+		checkPrivileges(reqParam, employee);
 		int ret = employeeService.addEmployee(employee);
 		model.addAttribute("message", "Successfully added employee!");
 		return "redirect:/add_employee";
 	}
 	
 	
+	private void checkPrivileges(Map<String, String> reqParam, Employee employee) {
+		if(reqParam.get("isadmin") != null)
+			employee.grantAdminPrivelages();
+		if(reqParam.get("issupervisor") != null)
+			employee.grantSupervisorPrivileges();
+		if(reqParam.get("ishr") != null)
+			employee.grantHRPrivileges();
+	}
+
 	@RequestMapping("/view_all_employees")
 	public String viewAllEmployees(Model model) {
 		List<Employee> employees = employeeService.findAllEmployees();

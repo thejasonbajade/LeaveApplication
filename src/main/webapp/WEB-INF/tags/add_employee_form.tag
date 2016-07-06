@@ -81,13 +81,13 @@
 		<label class="col-md-4"> Roles </label>
 		<div class="col-md-8">
 			<div class="checkbox">
-				<label><input type="checkbox" id="adminrole" name="roles" value="admin"> Admin </label>
+				<label><input type="checkbox" id="adminrole" name="isadmin" value="admin"> Admin </label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" id="supervisorrole" name="roles" value="supervisor"> Supervisor </label>
+				<label><input type="checkbox" id="supervisorrole" name="issupervisor" value="supervisor"> Supervisor </label>
 			</div>
 			<div class="checkbox">
-				<label><input type="checkbox" id="hrrole" name="roles" value="hr"> HR </label>
+				<label><input type="checkbox" id="hrrole" name="ishr" value="hr"> HR </label>
 			</div>
 		</div>
 	</div>
