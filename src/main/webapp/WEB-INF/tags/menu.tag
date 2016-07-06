@@ -4,9 +4,9 @@
 	<ul class="list-group">
 		<a href="account_info" role="button" class="list-group-item"> 
 			<i class="fa fa-user fa-3x" aria-hidden="true"></i>  <br/>
-			<span> Account Info </span> 
+			<p> Account Info </p> 
 		</a>
-		<a href="apply_leave" role="button" class="list-group-item active"> 
+		<a href="apply_leave" role="button" class="list-group-item"> 
 			<i class="fa fa-pencil fa-3x" aria-hidden="true"></i> 
 			<p> Apply for Leave </p> 
 		</a>
@@ -14,19 +14,38 @@
 			<i class="fa fa-history fa-3x" aria-hidden="true"></i> 
 			<p> Leave History </p>
 		</a>
-		<a href="view_all_employees" role="button" class="list-group-item"> 
+		<li class="dropdown">
+			<a id="employeesMenu" role="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+				<i class="fa fa-users fa-3x" aria-hidden="true"></i> 
+				<p> Employees </p>
+			</a>
+			<ul class="dropdown-menu dropdown-menu-right" id="dropdownId">
+				<a href="add_employee" role="button" class="list-group-item">
+					<i class="fa fa-user-plus fa-2x" aria-hidden="true"></i> 
+					 Add Employee 
+				</a>
+				<a href="view_all_employees"  role="button" class="list-group-item"> 
+					<i class="fa fa-list-ul fa-2x" aria-hidden="true"></i> 
+					 Employee List
+				</a>
+			</ul>
+		</li>
+		<c:if test="user.supervisor == true">
+			<a href="view_leave_histories_supervisor" role="button" class="list-group-item"> 
+		</c:if>
 			
-			<i class="fa fa-list-ul fa-3x" aria-hidden="true"></i> 
-			<p> Employee List </p>
-		</a>
-		<a href="view_all_leave_histories" role="button" class="list-group-item"> 
+		<!--<c:if test="user.admin == true">
+			<a href="view_all_leave_histories" role="button" class="list-group-item"> 
+		</c:if>-->
+		
+		
 			<span class="badge">5</span>
 			<i class="fa fa-list-alt fa-3x" aria-hidden="true"></i> 
 			<p> Leave List </p>
 		</a>
-		<a href="add_employee" role="button" class="list-group-item">
-			<i class="fa fa-user-plus fa-3x" aria-hidden="true"></i> 
-			<p> Add Employee </p>
+		<a href="reports" role="button" class="list-group-item">
+			<i class="fa fa-file-text fa-3x" aria-hidden="true"></i> 
+			<p> Reports </p>
 		</a>
 	</ul>
 </div>

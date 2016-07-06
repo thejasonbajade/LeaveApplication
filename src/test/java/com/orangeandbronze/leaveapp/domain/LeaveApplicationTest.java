@@ -14,10 +14,10 @@ public class LeaveApplicationTest {
 	private LeaveApplication leaveApplication;
 	
 	private LeaveApplication generateLeaveApplication(LocalDate startDate, LocalDate endDate) {
-		return new LeaveApplication(startDate, endDate, LeaveType.SICK_LEAVE, "I'm Sick", new Employee(1, "A", "B"), new Supervisor(2, "C", "D"));
+		return new LeaveApplication(startDate, false, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick", null, null);
 	}
 
-	private void assertGetNumberOfLeaveDaysEvaluatesTo(int expected) {
+	private void assertGetNumberOfLeaveDaysEvaluatesTo(float expected) {
 		assertTrue("Number of leave days computed was " + leaveApplication.getNumberOfLeaveDays(), 
 				expected == leaveApplication.getNumberOfLeaveDays());
 	}
@@ -46,6 +46,22 @@ public class LeaveApplicationTest {
 		LocalDate endDate = LocalDate.of(2016,Month.JULY,31);
 		leaveApplication = generateLeaveApplication(startDate, endDate);
 		assertGetNumberOfLeaveDaysEvaluatesTo(2);
+	}
+	
+	@Test
+	public void leaveApplicationWithHalfDayStartAndEndDate() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
+		leaveApplication = new LeaveApplication(startDate, true, endDate, true, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+		assertGetNumberOfLeaveDaysEvaluatesTo(1);
+	}
+	
+	@Test
+	public void leaveApplicationWithHalfDayStartDate() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
+		leaveApplication = new LeaveApplication(startDate, true, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+		assertGetNumberOfLeaveDaysEvaluatesTo((float)1.5);
 	}
 
 	@Test

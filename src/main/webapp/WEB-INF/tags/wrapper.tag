@@ -38,8 +38,8 @@
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/bootstrap.min.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/jquery.validate.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/bootstrap-toggle.min.js"/>'></script>
+<script type="text/javascript" charset="utf8" src='<c:url value="assets/js/menu.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.add.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.editprofile.js"/>'></script>
-<script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.leaveapplication.js"/>'></script>
-</html>
+<script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.leaveapplication.js"/>'></script></html>
 	

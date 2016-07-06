@@ -8,7 +8,7 @@
 			<t:menu />
 			<div class="col-md-10" id="mainContent">
 				<div class="col-md-12">
-					<h1>Company Leave History</h1>
+					<h1>Leave History</h1>
 					<table class="table table-striped table-bordered" id="leaveList">
 						<thead>
 							<tr>
@@ -55,31 +55,30 @@
 											<td><span class="label label-default">Cancelled</span></td>
 										</c:when>
 									</c:choose>
-									<td>${leaveApplication.filer.firstName} ${leaveApplication.filer.lastName}</td>
+									<td>${leaveApplication.filer.employeeRecord.firstName} ${leaveApplication.filer.employeeRecord.lastName}</td>
 									<td>${leaveApplication.leaveType.toString()}</td>
-									<td>${leaveApplication.dateFiled}</td>
-									<td>${leaveApplication.startDate}</td>
-									<td>${leaveApplication.endDate}</td>
+									<td>${leaveApplication.dateFiled.format(formatter)}</td>
+									<td>${leaveApplication.startDate.format(formatter)}</td>
+									<td>${leaveApplication.endDate.format(formatter)}</td>
 									<td>${leaveApplication.numberOfLeaveDays}</td>
-									<td><a href="#leaveApplication${leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveId}">
+									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>
 										<a href="approve_leave/${leaveApplication.leaveId}">
-											<i class="fa fa-check text-success" aria-hidden="true" title="Approve"></i>
+											<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
 										</a> 
 										<a href="disapprove_leave/${leaveApplication.leaveId}">
-											<i class="fa fa-times text-danger" aria-hidden="true" title="Dispprove"></i>
+											<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
 										</a>
-										<c:if test="user.">
-											<a href="not_taken_leave/${leaveApplication.leaveId}"><i class="fa fa-ban text-warning" aria-hidden="true" title="Not Taken"></i></a>
-										</c:if>
+										<a href="not_taken_leave/${leaveApplication.leaveId}">
+											<span class="label label-default"><i class="fa fa-ban" aria-hidden="true" title="Not Taken"></i></span>
+										</a>								
 									</td>
 								</tr>	
-								<t:leave_details />
+								<t:leave_details leaveApplication="${leaveApplication}"/>
 							</c:forEach>
 						</tbody>
 					</table>
-					<t:leave_details />
 					<div class="col-md-12" id="pagination">
 						<ul class="pagination">
 							<li class="active"><a href="">1</a></li>

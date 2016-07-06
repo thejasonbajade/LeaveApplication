@@ -1,15 +1,19 @@
 $(document).ready(function () {
     $("#leaveapplicationform").validate({
         rules: {
-            startdate: {
-                required: true
+        	leavetype: {
+        		isNotDefault: true
+        	},
+        	supervisor: {
+        		isNotDefault: true
+        	},
+            startDate: {
+                required: true,
+                notLaterThanEnd: true
             },
-            enddate: {
+            endDate: {
                 required: true,
                 notEarlierThanStart: true
-            },
-            duration: {
-                required: true
             },
             reason: {
                 required: true,
@@ -18,15 +22,19 @@ $(document).ready(function () {
             }
         },
         messages: {
-            startdate: {
-                required: "This field is required"
-            },
-            enddate: {
+        	leavetype: {
+        		isNotDefault: "Please select a type"
+        	},
+        	supervisor: {
+        		isNotDefault: "Please select a supervisor"
+        	},
+            startDate: {
                 required: "This field is required",
-                notEarlierThanStart: "The end date cannot be later than start date"
+                notLaterThanEnd: "Date cannot be later than end date"
             },
-            duration: {
-              required: "This field is required"  
+            endDate: {
+                required: "This field is required",
+                notEarlierThanStart: "Date cannot be earlier than start date"
             },
             reason: {
                 required: "This field is required",
@@ -35,6 +43,44 @@ $(document).ready(function () {
             }
         }
     });
+    
+	$('#leavetype').change(function () {
+		if ($('#startdate').val() != "" && $('#endDate').val() != ""){
+			checkCredits();
+		}
+		if ($('#leavetype').val() == "VACATION_LEAVE"){
+			$('.panel').attr('class', 'panel panel-default');
+			$('#vlpanel').attr('class', 'panel panel-info');
+			
+		} else if ($('#leavetype').val() == "EMERGENCY_LEAVE"){
+			$('.panel').attr('class', 'panel panel-default');
+			$('#elpanel').attr('class', 'panel panel-info');
+			
+		} else if ($('#leavetype').val() == "SICK_LEAVE"){
+			$('.panel').attr('class', 'panel panel-default');
+			$('#slpanel').attr('class', 'panel panel-info');
+			
+		} else if ($('#leavetype').val() == "OFFSET"){
+			$('.panel').attr('class', 'panel panel-default');
+			$('#olpanel').attr('class', 'panel panel-info');
+			
+		}
+    });
+    
+	$('#endDate').change(function () {
+		if ($('#startdate').val() != "" && $('#leavetype').val() != null){
+			checkCredits();
+			
+		}
+    });
+
+	$('#startdate').change(function () {
+		if ($('#endDate').val() != "" && $('#leavetype').val() != null){
+			checkCredits();
+		}
+    });
+
+    
 });
 
 $.validator.addMethod("nospecialchar", function (value, element) {
@@ -61,22 +107,99 @@ $.validator.addMethod("notAdvanced", function (value) {
 });
 
 $.validator.addMethod("isNotDefault", function (value) {
-    if (value === "default") {
+    if (value == null) {
         return false;
     }
     else {
         return true;
+        
     }
 });
 
-$.validator.addMethod("notEarlierThanStart", function (value) {
-	var start = $('#startdate').val();
-	if (value >= start){
-		return true;
-	} else if (value < start){
-		return false;
+$.validator.addMethod("notLaterThanEnd", function (value) {
+	var endDate = $('#endDate').val();
+	var bool = true;
+	if (endDate !== ""){
+		if (value > endDate){
+			bool = false
+		} else if (value <= endDate){
+			bool = true;
+		}
 	}
+	$("#endDate-error").remove();
+
+	return bool;
+});
+
+$.validator.addMethod("notEarlierThanStart", function (value) {
+	var startDate = $('#startDate').val();
+	var bool = true;
+	if (startDate !== ""){
+		if (value >= startDate){
+			bool = true;
+			} else {
+			bool = false;
+		}
+}
+	$("#startDate").removeClass("error");
+	$("#startdate-error").remove();
+	return bool;
 });
 
 
+function checkCredits(){
+		$.ajax({
+			url : "CheckCredits",
+		    data:
+		    {
+		    	vlcredits: $('#vlpanel .panel-body h3').text(),
+		    	slcredits: $('#slpanel .panel-body h3').text(),
+		    	elcredits: $('#elpanel .panel-body h3').text(),
+		    	olcredits: $('#olpanel .panel-body h3').text(),
+		    	leavetype: $('#leavetype').val(),
+		    	startdate: $('#startdate').val(),
+		      	endDate: $('#endDate').val()
+		      },
+			success : function(leave) {
+				$('#warningdiv').text();
+				$('#duration').val(leave.numberOfLeaveDays);
+				lwopWarning(leave);
+			}
+		});
+}
+
+function lwopWarning(leave){
+	var selected = $('#leavetype').val();
+	var credits = getCreditsOfSelectedLeave(selected);
+	var lwopCount;
+	if (leave.numberOfLeaveDays > credits){
+		if (selected === "EMERGENCY_LEAVE"){
+			credits += getCreditsOfSelectedLeave("VACATION_LEAVE");
+			$('#warningdiv').text("Warning: Your EL balance is not enough to cover the leave. VL will be deducted");
+			if (leave.numberOfLeaveDays > credits){
+				lwopCount = leave.numberOfLeaveDays - credits;
+				$('#warningdiv').text("Warning: " + lwopCount + " day/s of your leave will be LWOP");
+			}
+		} else {
+			lwopCount = leave.numberOfLeaveDays - credits;
+			$('#warningdiv').text("Warning: Your balance is not enough to cover the duration. ");
+			$('#warningdiv').append(lwopCount + " day/s of your leave will be LWOP");
+		}
+	}
+}
+
+function getCreditsOfSelectedLeave(leavetype){
+	var credits;
+	if (leavetype === "VACATION_LEAVE"){
+		credits = $('#vlpanel .panel-body h3').text();
+	} else if (leavetype === "SICK_LEAVE"){
+		credits = $('#slpanel .panel-body h3').text();
+	} else if (leavetype === "EMERGENCY_LEAVE"){
+		credits = $('#elpanel .panel-body h3').text();
+	} else if (leavetype === "OFFSET_LEAVE"){
+		$('#olpanel .panel-body h3').text();
+	}
+	console.log("credits" + credits);
+	return parseFloat(credits);
+}
 

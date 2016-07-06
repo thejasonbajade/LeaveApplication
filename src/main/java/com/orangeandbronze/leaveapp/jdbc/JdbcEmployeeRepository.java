@@ -2,6 +2,7 @@ package com.orangeandbronze.leaveapp.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -40,11 +41,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Not yet implemented");
 	}
-
+	
+	
 	@Override
 	public List<Employee> findAll() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not yet implemented");
+		return jdbcTemplate.query("SELECT * FROM Employee e JOIN department d ON e.Department_ID = d.ID", rowMapper);
 	}
 
 	@Override
@@ -53,10 +54,10 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	}
 
 	private static final String SQL_INSERT_EMPLOYEE =
-			"INSERT INTO EMPLOYEE (ID, FirstName, LastName, Email,"
+			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
 			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
@@ -88,9 +89,15 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		@Override
 		public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
 			EmployeeRecord record = new EmployeeRecord.Builder(rs.getString("FirstName"), 
-					rs.getString("LastName"), rs.getString("Email"), rs.getString("Position"), mapDepartment(rs), 
-					rs.getDate("EmploymentDate").toLocalDate())
-					.status(EmploymentStatus.valueOf(rs.getString("EmploymentStatus")))
+					rs.getString("LastName"), 
+					rs.getDate("EmploymentDate").toLocalDate(), 
+					mapDepartment(rs), 
+					rs.getString("Email"), 
+					rs.getString("Position"))
+					.employmentStatus(EmploymentStatus.valueOf(rs.getString("EmploymentStatus")))
+					.regularizationDate(
+							rs.getDate("RegularizationDate") == null ? LocalDate.ofEpochDay(0) :
+									rs.getDate("RegularizationDate").toLocalDate())
 					.build();
 			LeaveCredits credits = mapLeaveCredits(rs);
 			Employee employee = new Employee(rs.getLong("ID"), record, credits);
@@ -109,10 +116,9 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		}
 
 		private Department mapDepartment(ResultSet rs) throws SQLException {
-			Department department = new Department(rs.getLong("Department_ID"), rs.getString("DepartmentName"));
+			Department department = new Department(rs.getLong("id"), rs.getString("DepartmentName"));
 			return department;
 		}
 	
 	}
-
 }

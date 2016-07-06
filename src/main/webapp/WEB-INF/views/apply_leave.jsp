@@ -10,6 +10,7 @@
 			<h1>Leave Application Form</h1>
 				<div class="panel panel-default">
 					<div class="panel-body">
+						<t:apply_leave_credits/>
 						<t:apply_form/>
 					</div>
 				</div>		

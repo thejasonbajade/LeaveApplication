@@ -9,6 +9,7 @@
 			<div class="col-md-10" id="mainContent">
 				<div class="col-md-12">
 					<h1>My Leave History</h1>
+					${date}
 					<table class="table table-striped table-bordered">
 						<thead>
 							<tr>
@@ -55,34 +56,22 @@
 											<td><span class="label label-default">Cancelled</span></td>
 										</c:when>
 									</c:choose>									
-									<td>${leaveApplication.filer.firstName} ${leaveApplication.filer.lastName}</td>
-									<td>${leaveApplication.leaveType}</td>
-									<td>${leaveApplication.dateFiled}</td>
-									<td>${leaveApplication.startDate}</td>
-									<td>${leaveApplication.endDate}</td>
+									<td>${leaveApplication.filer.employeeRecord.firstName} ${leaveApplication.filer.employeeRecord.lastName}</td>
+									<td>${leaveApplication.leaveType.toString()}</td>
+									<td>${leaveApplication.dateFiled.format(formatter)}</td>
+									<td>${leaveApplication.startDate.format(formatter)}</td>
+									<td>${leaveApplication.endDate.format(formatter)}</td>
 									<td>${leaveApplication.numberOfLeaveDays}</td>
-									<td><a href="#leaveApplication${leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveId}">
+									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>
 										<a href="cancel_leave/${leaveApplication.leaveId}">
-											<i class="fa fa-times text-danger" aria-hidden="true" value="Cancel"></i>
+											<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Cancel"></i></span>
 										</a>
 									</td>
 								</tr>
-								<t:leave_details />
+								<t:leave_details leaveApplication="${leaveApplication}"/>
 							</c:forEach>
-							<tr>
-								<td>Approved</td>
-								<td>Approved</td>
-								<td> Bajade</td>
-								<td>SL</td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td><i class="fa fa-eye text-primary" aria-hidden="true"></i>
-									<i class="fa fa-times text-danger" aria-hidden="true"></i></td>
-							</tr>
 						</tbody>
 					</table>
 					<div class="col-md-12" id="pagination">

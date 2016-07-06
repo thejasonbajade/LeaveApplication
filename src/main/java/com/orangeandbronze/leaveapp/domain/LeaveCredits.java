@@ -86,6 +86,18 @@ public class LeaveCredits {
 		return soloParentLeaveCredits;
 	}
 
+	public float getVacationLeaveCredits() {
+		return vacationLeaveCredits;
+	}
+
+	public float getSickLeaveCredits() {
+		return sickLeaveCredits;
+	}
+
+	public float getEmergencyLeaveCredits() {
+		return emergencyLeaveCredits;
+	}
+
 	public void increaseVacationLeaveCredits() {
 		vacationLeaveCredits += vacationLeaveCreditsIncreaseRate;
 	}

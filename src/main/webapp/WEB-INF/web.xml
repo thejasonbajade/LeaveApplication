@@ -20,4 +20,14 @@
     <servlet-name>appServlet</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CheckCredits</display-name>
+    <servlet-name>CheckCredits</servlet-name>
+    <servlet-class>com.orangeandbronze.leaveapp.servlet.CheckCredits</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheckCredits</servlet-name>
+    <url-pattern>/CheckCredits</url-pattern>
+  </servlet-mapping>
 </web-app>

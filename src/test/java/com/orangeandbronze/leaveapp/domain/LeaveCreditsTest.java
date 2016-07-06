@@ -1,4 +1,4 @@
-package com.orangeandbronze.leaveapp.model;
+package com.orangeandbronze.leaveapp.domain;
 
 import static org.junit.Assert.assertEquals;
 

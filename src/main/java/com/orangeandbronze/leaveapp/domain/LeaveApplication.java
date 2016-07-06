@@ -7,26 +7,31 @@ public class LeaveApplication {
 
 	private long leaveId;
 	private LocalDate startDate;
+	private boolean isStartHalfDay;
+	private boolean isEndHalfDay;
 	private LocalDate endDate;
 	private LocalDate dateFiled;
 	private LeaveType leaveType;
 	private LeaveStatus leaveStatus;
 	private Employee filer;
-	private Supervisor approver;
+	private Employee approver;
+
 	private String reason;
 	private float numberOfLeaveDays;
 
-	public LeaveApplication(LocalDate startDate, LocalDate endDate, LeaveType leaveType,
-			String reason,Employee filer, Supervisor approver) {
-		this(0, startDate, endDate, LocalDate.now(), leaveType, LeaveStatus.PENDING, reason, filer, approver);
+	public LeaveApplication(LocalDate startDate, boolean isStartHalfDay, LocalDate endDate, boolean isEndHalfDay, LeaveType leaveType,
+			String reason,Employee filer, Employee approver) {
+		this(0, startDate, isStartHalfDay, endDate, isEndHalfDay, LocalDate.now(), leaveType, LeaveStatus.PENDING, reason, filer, approver);
 	}
 
-	public LeaveApplication(int leaveId, LocalDate startDate, LocalDate endDate, LocalDate dateFiled, LeaveType leaveType, 
-			 LeaveStatus leaveStatus, String reason, Employee filer, Supervisor approver) {
+	public LeaveApplication(int leaveId, LocalDate startDate, boolean isStartHalfDay, LocalDate endDate, boolean isEndHalfDay, LocalDate dateFiled, LeaveType leaveType, 
+			 LeaveStatus leaveStatus, String reason, Employee filer, Employee approver) {
 		checkIfEndDateIsBeforeStartDate(startDate, endDate);
 		this.leaveId = leaveId;
 		this.startDate = startDate;
+		this.isStartHalfDay = isStartHalfDay;
 		this.endDate = endDate;
+		this.isEndHalfDay = isEndHalfDay;
 		this.dateFiled = dateFiled;
 		this.leaveType = leaveType;
 		this.leaveStatus = leaveStatus;
@@ -35,23 +40,19 @@ public class LeaveApplication {
 		this.approver = approver;
 		numberOfLeaveDays = countNumberOfLeaveDays(startDate, endDate);
 	}
-
-	private int countNumberOfLeaveDays(LocalDate startDate, LocalDate endDate) {
-		int numberOfLeaveDays = 1;
+	
+	private float countNumberOfLeaveDays(LocalDate startDate, LocalDate endDate) {
+		float numberOfLeaveDays = 1;
 		for(LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
 			if(!isWeekEnd(date) && !Holiday.isHoliday(date))
 				numberOfLeaveDays++;
 		}	
-		/*
-		 float numberOfLeaveDaysF = (float) numberOfLeaveDays;
-		 if(startHalfDay == true)
-		 	numberOfLeaveDaysF -= -0.5;
-		 if(endtHalfDay == true)
-		 	numberOfLeaveDaysF -= -0.5;
-
-		 return numberOfLeaveDaysF
-		 */
-		return numberOfLeaveDays;
+		if(isStartHalfDay == true)
+		 	numberOfLeaveDays -= 0.5;
+		if(isEndHalfDay == true)
+		 	numberOfLeaveDays -= 0.5;
+		 
+		 return numberOfLeaveDays;
 	}
 
 	private boolean isWeekEnd(LocalDate date) {
@@ -120,11 +121,19 @@ public class LeaveApplication {
 		return filer;
 	}
 
-	public Supervisor getApprover() {
+	public Employee getApprover() {
 		return approver;
 	}
 
 	public LocalDate getDateFiled() {
 		return dateFiled;
+	}
+	
+	public boolean isStartHalfDay() {
+		return isStartHalfDay;
+	}
+	
+	public boolean isEndHalfDay() {
+		return isEndHalfDay;
 	}
 }
