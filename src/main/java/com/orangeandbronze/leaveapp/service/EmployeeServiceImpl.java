@@ -9,12 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.orangeandbronze.leaveapp.domain.Admin;
 import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
-import com.orangeandbronze.leaveapp.domain.Supervisor;
 import com.orangeandbronze.leaveapp.repository.DepartmentRepository;
 import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
 import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
@@ -40,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	public void fileLeave(long employeeId, LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, long approverId) {
 		Employee employee = employeeRepository.findBy(employeeId);
-		Supervisor supervisor = (Supervisor) employeeRepository.findBy(approverId);
+		Employee supervisor = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication =  employee.fileLeave(startDate, endDate, leaveType, reason, supervisor); 
 		leaveApplicationRepository.insert(leaveApplication);
 	}
@@ -61,14 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	public void disapproveLeaveApplication(long approverId, long leaveId) {
-		Supervisor approver = (Supervisor) employeeRepository.findBy(approverId);
+		Employee approver = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.disapprove(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
 	}
 
 	public void changeLeaveApplicationToNotTaken(long approverId, long leaveId) {
-		Admin approver = (Admin) employeeRepository.findBy(approverId);
+		Employee approver = employeeRepository.findBy(approverId);
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.changeToNotTaken(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);

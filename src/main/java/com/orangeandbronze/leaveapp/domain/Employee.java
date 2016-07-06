@@ -21,7 +21,7 @@ public class Employee {
 		this.credits = credits;
 	}
 
-	public LeaveApplication fileLeave(LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, Supervisor approver) {
+	public LeaveApplication fileLeave(LocalDate startDate, LocalDate endDate, LeaveType leaveType, String reason, Employee approver) {
 		LeaveApplication leaveApplication = new LeaveApplication(startDate, endDate, leaveType, reason, this, approver);
 		return leaveApplication;
 	}

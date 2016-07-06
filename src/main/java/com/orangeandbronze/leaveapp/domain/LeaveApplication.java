@@ -17,7 +17,7 @@ public class LeaveApplication {
 	private float numberOfLeaveDays;
 
 	public LeaveApplication(LocalDate startDate, LocalDate endDate, LeaveType leaveType,
-			String reason,Employee filer, Supervisor approver) {
+			String reason,Employee filer, Employee approver) {
 		this(0, startDate, endDate, LocalDate.now(), leaveType, LeaveStatus.PENDING, reason, filer, approver);
 	}
 
