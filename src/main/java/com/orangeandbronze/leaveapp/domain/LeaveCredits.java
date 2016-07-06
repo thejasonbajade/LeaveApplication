@@ -3,8 +3,8 @@ package com.orangeandbronze.leaveapp.domain;
 public class LeaveCredits {
 	public static final LeaveCredits ZERO = new LeaveCredits.Builder().build();
 	
-	private final float vacationLeaveCreditsIncreaseRate = (float) 1.25;
-	private final float sickLeaveCreditsIncreaseRate = (float) 1.25;
+	private static final float VACATION_LEAVE_CREDITS_INCREASE_RATE = (float) 1.25;
+	private static final float SICK_LEAVE_CREDITS_INCREASE_RATE = (float) 1.25;
 	
 	private float vacationLeaveCredits;
 	private float sickLeaveCredits;
@@ -101,11 +101,11 @@ public class LeaveCredits {
 	}
 
 	public void increaseVacationLeaveCredits() {
-		vacationLeaveCredits += vacationLeaveCreditsIncreaseRate;
+		vacationLeaveCredits += VACATION_LEAVE_CREDITS_INCREASE_RATE;
 	}
 
 	public void increaseSickLeaveCredits() {
-		sickLeaveCredits += sickLeaveCreditsIncreaseRate;
+		sickLeaveCredits += SICK_LEAVE_CREDITS_INCREASE_RATE;
 	}
 
 	public void deductLeaveCreditsOfType(LeaveType type, float creditsToDeduct) {
@@ -165,5 +165,43 @@ public class LeaveCredits {
 	public float getLwopCount() {
 		return lwopCount;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(emergencyLeaveCredits);
+		result = prime * result + Float.floatToIntBits(lwopCount);
+		result = prime * result + Float.floatToIntBits(offsetLeaveCredits);
+		result = prime * result + Float.floatToIntBits(sickLeaveCredits);
+		result = prime * result + Float.floatToIntBits(soloParentLeaveCredits);
+		result = prime * result + Float.floatToIntBits(vacationLeaveCredits);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LeaveCredits other = (LeaveCredits) obj;
+		if (Float.floatToIntBits(emergencyLeaveCredits) != Float.floatToIntBits(other.emergencyLeaveCredits))
+			return false;
+		if (Float.floatToIntBits(lwopCount) != Float.floatToIntBits(other.lwopCount))
+			return false;
+		if (Float.floatToIntBits(offsetLeaveCredits) != Float.floatToIntBits(other.offsetLeaveCredits))
+			return false;
+		if (Float.floatToIntBits(sickLeaveCredits) != Float.floatToIntBits(other.sickLeaveCredits))
+			return false;
+		if (Float.floatToIntBits(soloParentLeaveCredits) != Float.floatToIntBits(other.soloParentLeaveCredits))
+			return false;
+		if (Float.floatToIntBits(vacationLeaveCredits) != Float.floatToIntBits(other.vacationLeaveCredits))
+			return false;
+		return true;
+	}
+	
 	
 }

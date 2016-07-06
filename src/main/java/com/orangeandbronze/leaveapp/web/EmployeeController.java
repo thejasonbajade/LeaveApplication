@@ -35,9 +35,6 @@ public class EmployeeController{
 	public String addEmployee(Model model) {
 		List<Department> departments = employeeService.findAllDepartments();
 		model.addAttribute("departments", departments);
-		if(!model.containsAttribute("message")){
-			model.addAttribute("message", "");
-		}
 		return "add_employee";
 	}
 	
@@ -62,8 +59,8 @@ public class EmployeeController{
 		Employee employee = new Employee(1, record);
 		checkPrivileges(reqParam, employee);
 		int ret = employeeService.addEmployee(employee);
-		model.addAttribute("message", "Successfully added employee!");
-		return "redirect:/add_employee";
+		model.addAttribute("message", "Employee " + employee + "has been successfully added!");
+		return "submit_add_employee";
 	}
 	
 	

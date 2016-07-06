@@ -57,14 +57,13 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 			"INSERT INTO EMPLOYEE (FirstName, LastName, Email,"
 			+ "ContactNo, EmploymentDate, Position, EmploymentStatus, RegularizationDate, isSoloParent,"
 			+ "VLCredits, SLCredits, ELCredits, SPCredits, OffsetCredits, Department_ID, isSupervisor, isAdmin, isHR)"
-					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	@Override
 	public int add(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
 		return jdbcTemplate.update(SQL_INSERT_EMPLOYEE,
-				employee.getEmployeeId(),
 				record.getFirstName(),
 				record.getLastName(),
 				record.getEmail(),

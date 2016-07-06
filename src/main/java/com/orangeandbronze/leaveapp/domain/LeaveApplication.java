@@ -63,4 +63,28 @@ public class LeaveApplication {
 	public Employee getApprover() {
 		return approver;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (leaveId ^ (leaveId >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LeaveApplication other = (LeaveApplication) obj;
+		if (leaveId != other.leaveId)
+			return false;
+		return true;
+	}
+	
+	
 }

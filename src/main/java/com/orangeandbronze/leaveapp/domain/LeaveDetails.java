@@ -88,4 +88,60 @@ public class LeaveDetails {
 		return numberOfLeaveDays;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((dateFiled == null) ? 0 : dateFiled.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result + (isEndHalfDay ? 1231 : 1237);
+		result = prime * result + (isStartHalfDay ? 1231 : 1237);
+		result = prime * result + ((leaveType == null) ? 0 : leaveType.hashCode());
+		result = prime * result + Float.floatToIntBits(numberOfLeaveDays);
+		result = prime * result + ((reason == null) ? 0 : reason.hashCode());
+		result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LeaveDetails other = (LeaveDetails) obj;
+		if (dateFiled == null) {
+			if (other.dateFiled != null)
+				return false;
+		} else if (!dateFiled.equals(other.dateFiled))
+			return false;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (isEndHalfDay != other.isEndHalfDay)
+			return false;
+		if (isStartHalfDay != other.isStartHalfDay)
+			return false;
+		if (leaveType != other.leaveType)
+			return false;
+		if (Float.floatToIntBits(numberOfLeaveDays) != Float.floatToIntBits(other.numberOfLeaveDays))
+			return false;
+		if (reason == null) {
+			if (other.reason != null)
+				return false;
+		} else if (!reason.equals(other.reason))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		return true;
+	}
+
+	
 }
