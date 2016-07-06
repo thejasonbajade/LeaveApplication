@@ -56,7 +56,7 @@ public class JdbcLeaveApplicationRepositoryTest {
 
 	@Test
 	public void testFindLeaveApplicationsForSupervisor() {
-		Collection<LeaveApplication> leaveApplications = leaveApplicationRepository.findLeaveApplicationsForSupervisor(supervisorId);
+		Collection<LeaveApplication> leaveApplications = leaveApplicationRepository.findLeaveApplicationsForSupervisor(2);
 		
 		assertNotNull(leaveApplications);
 		assertEquals(5, leaveApplications.size());
@@ -87,12 +87,12 @@ public class JdbcLeaveApplicationRepositoryTest {
 	
 	@Test
 	public void testUpdateLeaveApplicationStatus() {
-		LeaveApplication leaveApplicationExpected = leaveApplicationRepository.findBy(leaveId);
+		LeaveApplication leaveApplicationExpected = leaveApplicationRepository.findBy(1);
 		
 		leaveApplicationRepository.updateLeaveStatus(leaveApplicationExpected);
 		
-		LeaveApplication leaveApplicationActual = leaveApplicationRepository.findBy(leaveId);
-		assertEquals(LeaveStatus.ADMIN_APPROVED, leaveApplicationActual.getStatus());
+		LeaveApplication leaveApplicationActual = leaveApplicationRepository.findBy(1);
+		assertEquals(LeaveStatus.SUPERVISOR_APPROVED, leaveApplicationActual.getStatus());
 	}
 	
 	private Employee generateEmployee(long id) {
