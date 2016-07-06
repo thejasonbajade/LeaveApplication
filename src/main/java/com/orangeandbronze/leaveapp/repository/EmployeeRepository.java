@@ -17,4 +17,6 @@ public interface EmployeeRepository {
 	public int updateEmploymentStatusOf(Employee employee);
 
 	public int add(Employee employee);
+
+	void update(Employee employee);
 }	

@@ -1,4 +1,4 @@
-	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -16,10 +16,10 @@
 								<th>Status (HR)</th>
 								<th>Name</th>
 								<th>Leave Type</th>
-								<th>Date Filed</th>
 								<th>Start Date</th>
 								<th>End Date</th>
 								<th>Duration</th>
+								<th>Date Filed</th>								
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -56,23 +56,35 @@
 										</c:when>
 									</c:choose>
 									<td>${leaveApplication.filer.employeeRecord.firstName} ${leaveApplication.filer.employeeRecord.lastName}</td>
-									<td>${leaveApplication.leaveDetails.leaveType.toString()}</td>
-									<td>${leaveApplication.leaveDetails.dateFiled.format(formatter)}</td>
+									<td>${leaveApplication.leaveDetails.leaveType.toAcronym()}</td>
 									<td>${leaveApplication.leaveDetails.startDate.format(formatter)}</td>
 									<td>${leaveApplication.leaveDetails.endDate.format(formatter)}</td>
 									<td>${leaveApplication.leaveDetails.numberOfLeaveDays}</td>
+									<td>${leaveApplication.leaveDetails.dateFiled.format(formatter)}</td>
 									<td><a href="#leaveApplication${leaveApplication.leaveId}" data-toggle="modal" data-target="#leaveApplication${leaveApplication.leaveId}">
 											<i class="fa fa-eye text-primary" aria-hidden="true" title="View"></i> 
 										</a>
-										<a href="approve_leave/${leaveApplication.leaveId}">
-											<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
-										</a> 
-										<a href="disapprove_leave/${leaveApplication.leaveId}">
-											<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
-										</a>
-										<a href="not_taken_leave/${leaveApplication.leaveId}">
-											<span class="label label-default"><i class="fa fa-ban" aria-hidden="true" title="Not Taken"></i></span>
-										</a>								
+										<c:if test="${leaveApplication.approver.employeeId == user.employeeId && leaveApplication.status == 'PENDING'}">
+											<a href="approve_leave_supervisor/${leaveApplication.leaveId}">
+												<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
+											</a> 
+											<a href="disapprove_leave_supervisor/${leaveApplication.leaveId}">
+												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
+											</a>
+										</c:if>
+										<c:if test="${user.admin && leaveApplication.status == 'SUPERVISOR_APPROVED'}">
+											<a href="approve_leave/${leaveApplication.leaveId}">
+												<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
+											</a> 
+											<a href="disapprove_leave/${leaveApplication.leaveId}">
+												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
+											</a>
+										</c:if>
+										<c:if test="${user.admin && (leaveApplication.status == 'SUPERVISOR_APPROVED' || leaveApplication.status == 'ADMIN_APPROVED')}">
+											<a href="not_taken_leave/${leaveApplication.leaveId}">
+												<span class="label label-default"><i class="fa fa-ban" aria-hidden="true" title="Not Taken"></i></span>
+											</a>		
+										</c:if>						
 									</td>
 								</tr>	
 								<t:leave_details leaveApplication="${leaveApplication}"/>

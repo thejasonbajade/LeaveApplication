@@ -59,7 +59,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(leaveId);
 		approver.approve(leaveApplication);
 		leaveApplicationRepository.updateLeaveStatus(leaveApplication);
-	}
+		employeeRepository.update(leaveApplication.getFiler());
+	}	
 
 	public void disapproveLeaveApplication(long approverId, long leaveId) {
 		Employee approver =  employeeRepository.findBy(approverId);

@@ -19,7 +19,6 @@
 		<label class="col-md-4"> Supervisor </label>
 		<div class="col-md-8">
 			<select class="form-control" name="supervisorId">
-				<option selected disabled> Supervisor </option>
 				<c:forEach items="${supervisors}" var="supervisor">
 					<option value="${supervisor.employeeId}"> ${supervisor.employeeRecord.firstName} ${supervisor.employeeRecord.lastName} </option>
 				</c:forEach>

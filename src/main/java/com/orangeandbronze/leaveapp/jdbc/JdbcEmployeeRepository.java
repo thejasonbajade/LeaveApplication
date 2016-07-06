@@ -68,6 +68,38 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				LocalDate.now().toString(),
 				employee.getEmployeeId());
 	}
+	
+	private static final String SQL_UPDATE = 
+			"UPDATE EMPLOYEE SET FirstName = ?, LastName = ?, Email = ?,"
+			+ "ContactNo = ?, EmploymentDate = ?, Position = ?, EmploymentStatus = ?, RegularizationDate = ?, isSoloParent = ?,"
+			+ "VLCredits = ?, SLCredits = ?, ELCredits = ?, SPCredits = ?, OffsetCredits = ?, Department_ID = ?, isSupervisor = ?,"
+			+ "isAdmin = ?, isHR = ? WHERE ID = ?";
+	@Override
+	public void update(Employee employee) {
+		EmployeeRecord record = employee.getEmployeeRecord();
+		Department department = record.getDepartment();
+		LeaveCredits credits = employee.getLeaveCredits();
+		jdbcTemplate.update(SQL_UPDATE,	
+				record.getFirstName(),
+				record.getLastName(),
+				record.getEmail(),
+				record.getContactNumber(),
+				record.getEmploymentDate().toString(),
+				record.getPosition(),
+				record.getStatus().toString(),
+				record.getRegularizationDate().toString(),
+				record.isSoloParent(),
+				credits.getLeaveCreditsOfType(LeaveType.VACATION_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.SICK_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.EMERGENCY_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.SOLO_PARENT_LEAVE),
+				credits.getLeaveCreditsOfType(LeaveType.OFFSET_LEAVE),
+				department.getId(),
+				employee.isSupervisor(),
+				employee.isAdmin(),
+				employee.isHR(),
+				employee.getEmployeeId());
+	}
 
 	@Override
 	public List<Employee> findAll() {

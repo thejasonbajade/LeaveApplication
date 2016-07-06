@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ public class LeaveApplicationController{
 	EmployeeService employeeService;
 	LeaveApplicationService leaveApplicationService;
 	Employee user;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
 
 	@Autowired
 	public LeaveApplicationController(EmployeeService employeeService, LeaveApplicationService leaveApplicationService) {
@@ -43,30 +43,16 @@ public class LeaveApplicationController{
 		model.addAttribute("user", user);
 		model.addAttribute("formatter", formatter);
 	}
-	
-	@RequestMapping(value="/loginEmployee", method = RequestMethod.GET)
-	public String loginEmployee(HttpServletRequest request, Model model){
-		user = employeeService.viewEmployee(4);
-		request.getSession().setAttribute("user", user);
-		return "account_info";
-	}
-	
-	@RequestMapping(value="/loginSupervisor", method = RequestMethod.GET)
-	public String loginSupervisor(HttpServletRequest request, Model model){
-		user = employeeService.viewEmployee(6);
-		request.getSession().setAttribute("user", user);
-		return "account_info";
-	}
 
-	@RequestMapping(value="/loginAdmin", method = RequestMethod.GET)
-	public String loginAdmin(HttpServletRequest request){
-		user = employeeService.viewEmployee(1);
-		request.getSession().setAttribute("user", user);
+	@RequestMapping(value="/account_info/{employeeId}", method = RequestMethod.GET)
+	public String viewEmployeeProfle(@PathVariable("employeeId") int employeeId, Model model){
+		Employee employee = employeeService.viewEmployee(employeeId);
+		model.addAttribute("user", employee);
 		return "account_info";
 	}
-
+	
 	@RequestMapping("/apply_leave")
-	public String applyLeave(HttpSession session, Model model) {		
+	public String applyLeave(Model model) {		
 		List<Employee> supervisors = employeeService.findAllSupervisor();
 		model.addAttribute("supervisors", supervisors);
 		return "apply_leave";
@@ -76,10 +62,12 @@ public class LeaveApplicationController{
 	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {
 		boolean startHalfDay = false;
 		boolean endHalfDay = false;
-		if(reqParam.get("startHalfDay") != null)
+		if(reqParam.get("startHalfDay") != null) {
 			startHalfDay = true;
-		if(reqParam.get("endHalfDay") != null)
+		}
+		if(reqParam.get("endHalfDay") != null) {
 			endHalfDay = true;
+		}
 		int ret = employeeService.fileLeave(user.getEmployeeId(), 
 				LocalDate.parse(reqParam.get("startDate")), 
 				startHalfDay,
@@ -91,27 +79,40 @@ public class LeaveApplicationController{
 
 		return "redirect:/view_leave_history";
 	}
-
-	@RequestMapping("/view_all_leave_histories")
-	public String showAllLeaveHistories(Model model) {	
-		List<LeaveApplication> leaveApplications = leaveApplicationService.findAllLeaveApplications();
-		model.addAttribute("leaveApplications", leaveApplications);
-		return "leave_list";
-	}
-
+	
 	@RequestMapping("/view_leave_history")
 	public String showOwnLeaveHistory(Model model) {
 		List<LeaveApplication> leaveApplications = 
 				leaveApplicationService.findLeaveApplicationsByEmployee(user.getEmployeeId());
 		model.addAttribute("leaveApplications", leaveApplications);
+		model.addAttribute("formatter", formatter);
 		return "leave_history";
 	}
+	
+	@RequestMapping("view_employee_leave_history/{employeeId}")
+	public String showLeaveHistoryOfAnEmployee(@PathVariable("employeeId") int employeeId, Model model) {
+		List<LeaveApplication> leaveApplications = 
+				leaveApplicationService.findLeaveApplicationsByEmployee(employeeId);
+		model.addAttribute("leaveApplications", leaveApplications);
+		model.addAttribute("formatter", formatter);
+		return "view_employee_leave_history";
+	}
+
+	@RequestMapping("/view_all_leave_histories")
+	public String showAllLeaveHistories(Model model) {	
+		List<LeaveApplication> leaveApplications = leaveApplicationService.findAllLeaveApplications();
+		model.addAttribute("leaveApplications", leaveApplications);
+		model.addAttribute("formatter", formatter);
+		return "leave_list";
+	}
+
 	
 	@RequestMapping("/view_leave_histories_supervisor")
 	public String showAllLeaveHistoriesForSupervisor(Model model) {	
 		List<LeaveApplication> leaveApplications = 
 				leaveApplicationService.findLeaveApplicationsForSupervisor(user.getEmployeeId());
 		model.addAttribute("leaveApplications", leaveApplications);
+		model.addAttribute("formatter", formatter);
 		return "leave_list";
 	}
 
@@ -121,12 +122,24 @@ public class LeaveApplicationController{
 		return "redirect:/view_all_leave_histories";
 	}
 
+	@RequestMapping("/approve_leave_supervisor/{leaveId}")
+	public String approveLeaveSupervisor(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.approveLeaveApplication(user.getEmployeeId(), leaveId);
+		return "redirect:/view_leave_histories_supervisor";
+	}
+	
 	@RequestMapping("/disapprove_leave/{leaveId}")
 	public String disapproveLeave(@PathVariable("leaveId") int leaveId, Model model) {
 		employeeService.disapproveLeaveApplication(user.getEmployeeId(), leaveId);
 		return "redirect:/view_all_leave_histories";
 	}
 
+	@RequestMapping("/disapprove_leave_supervisor/{leaveId}")
+	public String disapproveLeaveSupervisor(@PathVariable("leaveId") int leaveId, Model model) {
+		employeeService.disapproveLeaveApplication(user.getEmployeeId(), leaveId);
+		return "redirect:/view_leave_histories_supervisor";
+	}
+	
 	@RequestMapping("/cancel_leave/{leaveId}")
 	public String cancelLeave(@PathVariable("leaveId") int leaveId, Model model) {
 		employeeService.cancelLeaveApplication(user.getEmployeeId(), leaveId);
@@ -138,7 +151,14 @@ public class LeaveApplicationController{
 		employeeService.changeLeaveApplicationToNotTaken(user.getEmployeeId(), leaveId);
 		return "redirect:/view_all_leave_histories";
 	}
+	
+	@RequestMapping("/reports")
+	public String showReports() {
+		return "reports";
+	}
 
 	/*@ExceptionHandler(value= {.class})
-	public String () { }*/
+	public String showErrorPage() { 
+	
+	}*/
 }	
