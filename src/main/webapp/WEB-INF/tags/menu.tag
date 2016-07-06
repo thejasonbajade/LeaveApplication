@@ -14,12 +14,23 @@
 			<i class="fa fa-history fa-3x" aria-hidden="true"></i> 
 			<p> Leave History </p>
 		</a>
-		<a href="view_all_employees" role="button" class="list-group-item"> 
-			
-			<i class="fa fa-list-ul fa-3x" aria-hidden="true"></i> 
-			<p> Employee List </p>
-		</a>
-		<a href="view_all_leave_histories" role="button" class="list-group-item"> 
+		<li class="dropdown">
+				<a id="employeesMenu" role="button" class="list-group-item dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+					<i class="fa fa-users fa-3x" aria-hidden="true"></i> 
+					<p> Employees </p>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right" id="dropdownId">
+					<a href="add_employee" role="button" class="list-group-item">
+						<i class="fa fa-user-plus fa-2x" aria-hidden="true"></i> 
+						 Add Employee 
+					</a>
+					<a href="view_all_employees"  role="button" class="list-group-item"> 
+						<i class="fa fa-list-ul fa-2x" aria-hidden="true"></i> 
+						 Employee List
+					</a>
+				</ul>
+			</li>		
+			<a href="view_all_leave_histories" role="button" class="list-group-item"> 
 			<span class="badge">5</span>
 			<i class="fa fa-list-alt fa-3x" aria-hidden="true"></i> 
 			<p> Leave List </p>

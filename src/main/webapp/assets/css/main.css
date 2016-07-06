@@ -29,6 +29,7 @@ p {
 
 }
 
+
 #navLogo{
 	width: 300px;
 }
@@ -36,6 +37,16 @@ p {
 	position:absolute; 
 	right:25px;
 	top:30px
+}
+#loggedAccount{
+	position:absolute; 
+	font-size: 13px;
+	top: 25px;
+	right: 60px;
+	text-align: right;
+}
+#loggedAccount p{
+	font-weight: bold;
 }
 #mainContent {
 	margin-left: 180px;
@@ -68,10 +79,16 @@ table thead th{
 	width: 125px;
 	position: fixed;
 	background-color:#212121;
+	z-index:1;
 }
 .list-group-item,
 .list-group-item .active{
 	border-color: #000;
+	
+}
+.list-group .dropdown .dropdown-menu{
+	background-color: #212121;
+	
 }
 a.list-group-item {
 	text-align: center;
@@ -98,11 +115,23 @@ a.list-group-item.active:hover {
 	border-color: #FFF;
 	border-left: 6px solid #FF9800;
 }
-
+.dropdown-toggle:active, .open .dropdown-toggle {
+	color: #FF9800;
+	background-color: #FFF;
+	border-color: #FFF;
+	border-left: 6px solid #FF9800;	
+}
+#dropdownId{
+    margin-left: 125px;
+    margin-top: -90px;
+    height: 0;
+}
+.panel-transparent{
+	background-color : transparent;
+}
 #banner {
 	margin-top: 150px;
 }
-
 #banner,
 #banner a {
 	color: white;

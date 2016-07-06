@@ -22,9 +22,14 @@
 			<img src='<c:url value="/assets/images/oandblogo.png" />' alt="Orange & Bronze Software Labs, Inc." title="Orange & Bronze Software Labs, Inc." id="navLogo">
 		</a>
 		</div>
+		<div id="loggedAccount">
+			You are logged in as 
+			<p> rochelle.sisa@orangeandbronze.com </p>
+		</div>
 		<a href="login" role="button" title="Logout" id="navLogout">
-			<i class="fa fa-power-off fa-2x" aria-hidden="true"></i>
+		<i class="fa fa-power-off fa-2x" aria-hidden="true"></i>
 		</a>
+		
 	</div> 
 </nav>
 
@@ -38,8 +43,8 @@
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/bootstrap.min.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/jquery.validate.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/bootstrap-toggle.min.js"/>'></script>
+<script type="text/javascript" charset="utf8" src='<c:url value="assets/js/menu.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.add.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.editprofile.js"/>'></script>
 <script type="text/javascript" charset="utf8" src='<c:url value="assets/js/validate.leaveapplication.js"/>'></script>
 </html>
-	
