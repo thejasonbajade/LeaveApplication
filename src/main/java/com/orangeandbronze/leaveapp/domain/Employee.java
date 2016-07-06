@@ -61,4 +61,48 @@ public class Employee {
 	public LeaveCredits getLeaveCredits() {
 		return credits;
 	}
+	
+	public void grantAdminPrivelages(){
+		isAdmin = true;
+	}
+	
+	public void grantSupervisorPrivileges(){
+		isSupervisor = true;
+	}
+	
+	public void grantHRPrivileges(){
+		isHR = true;
+	}
+	
+	public void revokeAdminPrivileges(){
+		isAdmin = false;
+	}
+	
+	public void revokeSupervisorPrivileges(){
+		isSupervisor = false;
+	}
+	
+	public void revokeHRPrivileges(){
+		isHR = false;
+	}
+
+	public LeaveCredits getCredits() {
+		return credits;
+	}
+
+	public EmployeeRecord getRecord() {
+		return record;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public boolean isSupervisor() {
+		return isSupervisor;
+	}
+
+	public boolean isHR() {
+		return isHR;
+	}
 }
