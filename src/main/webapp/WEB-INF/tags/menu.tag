@@ -39,7 +39,7 @@
 				</ul>
 			</li>
 		</c:if>
-		<c:if test="${sessionScope.user.supervisor || sessionScope.user.admin || sessionScope.user.HR} ">
+		<c:if test="${sessionScope.user.supervisor || sessionScope.user.admin || sessionScope.user.HR}">
 			<c:choose>
 				<c:when test="${sessionScope.user.supervisor && (!sessionScope.user.HR || !sessionScope.user.admin)}">
 					<a href="/leaveapplication/view_leave_histories_supervisor" role="button" class="list-group-item">
