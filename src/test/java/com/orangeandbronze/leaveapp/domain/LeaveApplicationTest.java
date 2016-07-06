@@ -1,11 +1,10 @@
 package com.orangeandbronze.leaveapp.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
@@ -14,12 +13,29 @@ public class LeaveApplicationTest {
 	private LeaveApplication leaveApplication;
 	
 	private LeaveApplication generateLeaveApplication(LocalDate startDate, LocalDate endDate) {
-		return new LeaveApplication(startDate, endDate, LeaveType.SICK_LEAVE, "I'm Sick", new Employee(1, "A", "B"), new Supervisor(2, "C", "D"));
+		final long filer_id = 1;
+		final long approver_id = 2;
+		EmployeeRecord record = new EmployeeRecord.Builder("John", "Cena",
+				LocalDate.of(2010, 12, 3), 
+				new Department(1, "Party"), 
+				"youcantseeme@orangeandbronze.com", 
+				"professional wrestler")
+				.build();
+		Employee filer = new Employee(filer_id, record);
+		Supervisor approver = new Supervisor(approver_id, record);
+		return new LeaveApplication(startDate, 
+				endDate, 
+				LeaveType.SICK_LEAVE, 
+				"I am sick", 
+				filer, 
+				approver);
 	}
 
 	private void assertGetNumberOfLeaveDaysEvaluatesTo(int expected) {
-		assertTrue("Number of leave days computed was " + leaveApplication.getNumberOfLeaveDays(), 
-				expected == leaveApplication.getNumberOfLeaveDays());
+		float numberOfLeaveDays = leaveApplication.getNumberOfLeaveDays();
+		assertTrue("Number of leave days should be " + expected + 
+				"\nNumber of leave days computed was " + numberOfLeaveDays, 
+				expected == numberOfLeaveDays);
 	}
 
 	@Test
@@ -42,8 +58,8 @@ public class LeaveApplicationTest {
 	
 	@Test
 	public void leaveApplicationWithIntervalContainingHolidaysShouldHaveCorrectNumberOfLeaveDays() throws Exception {
-		LocalDate startDate = LocalDate.of(2016,Month.JULY,29);
-		LocalDate endDate = LocalDate.of(2016,Month.JULY,31);
+		LocalDate startDate = LocalDate.of(2016,Month.AUGUST,29);
+		LocalDate endDate = LocalDate.of(2016,Month.AUGUST,31);
 		leaveApplication = generateLeaveApplication(startDate, endDate);
 		assertGetNumberOfLeaveDaysEvaluatesTo(2);
 	}
@@ -61,6 +77,4 @@ public class LeaveApplicationTest {
 			
 		}
 	}
-
-
 }

@@ -1,6 +1,6 @@
 package com.orangeandbronze.leaveapp.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

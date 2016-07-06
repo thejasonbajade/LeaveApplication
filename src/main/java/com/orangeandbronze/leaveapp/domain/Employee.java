@@ -1,14 +1,15 @@
 package com.orangeandbronze.leaveapp.domain;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashSet;
 
 public class Employee {
 	private final long employeeId;
 	private final LeaveCredits credits;
 	private final EmployeeRecord record;
+	
+	private boolean isAdmin;
+	private boolean isSupervisor;
+	private boolean isHR;
 	
 	public Employee(long employeeId, EmployeeRecord record) {
 		this(employeeId, record, LeaveCredits.ZERO);
@@ -29,8 +30,24 @@ public class Employee {
 		leaveApplication.cancel();
 	}
 	
-	public void regularize() {
-		//record.regularize();
+	public void changeToNotTaken(LeaveApplication leaveApplication) {
+		leaveApplication.changeToNotTaken();
+	}
+	
+	public void regularize(Employee employee) {
+		employee.regularize();
+	}	
+
+	private void regularize() {
+		record.changeEmploymentStatusToRegular();
+	}
+	
+	public void approve(LeaveApplication leaveApplication) {
+		leaveApplication.approve();
+	}
+	
+	public void disapprove(LeaveApplication leaveApplication) {
+		leaveApplication.disapprove();
 	}
 
 	public long getEmployeeId() {

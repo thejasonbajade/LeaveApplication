@@ -88,9 +88,13 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 		@Override
 		public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
 			EmployeeRecord record = new EmployeeRecord.Builder(rs.getString("FirstName"), 
-					rs.getString("LastName"), rs.getString("Email"), rs.getString("Position"), mapDepartment(rs), 
-					rs.getDate("EmploymentDate").toLocalDate())
-					.status(EmploymentStatus.valueOf(rs.getString("EmploymentStatus")))
+					rs.getString("LastName"), 
+					rs.getDate("EmploymentDate").toLocalDate(), 
+					mapDepartment(rs), 
+					rs.getString("Email"), 
+					rs.getString("Position"))
+					.employmentStatus(EmploymentStatus.valueOf("EmploymentStatus"))
+					.regularizationDate(rs.getDate("RegularizationDate").toLocalDate())
 					.build();
 			LeaveCredits credits = mapLeaveCredits(rs);
 			Employee employee = new Employee(rs.getLong("ID"), record, credits);

@@ -1,4 +1,4 @@
-package com.orangeandbronze.leaveapp.domain.model;
+package com.orangeandbronze.leaveapp.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -35,7 +35,7 @@ public class EmployeeTest {
 		admin = generateAdmin();
 		startDate = LocalDate.of(2016, 11, 5);
 		endDate = LocalDate.of(2016, 11, 12);
-		newLeaveApplication = employee.fileLeave(startDate, endDate, LeaveType.SICK_LEAVE, supervisor);
+		newLeaveApplication = employee.fileLeave(startDate, endDate, LeaveType.SICK_LEAVE, "I am sick", supervisor);
 	}
 
 	private Admin generateAdmin() {
@@ -45,7 +45,13 @@ public class EmployeeTest {
 	}
 
 	private EmployeeRecord generateRecord() {
-		return new EmployeeRecord.Builder("John", "Cena", "youcantseeme@orangeandbronze.com", "vice-president", generateDepartment(), LocalDate.now()).build();
+		return new EmployeeRecord.Builder("John", 
+				"Cena", 
+				LocalDate.now(), 
+				generateDepartment(), 
+				"youcantseeme@orangeandbronze.com", 
+				"professional wrestler")
+				.build();
 	}
 	
 	private Department generateDepartment(){
@@ -95,7 +101,7 @@ public class EmployeeTest {
 
 	@Test
 	public void disapproveLeaveApplicationBySupervisor() {
-		leaveApplication = new LeaveApplication(startDate, endDate, LeaveType.SICK_LEAVE, "I am sick", LeaveStatus.PENDING, employee, supervisor);
+		leaveApplication = new LeaveApplication(startDate, endDate, LeaveType.SICK_LEAVE, "I am sick", employee, supervisor);
 		supervisor.disapprove(leaveApplication);
 
 		assertEquals(LeaveStatus.SUPERVISOR_DISAPPROVED, leaveApplication.getStatus());
