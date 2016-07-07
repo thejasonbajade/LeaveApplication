@@ -24,10 +24,8 @@ function validateAdd(){
                 onbemail: true
             },
             contactnumber: {
-                required: true,
                 digits: true,
-                minlength: 11,
-                maxlength: 11
+                elevenDigitsOnly: true
             },
             employmentdate: {
                 required: true,
@@ -67,10 +65,8 @@ function validateAdd(){
                 onbemail: "Address should have \"@orangeandbronze.com\" domain"
             },
             contactnumber: {
-                required: "This field is required",
                 digits: "This field can only contain numbers",
-                minlength: "This field can only contain 11 digits",
-                maxlength: "This field can only contain 11 digits"
+                elevenDigitsOnly: "This field can only contain 11 digits"
             },
             employmentdate: {
                 required: "This field is required",
@@ -96,8 +92,6 @@ function validateAdd(){
     });
 }
 
-
-
 function otherAddEditFc(){
 	$('#adminrole').change(function () {
         if ($(this).prop('checked')) {
@@ -118,6 +112,14 @@ function otherAddEditFc(){
     });
     
 }
+
+$.validator.addMethod("elevenDigitsOnly", function (value) {
+	if (value.length == 11){
+		return true;
+	} else {
+		return false;
+	}
+});
 
 $.validator.addMethod("lettersonly", function (value, element) {
     return this.optional(element) || /^[a-zA-Z -]*$/.test(value);
