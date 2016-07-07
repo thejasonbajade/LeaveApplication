@@ -22,5 +22,5 @@ public interface EmployeeRepository {
 
 	public int add(Employee employee);
 
-	void update(Employee employee);
+	public int update(Employee employee);
 }	

@@ -119,4 +119,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public int updateEmploymentStatusOf(Employee employee) {
 		return employeeRepository.updateEmploymentStatusOf(employee);
 	}
+
+	@Override
+	public int updateEmployee(Employee employee) {
+		return employeeRepository.update(employee);
+	}
 }

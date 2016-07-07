@@ -40,4 +40,6 @@ public interface EmployeeService {
 	public List<Employee> findAllEmployees();
 
 	public List<Department> findAllDepartments();
+
+	public int updateEmployee(Employee employee);
 }

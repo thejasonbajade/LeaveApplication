@@ -112,6 +112,38 @@ public class EmployeeController{
 		if(reqParam.get("ishr") != null)
 			employee.grantHRPrivileges();
 	}
+	
+	@RequestMapping(value="/edit_profile")
+	public String editProfile(Model model){
+		List<Department> departments = employeeService.findAllDepartments();
+		model.addAttribute("departments", departments);
+		return "edit_profile";
+	}
+	
+	@RequestMapping(value="/submit_edit_profile", method=RequestMethod.POST)
+	public String submitEditProfile(@RequestParam Map<String, String> reqParam, Model model) {
+		EmploymentStatus status = reqParam.get("employeestatus") == null ? 
+				EmploymentStatus.PROBATIONARY : EmploymentStatus.REGULAR;
+		LocalDate regularizationDate = reqParam.get("regularizationdate").equals("") ?
+				LocalDate.ofEpochDay(0) : LocalDate.parse(reqParam.get("regularizationdate"));
+		EmployeeRecord record = new EmployeeRecord.Builder(
+				reqParam.get("firstName"), 
+				reqParam.get("lastName"), 
+				LocalDate.parse(reqParam.get("employmentdate")), 
+				new Department(Long.parseLong(reqParam.get("department")), ""), 
+				reqParam.get("email"), 
+				reqParam.get("employeeposition"))
+				.contactNumber(reqParam.get("contactnumber"))
+				.employmentStatus(status)
+				.isSoloParent(reqParam.get("isSoloParent") == null)
+				.regularizationDate(regularizationDate)
+				.build();
+		Employee employee = new Employee(1, record);
+		checkPrivileges(reqParam, employee);
+		int ret = employeeService.updateEmployee(employee);
+		model.addAttribute("message", "Employee " + employee + "has been successfully updated!");
+		return "submit_edit_employee";
+	}
 
 	@RequestMapping("/view_all_employees")
 	public String viewAllEmployees(Model model) {
