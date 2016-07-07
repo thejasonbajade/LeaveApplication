@@ -15,6 +15,9 @@ $(document).ready(function () {
                 required: true,
                 notEarlierThanStart: true
             },
+            duration: {
+            	notZeroDuration: true
+            },
             reason: {
                 required: true,
                 nospecialchar: true,
@@ -35,6 +38,9 @@ $(document).ready(function () {
             endDate: {
                 required: "This field is required",
                 notEarlierThanStart: "Date cannot be earlier than start date"
+            },
+            duration: {
+            	notZeroDuration: "Duration cannot be zero"
             },
             reason: {
                 required: "This field is required",
@@ -156,6 +162,16 @@ $.validator.addMethod("notEarlierThanStart", function (value) {
 	return bool;
 });
 
+$.validator.addMethod("notZeroDuration", function (value) {
+	if ($('#startDate').val() != "" && $('#leaveType').val() != null && $('#endDate').val() != ""){
+		if ($('#duration').val() != "0"){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+});
 
 function checkCredits(){
 	var startHalf= $("#startHalfDay").is(':checked');
