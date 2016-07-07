@@ -76,11 +76,11 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 			+ "VLCredits = ?, SLCredits = ?, ELCredits = ?, SPCredits = ?, OffsetCredits = ?, Department_ID = ?, isSupervisor = ?,"
 			+ "isAdmin = ?, isHR = ? WHERE ID = ?";
 	@Override
-	public void update(Employee employee) {
+	public int update(Employee employee) {
 		EmployeeRecord record = employee.getEmployeeRecord();
 		Department department = record.getDepartment();
 		LeaveCredits credits = employee.getLeaveCredits();
-		jdbcTemplate.update(SQL_UPDATE,	
+		return jdbcTemplate.update(SQL_UPDATE,	
 				record.getFirstName(),
 				record.getLastName(),
 				record.getEmail(),
