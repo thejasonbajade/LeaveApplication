@@ -116,12 +116,22 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public int updateEmploymentStatusOf(Employee employee) {
-		return employeeRepository.regularize(employee);
+	public int regularizeEmployeeWithId(long employeeId) {
+		return employeeRepository.regularize(employeeId);
 	}
 
 	@Override
 	public int updateEmployee(Employee employee) {
 		return employeeRepository.update(employee);
+	}
+
+	@Override
+	public Employee findEmployeeWithId(long employeeId) {
+		return employeeRepository.findBy(employeeId);
+	}
+
+	@Override
+	public int deactivateEmployeeAccountWithId(long employeeId) {
+		return employeeRepository.deactivate(employeeId);
 	}
 }

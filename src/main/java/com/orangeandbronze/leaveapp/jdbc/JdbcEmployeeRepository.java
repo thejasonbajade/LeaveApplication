@@ -57,15 +57,14 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 	}
 	
 	@Override
-	public int regularize(Employee employee) {
-		final EmploymentStatus status = employee.getEmployeeRecord().getStatus();
+	public int regularize(long employeeId) {
 		return jdbcTemplate.update("UPDATE Employee SET "
 				+ "EmploymentStatus = ?, "
 				+ "RegularizationDate = ? "
 				+ "WHERE ID = ?", 
-				status, 
+				EmploymentStatus.REGULAR, 
 				LocalDate.now().toString(),
-				employee.getEmployeeId());
+				employeeId);
 	}
 	
 	private static final String SQL_UPDATE = 
@@ -253,5 +252,15 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 					}
 				});
 		return updateCount;
+	}
+
+	@Override
+	public int deactivate(long employeeId) {
+		return jdbcTemplate.update("UPDATE Employee SET "
+				+ "EmploymentStatus = ? "
+				+ "WHERE ID = ?", 
+				EmploymentStatus.TERMINATED, 
+				LocalDate.now().toString(),
+				employeeId);
 	}
 }

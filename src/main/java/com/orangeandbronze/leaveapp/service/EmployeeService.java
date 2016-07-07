@@ -29,7 +29,7 @@ public interface EmployeeService {
 	
 	public int updateLeaveCreditsOf(Employee employee);
 	
-	public int updateEmploymentStatusOf(Employee employee);
+	public int regularizeEmployeeWithId(long employeeId);
 	
 	public Employee viewEmployee(long employeeId);
 	
@@ -42,4 +42,8 @@ public interface EmployeeService {
 	public List<Department> findAllDepartments();
 
 	public int updateEmployee(Employee employee);
+
+	public Employee findEmployeeWithId(long employeeId);
+
+	public int deactivateEmployeeAccountWithId(long employeeId);
 }

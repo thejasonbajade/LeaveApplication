@@ -103,6 +103,21 @@ public class EmployeeController{
 		return "submit_add_employee";
 	}
 	
+	@RequestMapping(value = "/regularize_employee", method = RequestMethod.POST)
+	public String submitRegularizeEmployee(@RequestParam Map<String, String> reqParam, Model model) {
+		long employeeId = Long.parseLong(reqParam.get("employeeid"));
+		employeeService.regularizeEmployeeWithId(employeeId);
+		model.addAttribute("user", employeeService.findEmployeeWithId(employeeId));
+		return "/account_info/" + employeeId;
+	}
+	
+	@RequestMapping(value = "/regularize_employee", method = RequestMethod.POST)
+	public String submitDeactivateEmployeeAccount(@RequestParam Map<String, String> reqParam, Model model) {
+		long employeeId = Long.parseLong(reqParam.get("employeeid"));
+		int ret = employeeService.deactivateEmployeeAccountWithId(employeeId);
+		model.addAttribute("user", employeeService.findEmployeeWithId(employeeId));
+		return "/account_info/" + employeeId;
+	}
 	
 	private void checkPrivileges(Map<String, String> reqParam, Employee employee) {
 		if(reqParam.get("isadmin") != null)

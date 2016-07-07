@@ -18,9 +18,11 @@ public interface EmployeeRepository {
 	
 	public int updateLeaveCreditsOf(Employee employee);
 	
-	public int regularize(Employee employee);
+	public int regularize(long employeeId);
 
 	public int add(Employee employee);
 
 	public int update(Employee employee);
+
+	public int deactivate(long employeeId);
 }	
