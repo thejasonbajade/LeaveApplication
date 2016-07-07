@@ -3,7 +3,7 @@
 <ul class="nav nav-tabs">
 	<li class="active"><a href="account_info"> Leave Credits </a></li>
 	<c:if test="${sessionScope.user.admin}">
-		<li><a href="edit_profile"> Edit Profile </a></li>
+		<li><a href="/leaveapplication/edit_profile"> Edit Profile </a></li>
 		<li><a href="/leaveapplication/view_employee_leave_history/${user.employeeId}"> Leave History </a></li>
 		<li><a href="/leaveapplication/notify_lwop"> Notify LWOP </a></li>
 		<li><a href="/leaveapplication/notify_awol"> Notify AWOL </a></li>
