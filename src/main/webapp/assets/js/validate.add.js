@@ -30,7 +30,8 @@ function validateAdd(){
             employmentdate: {
                 required: true,
                 date: true,
-                notAdvanced: true
+                notAdvanced: true,
+                notLaterThanRegularization: true
             },
             employeeposition: {
                 required: true
@@ -41,7 +42,9 @@ function validateAdd(){
             },
             regularizationdate: {
                 required: true,
-                notAdvanced: true
+                date: true,
+                notAdvanced: true,
+                notEarlierThanEmployment: true
             },
             department: {
                 required: true,
@@ -70,7 +73,8 @@ function validateAdd(){
             },
             employmentdate: {
                 required: "This field is required",
-                notAdvanced: "Date cannot be set in the future"
+                notAdvanced: "Date cannot be set in the future",
+                notLaterThanRegularization: "Date cannot be later than regularization"
             },
             employeeposition: {
                 required: "This field is required"
@@ -81,7 +85,8 @@ function validateAdd(){
             },
             regularizationdate: {
                 required: "This field is required",
-                notAdvanced: "Date cannot be set in the future"
+                notAdvanced: "Date cannot be set in the future",
+                notEarlierThanEmployment: "Date cannot be earlier than employment"
             },
             department: {
                 required: "This field is required",
@@ -194,26 +199,39 @@ $.validator.addMethod("isNotDefault", function (value) {
     }
 });
 
-//$.validator.addMethod("employmentNotLate", function (value) {
-//    var bool = true;
-//
-//    if (value === $('#employmentdate').val() & $('#regularizationdate').val()!==null) {
-//        var regDate = $('#regularizationdate').val();
-//        //if regulatization is earlier than employment
-//        if (value > regDate) {
-//            bool = false;
-//        }
-//    }
-//    else if (value === $('#regularizationdate').val() && $('#employmentdate').val()!==null) {
-//        var empDate = $('#employmentdate').val();
-//        //if employment is later than regularization
-//        if (value < empDate) {
-//            bool = false;
-//        }
-//    }
-//    return bool;
-//});
+$.validator.addMethod("notLaterThanRegularization", function (value) {
+	var regDate = $('#regularizationdate').val();
+	var bool = true;
+	if (regDate !== ""){
+		if (value > regDate){
+			bool = false
+		} else{
+			bool = true;
+		}
+	}
+	
+	if ($("#regularizationdate-error").text() === "Date cannot be earlier than employment"){
+		$("#regularizationdate").removeClass("error");
+		$("#regularizationdate-error").remove();
+	}
 
+	return bool;
+});
 
+$.validator.addMethod("notEarlierThanEmployment", function (value) {
+	var empDate = $('#employmentdate').val();
+	var bool = true;
+	if (empDate !== ""){
+		if (value > empDate){
+			bool = true;
+		} else{
+			bool = false;
+		}
+	}
+	if ($("#employmentdate-error").text() === "Date cannot be later than regularization"){
+		$("#employmentdate").removeClass("error");
+		$("#employmentdate-error").remove();
+	}
 
-
+	return bool;
+});
