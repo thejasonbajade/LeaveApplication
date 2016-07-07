@@ -40,7 +40,6 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 
 	@Override
 	public int updateLeaveCreditsOf(Employee employee) {
-		// TODO Auto-generated method stub
 		final LeaveCredits credits = employee.getCredits();
 		return jdbcTemplate.update("UPDATE Employee SET "
 				+ "VLCredits = ?, "
@@ -209,6 +208,38 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						Employee employee = employees.get(i);
 						employee.gainLeaveCredits();
+						LeaveCredits credits = employee.getCredits();
+						ps.setFloat(1, credits.getVacationLeaveCredits());
+						ps.setFloat(2, credits.getSickLeaveCredits());
+						ps.setFloat(3, credits.getEmergencyLeaveCredits());
+						ps.setFloat(4, credits.getSoloParentLeaveCredits());
+						ps.setFloat(5, credits.getOffsetLeaveCredits());
+						ps.setLong(5, employee.getEmployeeId());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						return employees.size();
+					}
+				});
+		return updateCount;
+	}
+
+	@Override
+	public int[] employeeLeaveCreditsBatchReset(final List<Employee> employees) {
+		int[] updateCount = jdbcTemplate.batchUpdate("UPDATE Employee SET "
+				+ "VLCredits = ?, "
+				+ "SLCredits = ?, "
+				+ "ELCredits = ?, "
+				+ "SPCredits = ?, "
+				+ "OffsetCredits = ? "
+				+ "WHERE ID = ?",
+				new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						Employee employee = employees.get(i);
+						employee.refreshCredits();
 						LeaveCredits credits = employee.getCredits();
 						ps.setFloat(1, credits.getVacationLeaveCredits());
 						ps.setFloat(2, credits.getSickLeaveCredits());

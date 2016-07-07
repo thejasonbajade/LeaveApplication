@@ -77,7 +77,7 @@ public class LeaveDetailsTest {
 		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
 		LocalDate endDate = LocalDate.of(2016,Month.JULY,25);
 		leaveDetails = generateLeaveDetails(startDate, true, endDate, true);
-		assertGetNumberOfLeaveDaysEvaluatesTo((float) 0.5);
+		assertGetNumberOfLeaveDaysEvaluatesTo(0);
 	}
 
 	@Test

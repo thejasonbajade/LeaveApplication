@@ -14,6 +14,8 @@ public interface EmployeeRepository {
 	
 	public int[] employeeLeaveCreditsBatchAwarding(final List<Employee> employees);
 	
+	public int[] employeeLeaveCreditsBatchReset(final List<Employee> employees);
+	
 	public int updateLeaveCreditsOf(Employee employee);
 	
 	public int updateEmploymentStatusOf(Employee employee);
