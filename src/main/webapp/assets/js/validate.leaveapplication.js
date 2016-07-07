@@ -43,7 +43,13 @@ $(document).ready(function () {
             }
         }
     });
+   
+    onChanges();
     
+});
+
+function onChanges(){
+	 
 	$('#leaveType').change(function () {
 		if ($('#leaveType').val() == "VACATION_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
@@ -73,15 +79,19 @@ $(document).ready(function () {
 		}
     });
 
-	$('#startDate').change(function () {
-		if ($('#endDate').val() != "" && $('#leaveType').val() != null){
+	$('#startHalfDay').change(function () {
+		if ($('#startDate').val() != "" && $('#leaveType').val() != null && $('#endDate').val() != ""){
 			checkCredits();
-
 		}
     });
+	
+    $('#endHalfDay').change(function () {
+		if ($('#startDate').val() != "" && $('#leaveType').val() != null && $('#endDate').val() != ""){
+			checkCredits();
+        }
+    });
 
-    
-});
+}
 
 $.validator.addMethod("nospecialchar", function (value, element) {
     return this.optional(element) || /[A-Za-z0-9 _.,!"'/$]/.test(value);
@@ -148,7 +158,10 @@ $.validator.addMethod("notEarlierThanStart", function (value) {
 
 
 function checkCredits(){
-		$.ajax({
+	var startHalf= $("#startHalfDay").is(':checked');
+	var endHalf= $("#endHalfDay").is(':checked');
+	
+	$.ajax({
 			url : "CheckCredits",
 		    data:
 		    {
@@ -158,8 +171,9 @@ function checkCredits(){
 		    	olcredits: $('#olpanel .panel-body h3').text(),
 		    	leaveType: $('#leaveType').val(),
 		    	startDate: $('#startDate').val(),
-		      	endDate: $('#endDate').val()
-
+		      	endDate: $('#endDate').val(),
+		      	startHalfDay: startHalf,
+		      	endHalfDay: endHalf
 		      },
 			success : function(leave) {
 				$('#warningdiv').text("");

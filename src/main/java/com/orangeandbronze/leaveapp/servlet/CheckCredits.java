@@ -41,30 +41,18 @@ public class CheckCredits extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-
-		LeaveCredits lc = new LeaveCredits.Builder()
-				.vacationLeaveCredits(Float.parseFloat(request.getParameter("vlcredits")))
-				.sickLeaveCredits(Float.parseFloat(request.getParameter("slcredits")))
-				.emergencyLeaveCredits(Float.parseFloat(request.getParameter("elcredits")))
-				.offsetLeaveCredits(Float.parseFloat(request.getParameter("olcredits"))).build();
-		Employee e = new Employee(0, null, lc);
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
 		String start = request.getParameter("startDate");
 		String end = request.getParameter("endDate");
-		System.out.println(dtf.format(LocalDate.parse(start, dtf)));
 
 		LocalDate startC = LocalDate.parse(start, dtf);
 		LocalDate endC = LocalDate.parse(end, dtf);
-		System.out.println(dtf.format(startC));
 		LeaveType lt = LeaveType.valueOf(request.getParameter("leaveType"));
-		boolean isStartHalfDay = request.getParameter("startHalfDay") == null;
-		boolean isEndHalfDay = request.getAttribute("endHalfDay") == null;
+		boolean isStartHalfDay = Boolean.valueOf(request.getParameter("startHalfDay"));
+		boolean isEndHalfDay = Boolean.valueOf(request.getParameter("endHalfDay"));
 		
 		LeaveDetails details = new LeaveDetails(startC, isStartHalfDay, endC, isEndHalfDay, lt, request.getParameter("reason"));
-		LeaveApplication la = new LeaveApplication(details, e, null);
-		
 		
 		String json = new Gson().toJson(details);
 		response.setContentType("application/json");
