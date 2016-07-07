@@ -119,7 +119,7 @@ public class LeaveCreditsTest {
 	}
 
 	private void assertLWOPCountEvaluatesTo(float lwopCount) {
-		assertTrue(3 == credits.getLwopCount());
+		assertTrue(lwopCount == credits.getLwopCount());
 	}
 
 }

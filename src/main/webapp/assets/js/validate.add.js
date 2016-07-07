@@ -8,12 +8,12 @@ $(document).ready(function () {
 function validateAdd(){
 	$("#addemployeeform").validate({
         rules: {
-            firstname: {
+            firstName: {
                 required: true,
                 lettersonly: true,
                 letterexist: true
             },
-            lastname: {
+            lastName: {
                 required: true,
                 lettersonly: true,
                 letterexist: true
@@ -52,12 +52,12 @@ function validateAdd(){
             }
         },
         messages: {
-            firstname: {
+            firstName: {
                 required: "This field is required",
                 lettersonly: "This field can only contain letters, hyphens, and spaces",
                 letterexist: "First name must have letters"
             },
-            lastname: {
+            lastName: {
                 required: "This field is required",
                 lettersonly: "This field can only contain letters, hyphens, and spaces",
                 letterexist: "Last name must have letters"

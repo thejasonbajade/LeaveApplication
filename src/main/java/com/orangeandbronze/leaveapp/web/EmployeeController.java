@@ -111,7 +111,7 @@ public class EmployeeController{
 		return "/account_info/" + employeeId;
 	}
 	
-	@RequestMapping(value = "/regularize_employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/deactivate_account", method = RequestMethod.POST)
 	public String submitDeactivateEmployeeAccount(@RequestParam Map<String, String> reqParam, Model model) {
 		long employeeId = Long.parseLong(reqParam.get("employeeid"));
 		int ret = employeeService.deactivateEmployeeAccountWithId(employeeId);
