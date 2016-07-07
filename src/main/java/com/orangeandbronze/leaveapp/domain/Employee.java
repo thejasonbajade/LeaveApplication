@@ -47,6 +47,35 @@ public class Employee {
 	public void disapprove(LeaveApplication leaveApplication) {
 		leaveApplication.disapprove();
 	}
+	
+	private boolean employeeIsRegular() {
+		return record.getStatus() == EmploymentStatus.REGULAR;
+	}
+
+	public void gainLeaveCredits() {
+		if(employeeIsRegular()){
+			credits.increaseSickLeaveCredits();
+			credits.increaseVacationLeaveCredits();
+		}
+	}
+	
+	public void resetLwopCount() {
+		credits.resetLwopCount();
+	}
+
+	public void refreshCredits() {
+		if(employeeIsRegular()){
+			credits.resetVacationLeaveCredits();
+			credits.resetSickLeaveCredits();
+			credits.resetEmergencyLeaveCredits();
+			if(employeeIsSoloParent())
+				credits.resetSoloParentLeaveCredits();
+		}
+	}
+
+	private boolean employeeIsSoloParent() {
+		return record.isSoloParent();
+	}
 
 	public long getEmployeeId() {
 		return employeeId;

@@ -202,6 +202,26 @@ public class LeaveCredits {
 			return false;
 		return true;
 	}
+
+	public void resetVacationLeaveCredits() {
+		vacationLeaveCredits = (float) 3.75;
+	}
+
+	public void resetSickLeaveCredits() {
+		sickLeaveCredits = (float) 3.75;
+	}
+
+	public void resetEmergencyLeaveCredits() {
+		emergencyLeaveCredits = 3;
+	}
+
+	public void resetSoloParentLeaveCredits() {
+		soloParentLeaveCredits = 7;
+	}
+
+	public void resetLwopCount() {
+		lwopCount = 0;
+	}
 	
 	
 }

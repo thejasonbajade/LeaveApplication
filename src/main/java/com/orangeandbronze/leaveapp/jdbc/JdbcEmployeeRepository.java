@@ -1,5 +1,6 @@
 package com.orangeandbronze.leaveapp.jdbc;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -190,5 +192,37 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 			return department;
 		}
 	
+	}
+
+	@Override
+	public int[] employeeLeaveCreditsBatchAwarding(final List<Employee> employees) {
+		int[] updateCount = jdbcTemplate.batchUpdate("UPDATE Employee SET "
+				+ "VLCredits = ?, "
+				+ "SLCredits = ?, "
+				+ "ELCredits = ?, "
+				+ "SPCredits = ?, "
+				+ "OffsetCredits = ? "
+				+ "WHERE ID = ?",
+				new BatchPreparedStatementSetter() {
+					
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						Employee employee = employees.get(i);
+						employee.gainLeaveCredits();
+						LeaveCredits credits = employee.getCredits();
+						ps.setFloat(1, credits.getVacationLeaveCredits());
+						ps.setFloat(2, credits.getSickLeaveCredits());
+						ps.setFloat(3, credits.getEmergencyLeaveCredits());
+						ps.setFloat(4, credits.getSoloParentLeaveCredits());
+						ps.setFloat(5, credits.getOffsetLeaveCredits());
+						ps.setLong(5, employee.getEmployeeId());
+					}
+					
+					@Override
+					public int getBatchSize() {
+						return employees.size();
+					}
+				});
+		return updateCount;
 	}
 }

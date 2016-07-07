@@ -1,7 +1,6 @@
 package com.orangeandbronze.leaveapp.domain;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -63,6 +62,22 @@ public class LeaveDetailsTest {
 		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
 		leaveDetails = generateLeaveDetails(startDate, true, endDate, false);
 		assertGetNumberOfLeaveDaysEvaluatesTo((float) 1.5);
+	}
+	
+	@Test
+	public void leaveApplicationWithStartDateSameWithEndDate() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,25);
+		leaveDetails = generateLeaveDetails(startDate, false, endDate, false);
+		assertGetNumberOfLeaveDaysEvaluatesTo((float) 1);
+	}
+	
+	@Test
+	public void leaveApplicationWithStartDateSameWithEndDateSetToHalfDay() throws Exception {
+		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
+		LocalDate endDate = LocalDate.of(2016,Month.JULY,25);
+		leaveDetails = generateLeaveDetails(startDate, true, endDate, true);
+		assertGetNumberOfLeaveDaysEvaluatesTo((float) 0.5);
 	}
 
 	@Test
