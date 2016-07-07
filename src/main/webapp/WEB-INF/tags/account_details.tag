@@ -16,22 +16,24 @@
 		<p><b>Email Address:</b></p>
 		<p><b>Department:</b></p>
 		<p><b>Position:</b></p>
+		<p><b>Status:</b></p>
 	</div>
 	<div class="col-md-8">
 		<p>${user.employeeRecord.firstName} ${user.employeeRecord.lastName}</p>
 		<p>${user.employeeRecord.email}</p>
 		<p>${user.employeeRecord.department.name}</p>
 		<p>${user.employeeRecord.position}</p>
+		<p>${user.employeeRecord.status}</p>
 	</div>
 	<c:if test="${sessionScope.user.admin}">
 		<div class="col-md-10 col-md-offset-2">
 			<c:if test="${user.employeeRecord.status == 'PROBATIONARY'}">
-				<form action="regularize_employee/${user.employeeId}">
+				<form action="regularize_employee">
 					<input type="hidden" name="employeeid" value="${user.employeeId}" />
 					<input type="submit" class="btn btn-primary" value="Regularize">
 				</form>
 			</c:if>
-			<form action="deactivate_account/${user.employeeId}">
+			<form action="deactivate_account">
 				<input type="hidden" name="employeeid" value="${user.employeeId}" />
 				<input style="display: inline" type="submit" class="btn btn-primary" value="Deactivate">
 			</form>
