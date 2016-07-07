@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="t"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <t:wrapper>
 	<div class="container-fluid" id="content">
 		<div class="row">
@@ -10,7 +11,7 @@
 					<h1>Employee Leave History</h1>
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<t:account_details />
+							<t:account_details user="${user}"/>
 						</div>
 					</div>
 				</div>

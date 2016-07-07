@@ -12,14 +12,16 @@ import org.junit.Test;
 public class LeaveApplicationTest {
 	
 	private LeaveApplication leaveApplication;
+	private LeaveDetails leaveDetails;
 	
 	private LeaveApplication generateLeaveApplication(LocalDate startDate, LocalDate endDate) {
-		return new LeaveApplication(startDate, false, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick", null, null);
+		leaveDetails = new LeaveDetails(startDate, false, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick");
+		return new LeaveApplication(leaveDetails, null, null);
 	}
 
 	private void assertGetNumberOfLeaveDaysEvaluatesTo(float expected) {
-		assertTrue("Number of leave days computed was " + leaveApplication.getNumberOfLeaveDays(), 
-				expected == leaveApplication.getNumberOfLeaveDays());
+		assertTrue("Number of leave days computed was " + leaveApplication.getLeaveDetails().getNumberOfLeaveDays(), 
+				expected == leaveApplication.getLeaveDetails().getNumberOfLeaveDays());
 	}
 
 	@Test
@@ -52,7 +54,9 @@ public class LeaveApplicationTest {
 	public void leaveApplicationWithHalfDayStartAndEndDate() throws Exception {
 		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
 		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
-		leaveApplication = new LeaveApplication(startDate, true, endDate, true, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+
+		leaveDetails = new LeaveDetails(startDate, true, endDate, true, LeaveType.SICK_LEAVE, "I'm Sick");
+		leaveApplication = new LeaveApplication(leaveDetails, null, null);;
 		assertGetNumberOfLeaveDaysEvaluatesTo(1);
 	}
 	
@@ -60,7 +64,8 @@ public class LeaveApplicationTest {
 	public void leaveApplicationWithHalfDayStartDate() throws Exception {
 		LocalDate startDate = LocalDate.of(2016,Month.JULY,25);
 		LocalDate endDate = LocalDate.of(2016,Month.JULY,26);
-		leaveApplication = new LeaveApplication(startDate, true, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick", null, null);;
+		leaveDetails = new LeaveDetails(startDate, true, endDate, false, LeaveType.SICK_LEAVE, "I'm Sick");
+		leaveApplication = new LeaveApplication(leaveDetails, null, null);
 		assertGetNumberOfLeaveDaysEvaluatesTo((float)1.5);
 	}
 

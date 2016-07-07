@@ -30,7 +30,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.orangeandbronze.leaveapp.domain.Employee;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
-import com.orangeandbronze.leaveapp.domain.Supervisor;
 import com.orangeandbronze.leaveapp.service.EmployeeService;
 import com.orangeandbronze.leaveapp.service.LeaveApplicationService;
 
@@ -72,13 +71,13 @@ public class LeaveApplicationController{
 	
 	@RequestMapping("/process_leave_application")
 	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {
-		boolean startHalfDay = false;
-		boolean endHalfDay = false;
-		if(reqParam.get("startHalfDay") != null) {
-			startHalfDay = true;
+		boolean startHalfDay = true;
+		boolean endHalfDay = true;
+		if(reqParam.get("startWholeDay").equalsIgnoreCase("on")) {
+			startHalfDay = false;
 		}
-		if(reqParam.get("endHalfDay") != null) {
-			endHalfDay = true;
+		if(reqParam.get("endWholeDay").equalsIgnoreCase("on")) {
+			endHalfDay = false;
 		}
 		int ret = employeeService.fileLeave(user.getEmployeeId(), 
 				LocalDate.parse(reqParam.get("startDate")), 
@@ -107,7 +106,7 @@ public class LeaveApplicationController{
 				leaveApplicationService.findLeaveApplicationsByEmployee(employeeId);
 		model.addAttribute("leaveApplications", leaveApplications);
 		model.addAttribute("formatter", formatter);
-		return "view_employee_leave_history";
+		return "employee_leave_history";
 	}
 
 	@RequestMapping("/view_all_leave_histories")

@@ -23,7 +23,6 @@ import com.orangeandbronze.leaveapp.domain.LeaveApplication;
 import com.orangeandbronze.leaveapp.domain.LeaveDetails;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
-import com.orangeandbronze.leaveapp.domain.Supervisor;
 import com.orangeandbronze.leaveapp.repository.EmployeeRepository;
 import com.orangeandbronze.leaveapp.repository.LeaveApplicationRepository;
 

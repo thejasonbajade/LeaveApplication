@@ -13,8 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import com.orangeandbronze.leaveapp.domain.Department;
 import com.orangeandbronze.leaveapp.domain.Employee;
+import com.orangeandbronze.leaveapp.domain.EmployeeRecord;
 import com.orangeandbronze.leaveapp.domain.LeaveApplication;
+import com.orangeandbronze.leaveapp.domain.LeaveDetails;
 import com.orangeandbronze.leaveapp.domain.LeaveStatus;
 import com.orangeandbronze.leaveapp.domain.LeaveType;
 import com.orangeandbronze.leaveapp.domain.Supervisor;
@@ -23,6 +26,7 @@ import com.orangeandbronze.leaveapp.jdbc.JdbcLeaveApplicationRepository;
 public class JdbcLeaveApplicationRepositoryTest {
 	
 	private JdbcLeaveApplicationRepository leaveApplicationRepository;
+	private LeaveDetails leaveDetails;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -38,7 +42,7 @@ public class JdbcLeaveApplicationRepositoryTest {
 		LeaveApplication leaveApplication = leaveApplicationRepository.findBy(1);
 		assertNotNull(leaveApplication);
 		assertEquals(1, leaveApplication.getLeaveId());
-		assertEquals("I am Sick", leaveApplication.getReason());
+		assertEquals("I am Sick", leaveApplication.getLeaveDetails().getReason());
 		assertEquals(LeaveStatus.PENDING, leaveApplication.getStatus());
 	}
 	
@@ -52,10 +56,10 @@ public class JdbcLeaveApplicationRepositoryTest {
 
 	@Test
 	public void testFindLeaveApplicationsForSupervisor() {
-		Collection<LeaveApplication> leaveApplications = leaveApplicationRepository.findLeaveApplicationsForSupervisor(supervisorId);
+		Collection<LeaveApplication> leaveApplications = leaveApplicationRepository.findLeaveApplicationsForSupervisor(1);
 		
 		assertNotNull(leaveApplications);
-		assertEquals(5, leaveApplications.size());
+		assertEquals(1, leaveApplications.size());
 	}
 	
 	@Test
@@ -68,11 +72,11 @@ public class JdbcLeaveApplicationRepositoryTest {
 	
 	@Test
 	public void testInsertLeaveApplication() {
-		Employee employee = new Employee(1, "Jason", "Bajade");
-		Supervisor supervisor = new Supervisor(2, "Jerome", "Gonzalvo");
-		LeaveApplication leaveApplicationExpected = new LeaveApplication(
-				1, LocalDate.of(2016, Month.JULY, 1), LocalDate.of(2016, Month.JULY, 4),  
-				LocalDate.of(2016, Month.JUNE, 28), LeaveType.SICK_LEAVE, LeaveStatus.PENDING, "I am Sick", employee, supervisor);
+		Employee employee = generateEmployee();
+		LocalDate startDate = LocalDate.of(2016, Month.JULY, 1);
+		LocalDate endDate = LocalDate.of(2016, Month.JULY, 4);
+		leaveDetails = new LeaveDetails(startDate, true, endDate, true, LeaveType.SICK_LEAVE, "I'm Sick");
+		LeaveApplication leaveApplicationExpected = new LeaveApplication(1, leaveDetails, LeaveStatus.PENDING, employee, null);
 		
 		int affectedRow = leaveApplicationRepository.insert(leaveApplicationExpected);
 		
@@ -82,13 +86,27 @@ public class JdbcLeaveApplicationRepositoryTest {
 		assertTrue(leaveApplicationExpected.getStatus() == leaveApplicationActual.getStatus());
 	}
 	
+	private Employee generateEmployee() {
+		final long id = 42;
+		EmployeeRecord record = generateRecord();
+		return new Employee(id, record);
+	}
+	
+	private EmployeeRecord generateRecord() {
+		return new EmployeeRecord.Builder("John", "Cena", LocalDate.now(), generateDepartment(), "youcantseeme@orangeandbronze.com", "vice-president").build();
+	}
+	
+	private Department generateDepartment(){
+		return new Department(1, "Party");
+	}
+	
 	@Test
 	public void testUpdateLeaveApplicationStatus() {
-		LeaveApplication leaveApplicationExpected = leaveApplicationRepository.findBy(leaveId);
+		LeaveApplication leaveApplicationExpected = leaveApplicationRepository.findBy(1);
 		
 		leaveApplicationRepository.updateLeaveStatus(leaveApplicationExpected);
 		
-		LeaveApplication leaveApplicationActual = leaveApplicationRepository.findBy(leaveId);
+		LeaveApplication leaveApplicationActual = leaveApplicationRepository.findBy(1);
 		assertEquals(LeaveStatus.ADMIN_APPROVED, leaveApplicationActual.getStatus());
 	}
 	

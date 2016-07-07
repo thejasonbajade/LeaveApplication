@@ -2,6 +2,7 @@ package com.orangeandbronze.leaveapp.domain;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -12,20 +13,17 @@ public class LeaveApprovalTest {
 
 	private LeaveApplication newLeaveApplication;
 	Employee filer;
-	private Supervisor supervisor;
-	private Admin admin;
 
 	@Before
 	public void setUp() {
 		filer = new Employee();
-		supervisor = new Supervisor();
-		admin = new Admin();
 		newLeaveApplication = generateLeaveApplication(filer);
 	}
 
 	private LeaveApplication generateLeaveApplication(Employee filer) {
-		Calendar startDate = new GregorianCalendar(2016,11,5);
-		Calendar endDate = new GregorianCalendar(2016,11,12);
+		LocalDate startDate = LocalDate.of(2016,11,5);
+		LocalDate endDate = LocalDate.of(2016,11,12);
+		LeaveDetails leaveDetails = new LeaveDetails();
 		return filer.fileLeave(startDate, endDate, LeaveType.SICK_LEAVE, supervisor);
 	}
 
