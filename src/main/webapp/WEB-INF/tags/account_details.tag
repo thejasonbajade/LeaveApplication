@@ -23,4 +23,18 @@
 		<p>${user.employeeRecord.department.name}</p>
 		<p>${user.employeeRecord.position}</p>
 	</div>
+	<c:if test="${sessionScope.user.admin}">
+		<div class="col-md-10 col-md-offset-2">
+			<c:if test="${user.employeeRecord.status == 'PROBATIONARY'}">
+				<form action="regularize_employee/${user.employeeId}">
+					<input type="hidden" name="employeeid" value="${user.employeeId}" />
+					<input type="submit" class="btn btn-primary" value="Regularize">
+				</form>
+			</c:if>
+			<form action="deactivate_account/${user.employeeId}">
+				<input type="hidden" name="employeeid" value="${user.employeeId}" />
+				<input style="display: inline" type="submit" class="btn btn-primary" value="Deactivate">
+			</form>
+		</div>
+	</c:if>
 </div>
