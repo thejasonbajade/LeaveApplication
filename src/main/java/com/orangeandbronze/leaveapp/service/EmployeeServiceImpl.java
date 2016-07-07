@@ -117,7 +117,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	public int updateEmploymentStatusOf(Employee employee) {
-		return employeeRepository.updateEmploymentStatusOf(employee);
+		return employeeRepository.regularize(employee);
 	}
 
 	@Override

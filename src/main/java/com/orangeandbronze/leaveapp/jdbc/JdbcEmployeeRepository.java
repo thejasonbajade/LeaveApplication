@@ -56,10 +56,8 @@ public class JdbcEmployeeRepository implements EmployeeRepository {
 				employee.getEmployeeId());
 	}
 	
-	
-	
 	@Override
-	public int updateEmploymentStatusOf(Employee employee) {
+	public int regularize(Employee employee) {
 		final EmploymentStatus status = employee.getEmployeeRecord().getStatus();
 		return jdbcTemplate.update("UPDATE Employee SET "
 				+ "EmploymentStatus = ?, "

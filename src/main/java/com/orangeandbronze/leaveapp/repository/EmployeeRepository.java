@@ -18,7 +18,7 @@ public interface EmployeeRepository {
 	
 	public int updateLeaveCreditsOf(Employee employee);
 	
-	public int updateEmploymentStatusOf(Employee employee);
+	public int regularize(Employee employee);
 
 	public int add(Employee employee);
 
