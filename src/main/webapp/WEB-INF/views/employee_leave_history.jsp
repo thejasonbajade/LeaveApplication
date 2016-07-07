@@ -11,7 +11,7 @@
 					<h1>Employee Leave History</h1>
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<t:account_details user="${user}"></t:account_details>
+							<t:account_details user="${user}"/>
 						</div>
 					</div>
 				</div>
@@ -72,7 +72,7 @@
 											</c:choose>
 											<td>${leaveApplication.filer.employeeRecord.firstName}
 												${leaveApplication.filer.employeeRecord.lastName}</td>
-											<td>${leaveApplication.leaveDetails.leaveType.toString()}</td>
+											<td>${leaveApplication.leaveDetails.leaveType.toAcronym()}</td>
 											<td>${leaveApplication.leaveDetails.dateFiled.format(formatter)}</td>
 											<td>${leaveApplication.leaveDetails.startDate.format(formatter)}</td>
 											<td>${leaveApplication.leaveDetails.endDate.format(formatter)}</td>
@@ -83,12 +83,27 @@
 												data-target="#leaveApplication${leaveApplication.leaveId}">
 													<i class="fa fa-eye text-primary" aria-hidden="true"
 													title="View"></i>
-											</a> <c:if test="${leaveApplication.status == 'PENDING'}">
-													<a href="cancel_leave/${leaveApplication.leaveId}"> <span
-														class="label label-danger"><i class="fa fa-times"
-															aria-hidden="true" title="Cancel"></i></span>
-													</a>
-												</c:if></td>
+											</a> <c:if test="${leaveApplication.approver.employeeId == user.employeeId && leaveApplication.status == 'PENDING'}">
+											<a href="approve_leave_supervisor/${leaveApplication.leaveId}">
+												<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
+											</a> 
+											<a href="disapprove_leave_supervisor/${leaveApplication.leaveId}">
+												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
+											</a>
+										</c:if>
+										<c:if test="${user.admin && leaveApplication.status == 'SUPERVISOR_APPROVED'}">
+											<a href="approve_leave/${leaveApplication.leaveId}">
+												<span class="label label-success"><i class="fa fa-check" aria-hidden="true" title="Approve"></i></span>
+											</a> 
+											<a href="disapprove_leave/${leaveApplication.leaveId}">
+												<span class="label label-danger"><i class="fa fa-times" aria-hidden="true" title="Dispprove"></i></span>
+											</a>
+										</c:if>
+										<c:if test="${user.admin && (leaveApplication.status == 'SUPERVISOR_APPROVED' || leaveApplication.status == 'ADMIN_APPROVED')}">
+											<a href="not_taken_leave/${leaveApplication.leaveId}">
+												<span class="label label-default"><i class="fa fa-ban" aria-hidden="true" title="Not Taken"></i></span>
+											</a>		
+										</c:if></td>
 										</tr>
 										<t:leave_details leaveApplication="${leaveApplication}" />
 									</c:forEach>

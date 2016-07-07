@@ -32,7 +32,7 @@
 			<input type="date" id="startDate" name="startDate" class="form-control">
 		</div>
 		<div class="col-md-2">
-			<input type="checkbox" name="startHalfDay" value="true"> Half Day
+			<input type="checkbox" name="startHalfDay"> Half Day
 		</div>
 	</div>
 	
@@ -42,7 +42,7 @@
 			<input type="date" id="endDate" name="endDate" class="form-control">
 		</div>
 		<div class="col-md-2">
-			<input type="checkbox" name="endHalfDay" value="true"> Half Day
+			<input type="checkbox" name="endHalfDay"> Half Day
 		</div>
 	</div>
 	

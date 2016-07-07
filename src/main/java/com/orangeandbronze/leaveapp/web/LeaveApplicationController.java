@@ -60,14 +60,8 @@ public class LeaveApplicationController{
 	
 	@RequestMapping("/process_leave_application")
 	public String processLeaveApplication(@RequestParam Map<String, String> reqParam, Model model) {
-		boolean startHalfDay = false;
-		boolean endHalfDay = false;
-		if(reqParam.get("startHalfDay") != null) {
-			startHalfDay = true;
-		}
-		if(reqParam.get("endHalfDay") != null) {
-			endHalfDay = true;
-		}
+		boolean startHalfDay = reqParam.get("startHalfDay") == null;
+		boolean endHalfDay = reqParam.get("endHalfDay") == null;
 		int ret = employeeService.fileLeave(user.getEmployeeId(), 
 				LocalDate.parse(reqParam.get("startDate")), 
 				startHalfDay,
@@ -95,7 +89,7 @@ public class LeaveApplicationController{
 				leaveApplicationService.findLeaveApplicationsByEmployee(employeeId);
 		model.addAttribute("leaveApplications", leaveApplications);
 		model.addAttribute("formatter", formatter);
-		return "view_employee_leave_history";
+		return "employee_leave_history";
 	}
 
 	@RequestMapping("/view_all_leave_histories")
