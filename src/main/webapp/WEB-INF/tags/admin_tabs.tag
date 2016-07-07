@@ -5,7 +5,7 @@
 	<c:if test="${sessionScope.user.admin}">
 		<li><a href="edit_profile"> Edit Profile </a></li>
 		<li><a href="/leaveapplication/view_employee_leave_history/${user.employeeId}"> Leave History </a></li>
-		<li><a href="notify_lwop"> Notify LWOP </a></li>
-		<li><a href="notify_awol"> Notify AWOL </a></li>
+		<li><a href="/leaveapplication/notify_lwop"> Notify LWOP </a></li>
+		<li><a href="/leaveapplication/notify_awol"> Notify AWOL </a></li>
 	</c:if>
 </ul>
