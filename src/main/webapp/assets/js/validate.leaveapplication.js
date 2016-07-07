@@ -11,6 +11,9 @@ $(document).ready(function () {
                 required: true,
                 notLaterThanEnd: true
             },
+            duration: {
+            	notZeroDuration: true
+            },
             endDate: {
                 required: true,
                 notEarlierThanStart: true
@@ -35,6 +38,9 @@ $(document).ready(function () {
             endDate: {
                 required: "This field is required",
                 notEarlierThanStart: "Date cannot be earlier than start date"
+            },
+            duration: {
+            	notZeroDuration: "Duration cannot be zero"
             },
             reason: {
                 required: "This field is required",
@@ -163,7 +169,8 @@ $.validator.addMethod("notZeroDuration", function (value) {
 	if ($('#duration').val() != "0"){
 		return true;
 	} else {
-			return false;
+		$('#warningdiv').text("");
+		return false;
 	}
 });
 
@@ -215,11 +222,8 @@ function lwopWarning(leave){
 	}
 	
 	if (parseFloat($('#duration').val()) == 0){
-		$('#warningdiv').text("Warning: Leave duration cannot be zero. ");
+		$('#warningdiv').text("Warning: Leave duration cannot be zero.");
 	}
-
-
-
 }
 
 function getCreditsOfSelectedLeave(leaveType){
