@@ -33,7 +33,7 @@
 	<div class="form-group col-md-12">
 		<label class="col-md-4"> Employment Date </label>
 		<div class="col-md-8">
-			<input type="date" name="employmentdate" class="form-control">
+			<input type="date" name="employmentdate" id="employmentdate" class="form-control">
 		</div>
 	</div>
 	

@@ -11,6 +11,9 @@ $(document).ready(function () {
                 required: true,
                 notLaterThanEnd: true
             },
+            duration: {
+            	notZeroDuration: true
+            },
             endDate: {
                 required: true,
                 notEarlierThanStart: true
@@ -36,6 +39,9 @@ $(document).ready(function () {
                 required: "This field is required",
                 notEarlierThanStart: "Date cannot be earlier than start date"
             },
+            duration: {
+            	notZeroDuration: "Duration cannot be zero"
+            },
             reason: {
                 required: "This field is required",
                 nospecialchar: "This field cannot contain special characters",
@@ -43,7 +49,13 @@ $(document).ready(function () {
             }
         }
     });
+   
+    onChanges();
     
+});
+
+function onChanges(){
+	 
 	$('#leaveType').change(function () {
 		if ($('#leaveType').val() == "VACATION_LEAVE"){
 			$('.panel').attr('class', 'panel panel-default');
@@ -73,15 +85,19 @@ $(document).ready(function () {
 		}
     });
 
-	$('#startDate').change(function () {
-		if ($('#endDate').val() != "" && $('#leaveType').val() != null){
+	$('#startHalfDay').change(function () {
+		if ($('#startDate').val() != "" && $('#leaveType').val() != null && $('#endDate').val() != ""){
 			checkCredits();
-
 		}
     });
+	
+    $('#endHalfDay').change(function () {
+		if ($('#startDate').val() != "" && $('#leaveType').val() != null && $('#endDate').val() != ""){
+			checkCredits();
+        }
+    });
 
-    
-});
+}
 
 $.validator.addMethod("nospecialchar", function (value, element) {
     return this.optional(element) || /[A-Za-z0-9 _.,!"'/$]/.test(value);
@@ -122,14 +138,17 @@ $.validator.addMethod("notLaterThanEnd", function (value) {
 	if (endDate !== ""){
 		if (value > endDate){
 			bool = false
-		} else if (value <= endDate){
+		} else{
 			bool = true;
 		}
 	}
-	$("#endDate-error").remove();
+	
+		$("#endDate").removeClass("error");
+		$("#endDate-error").remove();
 
 	return bool;
 });
+
 
 $.validator.addMethod("notEarlierThanStart", function (value) {
 	var startDate = $('#startDate').val();
@@ -146,9 +165,20 @@ $.validator.addMethod("notEarlierThanStart", function (value) {
 	return bool;
 });
 
+$.validator.addMethod("notZeroDuration", function (value) {
+	if ($('#duration').val() != "0"){
+		return true;
+	} else {
+		$('#warningdiv').text("");
+		return false;
+	}
+});
 
 function checkCredits(){
-		$.ajax({
+	var startHalf= $("#startHalfDay").is(':checked');
+	var endHalf= $("#endHalfDay").is(':checked');
+	
+	$.ajax({
 			url : "CheckCredits",
 		    data:
 		    {
@@ -158,8 +188,9 @@ function checkCredits(){
 		    	olcredits: $('#olpanel .panel-body h3').text(),
 		    	leaveType: $('#leaveType').val(),
 		    	startDate: $('#startDate').val(),
-		      	endDate: $('#endDate').val()
-
+		      	endDate: $('#endDate').val(),
+		      	startHalfDay: startHalf,
+		      	endHalfDay: endHalf
 		      },
 			success : function(leave) {
 				$('#warningdiv').text("");
@@ -173,19 +204,25 @@ function lwopWarning(leave){
 	var selected = $('#leaveType').val();
 	var credits = getCreditsOfSelectedLeave(selected);
 	var lwopCount;
+	
+	
 	if (leave.numberOfLeaveDays > credits){
 		if (selected === "EMERGENCY_LEAVE"){
 			credits += getCreditsOfSelectedLeave("VACATION_LEAVE");
-			$('#warningdiv').text("Warning: Your EL balance is not enough to cover the leave. VL will be deducted");
+			$('#warningdiv').text("Warning: Insufficient EL balance. VL will be deducted");
 			if (leave.numberOfLeaveDays > credits){
 				lwopCount = leave.numberOfLeaveDays - credits;
 				$('#warningdiv').text("Warning: " + lwopCount + " day/s of your leave will be LWOP");
 			}
 		} else {
 			lwopCount = leave.numberOfLeaveDays - credits;
-			$('#warningdiv').text("Warning: Your balance is not enough to cover the duration. ");
+			$('#warningdiv').text("Warning: Insufficient credits ");
 			$('#warningdiv').append(lwopCount + " day/s of your leave will be LWOP");
 		}
+	}
+	
+	if (parseFloat($('#duration').val()) == 0){
+		$('#warningdiv').text("Warning: Leave duration cannot be zero.");
 	}
 }
 

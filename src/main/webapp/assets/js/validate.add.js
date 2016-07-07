@@ -113,9 +113,10 @@ function otherAddEditFc(){
         	 $('#regularizationdate').show();
         } else{
         	$('#regularizationdate').hide();
+        	$("#regularizationdate").removeClass("error");
+        	$("#regularizationdate-error").remove();
         }
-    });
-    
+    });    
 }
 
 $.validator.addMethod("elevenDigitsOnly", function (value) {
